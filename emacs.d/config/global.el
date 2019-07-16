@@ -80,7 +80,7 @@
   (let ((new-mode (if (eq frame-background-mode 'dark) 'light 'dark)))
     (setq frame-background-mode new-mode)
     (set-frame-parameter nil 'background-mode new-mode))
-  (enable-theme 'solarized))
+  (enable-theme 'solarized-dark))
 
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
@@ -269,7 +269,7 @@
             (let ((mode 'dark))
               (set-frame-parameter frame 'background-mode mode)
               (set-terminal-parameter frame 'background-mode mode))
-            (enable-theme 'solarized)))
+            (enable-theme 'solarized-dark)))
 
 
 (with-eval-after-load 'flycheck

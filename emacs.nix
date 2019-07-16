@@ -53,5 +53,6 @@
     discover-my-major
     proof-general
     nix-mode
+    solarized-theme
   ];
 }

@@ -6,6 +6,11 @@
 
 ;; Packages and configs to load
 
+(package-initialize)
+
+;; Set default theme
+(load-theme 'solarized-dark t)
+
 (defvar init-configs
   '("global"
     "markdown"
@@ -29,10 +34,6 @@
 
 (loop for name in init-configs
       do (load (concat init-currentDir "config/" name ".el")))
-
-;; Set default theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/solarized")
-(load-theme 'solarized t)
 
 ;; Mode initializations
 

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 SINK=$( pactl list short sinks | grep RUNNING | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -n 1 )
 
 if [ "$1" == "up" ]

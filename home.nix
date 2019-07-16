@@ -23,6 +23,8 @@ in {
     rofi = (import ./rofi.nix);
     alacritty = (import ./alacritty.nix);
     emacs = (import ./emacs.nix);
+    git = (import ./git.nix);
+    bash = (import ./bash.nix);
   };
 
   services.emacs.enable = true;
