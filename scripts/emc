@@ -1,0 +1,8 @@
+#!/bin/bash
+
+tty -s;
+if [ "0" == "$?" ]; then
+    emacsclient -a "" -t "$@"
+else
+    emacsclient -a "" -n -c "$@"
+fi

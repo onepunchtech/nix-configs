@@ -1,0 +1,57 @@
+{
+  enable = true;
+  extraPackages = epkgs: with epkgs; with melpaPackages; [
+    evil-numbers
+    exec-path-from-shell
+    paredit
+    flycheck
+    flycheck-rust
+    idris-mode
+    elixir-mode
+    ruby-end
+    alchemist
+    web-mode
+    markdown-mode
+    yaml-mode
+    ghc
+    haskell-mode
+    dhall-mode
+    intero
+    hindent
+    js2-mode
+    ac-js2
+    ag
+    f
+    let-alist
+    s
+    elm-mode
+    auto-complete
+    company
+    json-reformat
+    json-mode
+    ensime
+    writegood-mode
+    projectile
+    ag
+    helm
+    helm-projectile
+    helm-ag
+    helm-flx
+    helm-fuzzier
+    helm-tramp
+    w3m
+    rust-mode
+    intero
+    floobits
+    magit
+    go-mode
+    gotest
+    evil-mu4e
+    fix-word
+    whitespace-cleanup-mode
+    indent-guide
+    discover-my-major
+    proof-general
+    nix-mode
+  ];
+}
