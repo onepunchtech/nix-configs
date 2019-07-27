@@ -44,6 +44,7 @@
     intero
     floobits
     magit
+    evil-magit
     go-mode
     gotest
     evil-mu4e

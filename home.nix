@@ -8,13 +8,15 @@ in {
     google-chrome
     xorg.xbacklight
     i3
-    i3status
+    i3status-rust
+    stack
+    zlib
+    xsel
     scripts.pavol
     scripts.emc
+    ag
   ];
-  home.sessionVariables = {
-    GDK_SCALE = 2;
-  };
+  home.sessionVariables = {};
 
   programs = {
     firefox = {
@@ -25,6 +27,7 @@ in {
     emacs = (import ./emacs.nix);
     git = (import ./git.nix);
     bash = (import ./bash.nix);
+    autorandr = (import ./autorandr.nix);
   };
 
   services.emacs.enable = true;
@@ -36,9 +39,8 @@ in {
   home.file.".emacs.d".source = ./emacs.d;
 
   xdg.configFile."i3/config".source = ./i3/config;
-  xdg.configFile."i3status/config".source = ./i3status/config;
+  xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
 
   nixpkgs.config = import ./nixpkgs-config.nix;
-  xdg.configFile."nixpkgs/config.nix".source =
-      ./nixpkgs-config.nix;
+  xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 }

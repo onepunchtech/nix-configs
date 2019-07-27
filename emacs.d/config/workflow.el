@@ -1,6 +1,7 @@
 (require 'helm-config)
 (require 'helm-fuzzier)
 (require 'magit)
+(require 'evil-magit)
 (require 'projectile)
 (require 'helm-projectile)
 (require 'helm-mode)
@@ -30,12 +31,13 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(projectile-mode)
-
 (setq helm-locate-command "locate %s -e -A --regex %s")
 
 (setq projectile-enable-caching t)
 (setq projectile-file-exists-remote-cache-expire (* 10 60))
+(setq projectile-cache-file (expand-file-name "projectile.cache" (substitute-in-file-name "$HOME/.cache/emacs")))
+(setq projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" (substitute-in-file-name "$HOME/.cache/emacs")))
+(projectile-mode)
 
 (with-eval-after-load 'helm-projectile
   (defvar helm-source-file-not-found
