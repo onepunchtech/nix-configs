@@ -114,6 +114,6 @@ bar {
 
 # Audio controls
 
-bindsym XF86AudioMute exec pavol.sh toggle
-bindsym XF86AudioLowerVolume exec pavol.sh down
-bindsym XF86AudioRaiseVolume exec pavol.sh up
+bindsym XF86AudioMute exec opdt -m
+bindsym XF86AudioLowerVolume exec opdt -d 5%
+bindsym XF86AudioRaiseVolume exec opdt -i 5%

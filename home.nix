@@ -12,8 +12,8 @@ in {
     stack
     zlib
     xsel
-    scripts.pavol
     scripts.emc
+    scripts.opdt
     ag
   ];
   home.sessionVariables = {};
