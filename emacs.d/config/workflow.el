@@ -5,6 +5,7 @@
 (require 'projectile)
 (require 'helm-projectile)
 (require 'helm-mode)
+(require 'flymake)
 
 (helm-fuzzier-mode 1)
 (helm-mode 1)

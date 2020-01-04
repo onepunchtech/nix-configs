@@ -4,7 +4,7 @@
     export PATH=~/.local/bin:$PATH
   '';
   historyControl = [ "erasedups" "ignorespace" ];
-  historyFileSize = 1000000;
+  historySize = 1000000;
   historyIgnore = [ "ls" "ps" "history" ];
   shellOptions = [ "histappend" ];
 }

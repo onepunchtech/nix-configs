@@ -6,11 +6,9 @@
 (require 'dired-x)
 (require 'web-mode)
 (require 'auto-complete)
-(require 'ensime)
 (require 'writegood-mode)
 (require 'whitespace-cleanup-mode)
 (require 'indent-guide)
-
 
 ;; Functions
 
@@ -261,9 +259,6 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-(add-hook 'scala-mode-hook #'yas-minor-mode)
-
 (add-hook 'after-make-frame-functions
           (lambda (frame)
             (let ((mode 'dark))
@@ -318,12 +313,6 @@
 
 (set-exec-path-from-shell-PATH)
 
-;; YASNIPPET
-(yas-global-mode 1)
-(define-key yas-minor-mode-map (kbd "<tab>") nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "C-;") #'yas-expand)
-
 ;; TABS
 (add-hook 'makefile-mode-hook 
   '(lambda() 
@@ -336,6 +325,12 @@
 (global-set-key (kbd "M-u") #'fix-word-upcase)
 (global-set-key (kbd "M-l") #'fix-word-downcase)
 (global-set-key (kbd "M-c") #'fix-word-capitalize)
+
+;; YASNIPPET
+(yas-global-mode 1)
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "C-;") #'yas-expan)
 
 ;; TODO organize later
 (global-whitespace-cleanup-mode)

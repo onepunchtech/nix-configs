@@ -1,25 +1,53 @@
 { config, pkgs, ... }:
 
+let
+  unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+in
 {
   imports =
     [ 
+      <nixos-hardware/common/cpu/intel>
+      <nixos-hardware/common/pc/laptop>
+      <nixos-hardware/common/pc/laptop/ssd>
       ./hardware-configuration.nix
     ];
 
   nixpkgs.config = {
     allowUnfree = true;
+    packageOverrides = pkgs: rec {
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
   };
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  nix.nixPath = [
+    (let
+        sshConfigFile = pkgs.writeText "ssh_config" ''
+            Host github.com
+            IdentityFile /etc/ssh/ssh_host_rsa_key
+            StrictHostKeyChecking=no
+        '';
+    in
+        "ssh-config-file=${sshConfigFile}"
+    )
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
+    "nixos-config=/etc/nixos/configuration.nix"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
 
-  networking = {
-    hostName = "ludwig";
-    networkmanager.enable = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    # blacklistedKernelModules = ["nouveau"];
+    blacklistedKernelModules = [ "nouveau" "nv" "rivafb" "nvidiafb" "rivatv" ];
+    tmpOnTmpfs = true;
   };
 
-  time.timeZone = "America/Chicago";
+  console.font = "latarcyrheb-sun32";
 
   environment.systemPackages = with pkgs; [
     wget 
@@ -29,26 +57,85 @@
     git
     tree
     rxvt_unicode
-    home-manager
+    unstable.home-manager
+    lm_sensors
+    firmwareLinuxNonfree
   ];
 
-  services.openssh.enable = true;
+  fonts.fonts = with pkgs; [
+    dejavu_fonts
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    font-awesome_5
+    material-icons
+  ];
 
-  networking.firewall.enable = false;
-  services.printing.enable = true;
+  hardware = {
+    bluetooth.enable = true;
+    enableRedistributableFirmware = true;
+    nvidia = {
+      optimus_prime.enable = true;
+      modesetting.enable = true;
+      optimus_prime = {
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+    };
+    pulseaudio = {
+      enable = true;
+      package = pkgs.pulseaudioFull;
+    };
+  };
+
+  networking = {
+    firewall.enable = false;
+    hostName = "ludwig";
+    networkmanager.enable = true;
+  };
+  
+  services = {
+    hardware.bolt.enable = true;
+    openssh.enable = true;
+    printing.enable = true;
+    tlp.enable = true;
+    resolved = {
+      enable = true;
+      fallbackDns = [ "8.8.8.8" "8.8.4.4" ];
+    };
+    undervolt = {
+      enable = true;
+      analogioOffset = "-100";
+      coreOffset = "-130";
+      uncoreOffset = "-100";
+      gpuOffset = "-50"; 
+      verbose = true;
+    };
+    upower.enable = true;
+    xserver = {
+      enable = true;
+      dpi = 220;
+      libinput = {
+        naturalScrolling = false;
+        enable = true;
+        middleEmulation = true;
+        tapping = true;
+        clickMethod = "clickfinger";
+      };
+      videoDrivers = [ "nvidia" ];
+    };
+  };
 
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.enableRedistributableFirmware = true;
-  
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "intel" ];
-
-  users.users.whitehead = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-  };
 
   system.stateVersion = "19.03";
 
+  time.timeZone = "America/Chicago";
+
+  users.users.whitehead = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" "video" "docker" ];
+  };
+
+  virtualisation.docker.enable = true;
 }
