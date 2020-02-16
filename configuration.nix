@@ -23,13 +23,13 @@ in
 
   nix.nixPath = [
     (let
-        sshConfigFile = pkgs.writeText "ssh_config" ''
+      sshConfigFile = pkgs.writeText "ssh_config" ''
             Host github.com
             IdentityFile /etc/ssh/ssh_host_rsa_key
             StrictHostKeyChecking=no
         '';
     in
-        "ssh-config-file=${sshConfigFile}"
+      "ssh-config-file=${sshConfigFile}"
     )
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
     "nixos-config=/etc/nixos/configuration.nix"
@@ -42,6 +42,15 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [{
+      name = "thunderbolt";
+      patch = null;
+      extraConfig = ''
+        THUNDERBOLT y
+        HOTPLUG_PCI y
+        HOTPLUG_PCI_ACPI y
+      '';
+    }];
     # blacklistedKernelModules = ["nouveau"];
     blacklistedKernelModules = [ "nouveau" "nv" "rivafb" "nvidiafb" "rivatv" ];
     tmpOnTmpfs = true;
@@ -71,6 +80,11 @@ in
     material-icons
   ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+  };
+
   hardware = {
     bluetooth.enable = true;
     enableRedistributableFirmware = true;
@@ -95,6 +109,7 @@ in
   };
   
   services = {
+    acpid.enable = true;
     hardware.bolt.enable = true;
     openssh.enable = true;
     printing.enable = true;
@@ -114,6 +129,8 @@ in
     upower.enable = true;
     xserver = {
       enable = true;
+      layout = "us";
+      xkbOptions = "caps:super,ctrl:swap_lalt_lctl";
       dpi = 220;
       libinput = {
         naturalScrolling = false;

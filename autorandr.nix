@@ -23,7 +23,7 @@
       };
       config = {
         eDP-1-1 = {
-          enable = false;
+          enable = true;
           primary = true;
           position = "0x0";
           mode = "3840x2160";
@@ -33,7 +33,7 @@
         DP-1-1 = {
           enable = true;
           primary = false;
-          position = "0x0";
+          position = "3840x0";
           mode = "3840x2160";
           gamma = "0:0:0";
           rate = "60.00";

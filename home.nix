@@ -4,6 +4,8 @@ let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
   all-hies = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
 in {
+  nixpkgs = import ./nixpkgs-config.nix { inherit pkgs; };
+
   home.username = "whitehead";
   home.packages = with pkgs; [
     google-chrome
@@ -33,7 +35,6 @@ in {
     };
     rofi = (import ./rofi.nix);
     alacritty = (import ./alacritty.nix);
-    # emacs = (import ./emacs.nix);
     git = (import ./git.nix);
     bash = (import ./bash.nix);
     autorandr = (import ./autorandr.nix);
@@ -41,15 +42,14 @@ in {
 
   imports = [ ./emacs.nix ];
 
-  xdg.configFile."keyboard/config.xkb".source = ./keyboard/config.xkb;
+  # xdg.configFile."keyboard/config.xkb".source = ./keyboard/config.xkb;
   xsession.enable = true;
-  xsession.initExtra = "xkbcomp ~/.config/keyboard/config.xkb $DISPLAY";
+  # xsession.initExtra = "xkbcomp ~/.config/keyboard/config.xkb $DISPLAY";
   xsession.windowManager.command = "${pkgs.i3}/bin/i3";
 
   xdg.configFile."i3/config".source = ./i3/config;
   xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
   xdg.configFile."brittany/config.yaml".source = ./brittany/config.yaml;
 
-  nixpkgs.config = import ./nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 }
