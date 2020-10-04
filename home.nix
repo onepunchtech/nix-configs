@@ -2,23 +2,29 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  all-hies = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
+  emacsRev = "f31a66511568b15ca504d51eab21933ebba99e28";
+  emacs-overlay = import (builtins.fetchTarball {
+    url =
+      "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
+  });
+
 in {
-  nixpkgs = import ./nixpkgs-config.nix { inherit pkgs; };
+  nixpkgs = {
+    config = import ./nixpkgs-config.nix;
+    overlays = [ emacs-overlay ];
+  };
 
   home.username = "whitehead";
   home.packages = with pkgs; [
     google-chrome
-    xorg.xbacklight
+    brightnessctl
     i3
     i3status-rust
-    stack
     zlib
     xsel
     scripts.emc
     scripts.opdt
     ag
-    (all-hies.selection { selector = p: { inherit (p) ghc865 ghc864; }; })
     (python3.withPackages(ps: [
       ps.python-language-server
       ps.pyls-mypy ps.pyls-isort ps.pyls-black
@@ -30,14 +36,19 @@ in {
   };
 
   programs = {
-    firefox = {
-      enable = true;
-    };
     rofi = (import ./rofi.nix);
     alacritty = (import ./alacritty.nix);
     git = (import ./git.nix);
     bash = (import ./bash.nix);
     autorandr = (import ./autorandr.nix);
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+    };
+  };
+
+  services = {
+    lorri.enable = true;
   };
 
   imports = [ ./emacs.nix ];

@@ -4,6 +4,9 @@
   (setq gofmt-args (list "-local" "github.com/omnivore/giganto/"))
   ; Call Gofmt before saving
   (add-hook 'before-save-hook 'gofmt-before-save)
+  ;; (add-hook 'before-save-hook #'lsp-format-buffer nil 'local)
+  ;; (add-hook 'before-save-hook #'lsp-organize-imports nil 'local)
+
   ; Godef jump key binding                                                      
   (local-set-key (kbd "C-,") 'godef-jump)
   (local-set-key (kbd "C-x t") 'go-test-current-test)

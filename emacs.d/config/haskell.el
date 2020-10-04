@@ -28,3 +28,12 @@
 ;      lsp-ui-peek-peek-height 25)
 ;
 ;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+(use-package lsp-haskell
+  :hook (haskell-mode . (lambda ()
+                          (require 'lsp-haskell)
+                          (lsp)))
+  :config
+  (setq
+   lsp-haskell-process-path-hie "haskell-language-server-wrapper")
+  )

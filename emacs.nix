@@ -43,9 +43,11 @@
       helm-tramp
       w3m
       rust-mode
+      toml-mode
       intero
       floobits
       magit
+      forge
       evil-magit
       go-mode
       gotest
@@ -56,11 +58,13 @@
       discover-my-major
       proof-general
       nix-mode
+      direnv
       solarized-theme
       lsp-mode
       lsp-ui
       lsp-haskell
-      company-lsp
+      psc-ide
+      purescript-mode
       treemacs
       lsp-treemacs
       treemacs-evil
@@ -68,6 +72,11 @@
       treemacs-icons-dired
       treemacs-magit
       yasnippet
+      restclient
+      company-restclient
+      graphviz-dot-mode
+      which-key
+      lsp-python-ms
     ];
   };
 

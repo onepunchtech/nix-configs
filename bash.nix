@@ -1,7 +1,8 @@
 {
   enable = true;
   initExtra = ''
-    export PATH=~/.local/bin:$PATH
+    export GOPATH=~/go
+    export PATH=~/.local/bin:$GOPATH/bin:$PATH
   '';
   historyControl = [ "erasedups" "ignorespace" ];
   historySize = 1000000;

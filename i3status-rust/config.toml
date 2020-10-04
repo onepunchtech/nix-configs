@@ -44,5 +44,5 @@ format = "{percentage}% {time}"
 [[block]]
 block = "time"
 format = " %a, %d %b     %I:%M"
-timezone = "US/Central"
+timezone = "America/Denver"
 interval = 60

@@ -2,13 +2,26 @@
 ;; Load libs
 
 (require 'mouse)
-;; (require 'flx-ido)
 (require 'dired-x)
 (require 'web-mode)
 (require 'auto-complete)
 (require 'writegood-mode)
 (require 'whitespace-cleanup-mode)
 (require 'indent-guide)
+
+;; Evil
+(use-package evil
+  :demand t
+  :custom
+  (evil-esc-delay 0.001 "avoid ESC/meta mixups")
+  (evil-shift-width 2)
+
+  :bind
+  (:map evil-normal-state-map
+        ("S" . replace-symbol-at-point))
+  
+  :config
+  (evil-mode 1))
 
 ;; Functions
 
@@ -73,12 +86,12 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-(defun toggle-solarized ()
-  (interactive)
-  (let ((new-mode (if (eq frame-background-mode 'dark) 'light 'dark)))
-    (setq frame-background-mode new-mode)
-    (set-frame-parameter nil 'background-mode new-mode))
-  (enable-theme 'solarized-dark))
+;; (defun toggle-solarized ()
+;;   (interactive)
+;;   (let ((new-mode (if (eq frame-background-mode 'dark) 'light 'dark)))
+;;     (setq frame-background-mode new-mode)
+;;     (set-frame-parameter nil 'background-mode new-mode))
+;;   (enable-theme 'solarized-dark))
 
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
@@ -89,29 +102,6 @@
     (setq eshell-path-env path-from-shell) ; for eshell users
     (setq exec-path (split-string path-from-shell path-separator))))
 
-
-;; Theme/Look
-
-(setq default-frame-alist '((font . "dejavu sans mono 9")))
-(set-frame-font "dejavu sans mono 9")
-
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-(setq inhibit-startup-message t) ;disable start page
-(setq inhibit-startup-echo-area-message t)
-
-(global-linum-mode 1)
-(column-number-mode 1)
-(size-indication-mode 1)
-
-(transient-mark-mode 1)
-(delete-selection-mode 1)
-
-(if window-system (tool-bar-mode 0)) ;hide toolbar gui
-
-(show-paren-mode 1) ;parens
 
 ;; Mouse
 
@@ -152,9 +142,6 @@
 
 (global-set-key (kbd "C-x a r") 'align-regexp)
 
-(global-set-key (kbd "C-s") nil)
-(global-set-key (kbd "C-s t") 'toggle-solarized)
-
 (global-set-key "\C-cg" 'writegood-mode)
 (global-set-key "\C-c\C-gg" 'writegood-grade-level)
 (global-set-key "\C-c\C-ge" 'writegood-reading-ease)
@@ -181,23 +168,6 @@
 
 (when (fboundp 'winner-mode)
       (winner-mode 1))
-
-;; (ido-mode 1)
-;; (flx-ido-mode 1)
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-use-faces nil)
-;; (setq ido-decorations (quote ("\n-> "
-;;                               ""
-;;                               "\n   "
-;;                               "\n   ..."
-;;                               "[" "]"
-;;                               " [No match]"
-;;                               " [Matched]"
-;;                               " [Not readable]"
-;;                               " [Too big]"
-;;                               " [Confirm]")))
-;; (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
-;; (add-hook 'ido-setup-hook 'ido-define-keys)
 
 (global-font-lock-mode 1)
 
@@ -259,12 +229,12 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (let ((mode 'dark))
-              (set-frame-parameter frame 'background-mode mode)
-              (set-terminal-parameter frame 'background-mode mode))
-            (enable-theme 'solarized-dark)))
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame)
+;;             (let ((mode 'dark))
+;;               (set-frame-parameter frame 'background-mode mode)
+;;               (set-terminal-parameter frame 'background-mode mode))
+;;             (enable-theme 'solarized-dark)))
 
 
 (with-eval-after-load 'flycheck
@@ -272,9 +242,9 @@
 
 ;; Autoloads
 
-(add-to-list 'auto-mode-alist (cons "\\.hs\\'" 'haskell-mode))
-(add-to-list 'auto-mode-alist (cons "\\.cabal\\'" 'haskell-cabal-mode))
-(add-to-list 'auto-mode-alist '("\\.hcr\\'" . haskell-core-mode))
+;; (add-to-list 'auto-mode-alist (cons "\\.hs\\'" 'haskell-mode))
+;; (add-to-list 'auto-mode-alist (cons "\\.cabal\\'" 'haskell-cabal-mode))
+;; (add-to-list 'auto-mode-alist '("\\.hcr\\'" . haskell-core-mode))
 
 (add-to-list 'auto-mode-alist (cons "\\.el\\'" 'emacs-lisp-mode))
 (add-to-list 'auto-mode-alist (cons "\\.md\\'" 'markdown-mode))
@@ -300,12 +270,12 @@
 
 ;; Safe local variables
 
-(custom-set-variables
- '(safe-local-variable-values
-   (quote ((haskell-indent-spaces . 4)
-           (haskell-process-use-ghci . 4)
-           (haskell-indent-spaces . 2)
-           (haskell-process-type . cabal-repl)))))
+;; (custom-set-variables
+;;  '(safe-local-variable-values
+;;    (quote ((haskell-indent-spaces . 4)
+;;            (haskell-process-use-ghci . 4)
+;;            (haskell-indent-spaces . 2)
+;;            (haskell-process-type . cabal-repl)))))
 
 (provide 'global)
 
@@ -336,3 +306,9 @@
 (global-whitespace-cleanup-mode)
 (indent-guide-global-mode)
 (setq scroll-conservatively 1000)
+
+(use-package direnv
+ :config
+ (direnv-mode))
+
+(setq mac-command-modifier 'control)

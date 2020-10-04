@@ -117,3 +117,8 @@ bar {
 bindsym XF86AudioMute exec opdt -m
 bindsym XF86AudioLowerVolume exec opdt -d 5%
 bindsym XF86AudioRaiseVolume exec opdt -i 5%
+
+# Brightness controls
+
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-

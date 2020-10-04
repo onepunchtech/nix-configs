@@ -116,7 +116,7 @@ in
     tlp.enable = true;
     resolved = {
       enable = true;
-      fallbackDns = [ "8.8.8.8" "8.8.4.4" ];
+      fallbackDns = [ "1.1.1.1" ];
     };
     undervolt = {
       enable = true;
@@ -130,6 +130,7 @@ in
     xserver = {
       enable = true;
       layout = "us";
+      xkbModel = "pc104";
       xkbOptions = "caps:super,ctrl:swap_lalt_lctl";
       dpi = 220;
       libinput = {
