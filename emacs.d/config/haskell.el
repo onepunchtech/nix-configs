@@ -35,5 +35,5 @@
                           (lsp)))
   :config
   (setq
-   lsp-haskell-process-path-hie "haskell-language-server-wrapper")
+   lsp-haskell-process-path-hie "haskell-language-server")
   )

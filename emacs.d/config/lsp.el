@@ -13,6 +13,7 @@
 
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
+  :after (direnv evil)
   :hook (((go-mode haskell-mode python-mode rust-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   

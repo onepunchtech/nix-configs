@@ -2,13 +2,18 @@
 
 let
   unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec -a "$0" "$@"
+  '';
 in
 {
   imports =
     [ 
-      <nixos-hardware/common/cpu/intel>
-      <nixos-hardware/common/pc/laptop>
-      <nixos-hardware/common/pc/laptop/ssd>
+      <nixos-hardware/dell/xps/15-7590>
       ./hardware-configuration.nix
     ];
 
@@ -36,21 +41,30 @@ in
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
+  nix = {
+    binaryCachePublicKeys = [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
+    binaryCaches = [ "https://hydra.iohk.io" ];
+    buildMachines = [ {
+      hostName = "builder";
+      system = "x86_64-linux";
+      maxJobs = 1;
+      speedFactor = 2;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      mandatoryFeatures = [ ];
+    }] ;
+    distributedBuilds = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
+  };
+
   boot = {
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelPatches = [{
-      name = "thunderbolt";
-      patch = null;
-      extraConfig = ''
-        THUNDERBOLT y
-        HOTPLUG_PCI y
-        HOTPLUG_PCI_ACPI y
-      '';
-    }];
     # blacklistedKernelModules = ["nouveau"];
     blacklistedKernelModules = [ "nouveau" "nv" "rivafb" "nvidiafb" "rivatv" ];
     tmpOnTmpfs = true;
@@ -69,6 +83,7 @@ in
     unstable.home-manager
     lm_sensors
     firmwareLinuxNonfree
+    nvidia-offload
   ];
 
   fonts.fonts = with pkgs; [
@@ -80,18 +95,12 @@ in
     material-icons
   ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-  };
-
   hardware = {
     bluetooth.enable = true;
     enableRedistributableFirmware = true;
     nvidia = {
-      optimus_prime.enable = true;
-      modesetting.enable = true;
-      optimus_prime = {
+      prime = {
+        offload.enable = true;
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:1:0:0";
       };
@@ -105,6 +114,10 @@ in
   networking = {
     firewall.enable = false;
     hostName = "ludwig";
+    extraHosts = ''
+      192.168.1.12 bigtux
+      192.168.1.12 builder
+    '';
     networkmanager.enable = true;
   };
   
@@ -113,6 +126,7 @@ in
     hardware.bolt.enable = true;
     openssh.enable = true;
     printing.enable = true;
+    printing.drivers = [pkgs.brlaser];
     tlp.enable = true;
     resolved = {
       enable = true;
@@ -120,10 +134,10 @@ in
     };
     undervolt = {
       enable = true;
-      analogioOffset = "-100";
-      coreOffset = "-130";
-      uncoreOffset = "-100";
-      gpuOffset = "-50"; 
+      analogioOffset = -100;
+      coreOffset = -130;
+      uncoreOffset = -100;
+      gpuOffset = -50; 
       verbose = true;
     };
     upower.enable = true;
@@ -140,7 +154,7 @@ in
         tapping = true;
         clickMethod = "clickfinger";
       };
-      videoDrivers = [ "nvidia" ];
+      videoDrivers = [ "modesetting" "nvidia" ];
     };
   };
 
@@ -148,7 +162,7 @@ in
 
   system.stateVersion = "19.03";
 
-  time.timeZone = "America/Chicago";
+  time.timeZone = "America/Denver";
 
   users.users.whitehead = {
     isNormalUser = true;

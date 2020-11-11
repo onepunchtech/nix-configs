@@ -42,8 +42,9 @@
       helm-fuzzier
       helm-tramp
       w3m
-      rust-mode
+      rustic
       toml-mode
+      cargo
       intero
       floobits
       magit

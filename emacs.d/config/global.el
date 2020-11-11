@@ -25,27 +25,6 @@
 
 ;; Functions
 
-(defun set-auto-saves ()
-  "Put autosave files (ie #foo#) in one place, *not*
- scattered all over the file system!"
-  (defvar autosave-dir
-    (concat "/tmp/emacs_autosaves/" (user-login-name) "/"))
-
-  (make-directory autosave-dir t)
-
-  (defun auto-save-file-name-p (filename)
-    (string-match "^#.*#$" (file-name-nondirectory filename)))
-
-  (defun make-auto-save-file-name ()
-    (concat autosave-dir
-	    (if buffer-file-name
-		(concat "#" (file-name-nondirectory buffer-file-name) "#")
-	      (expand-file-name
-	       (concat "#%" (buffer-name) "#")))))
-
-  (defvar backup-dir (concat "/tmp/emacs_backups/" (user-login-name) "/"))
-  (setq backup-directory-alist (list (cons "." backup-dir))))
-
 (defun json-pretty-print-buffer ()
   (json-reformat-region (point-min) (point-max)))
 
@@ -178,7 +157,6 @@
 
 (transient-mark-mode 1)
 (delete-selection-mode 1)
-(set-auto-saves)
 
 ;; Default mode settings
 
@@ -308,7 +286,16 @@
 (setq scroll-conservatively 1000)
 
 (use-package direnv
- :config
- (direnv-mode))
+  :init
+  (add-hook 'prog-mode-hook #'direnv-update-environment)
+  :config
+  (direnv-mode))
 
 (setq mac-command-modifier 'control)
+
+(setq backup-directory-alist
+      '(("." . "~/.saves/")))
+(setq auto-save-file-name-transforms
+      `((".*" ,"~/.saves/" t)))
+
+(setq create-lockfiles nil)

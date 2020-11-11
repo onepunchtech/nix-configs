@@ -45,6 +45,7 @@ in {
       enable = true;
       enableBashIntegration = true;
     };
+    ssh.forwardAgent = true;
   };
 
   services = {
