@@ -30,6 +30,7 @@
                      "python"
                      "restclient"
                      "sql"
+                     "dhall"
                      ;; "email"
                      ))
      (config-paths (mapcar (lambda (name) (concat init-currentDir "config/" name ".el")) init-configs))

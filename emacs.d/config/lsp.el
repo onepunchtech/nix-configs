@@ -14,7 +14,7 @@
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
   :after (direnv evil)
-  :hook (((go-mode haskell-mode scala-mode rust-mode) . lsp)
+  :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   
          ;;(go-mode . lsp)
@@ -62,6 +62,7 @@
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)
+              ("C-c e" . lsp-execute-code-action)
               ("C-c l <" . lsp-find-references)))
 
 (use-package lsp-ui
