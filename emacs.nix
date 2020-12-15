@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  services.emacs.enable = true;
   programs.emacs = {
     enable = true;
     package = pkgs.emacsGit;
@@ -77,7 +76,10 @@
       company-restclient
       graphviz-dot-mode
       which-key
-      lsp-python-ms
+      lsp-pyright
+      scala-mode
+      sbt-mode
+      lsp-metals
     ];
   };
 

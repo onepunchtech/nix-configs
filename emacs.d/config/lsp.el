@@ -14,7 +14,7 @@
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
   :after (direnv evil)
-  :hook (((go-mode haskell-mode python-mode rust-mode) . lsp)
+  :hook (((go-mode haskell-mode scala-mode rust-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   
          ;;(go-mode . lsp)
@@ -40,6 +40,7 @@
        "[/\\\\]\\.hg$"
        "[/\\\\]\\.bzr$"
        "[/\\\\]_darcs$"
+       "[/\\\\]_build$"
        "[/\\\\]\\.svn$"
        "[/\\\\]_FOSSIL_$"
        ; IDE tools
@@ -118,6 +119,7 @@
 (use-package treemacs
   :ensure t
   :defer t
+  :hook (after-init . #'treemacs)
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
@@ -159,7 +161,7 @@
           treemacs-tag-follow-delay              1.5
           treemacs-width                         35)
 
-    (treemacs-resize-icons 44)
+    (treemacs-resize-icons 20)
 
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
