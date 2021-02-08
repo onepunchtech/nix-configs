@@ -3,7 +3,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsGit;
+    package = pkgs.emacs;
     extraPackages = epkgs: with epkgs; with melpaPackages; [
       use-package
       evil-numbers
@@ -85,12 +85,12 @@
 
   home.file.".emacs.d" = {
     source = ./emacs.d;
-    # recursive = true;
-    # onChange = ''
-    #     rm ~/.emacs.d/init.elc -fv
-    #     rm ~/.emacs.d/src/*.elc -fv
-    #     emacs -Q -nw -l ~/.emacs.d/init.el -batch -f batch-byte-compile ~/.emacs.d/init.el ~/.emacs.d/src/*.el
-    #   '';
+    recursive = true;
+    onChange = ''
+      rm ~/.emacs.d/init.elc -fv
+      rm ~/.emacs.d/src/*.elc -fv
+      emacs -Q -nw -l ~/.emacs.d/init.el -batch -f batch-byte-compile ~/.emacs.d/init.el ~/.emacs.d/src/*.el
+    '';
   };
 
   xdg.dataFile."applications/emacsclient.desktop".text = ''

@@ -199,15 +199,6 @@
   :after treemacs magit
   :ensure t)
 
-(use-package lsp-python-ms
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp)))
-  :init
-  (setq lsp-python-ms-executable (executable-find "python-language-server")))
-
-
 ; Company
 (setq company-idle-delay 0.3)
 (global-company-mode 1)
