@@ -1,30 +1,45 @@
-let themes = {
+let
+  gruvboxDark = "#282828";
+  themes = {
       dark = {
         primary = {
-          background = "0x002b36";
-          foreground = "0x839496";
+          background = "#282828";
+          foreground = "#fbf1c7";
+          bright_foreground = "#f9f5d7";
+          dim_foreground = "#f2e5bc";
         };
 
         normal = {
-          black =   "0x073642";
-          red =     "0xdc322f";
-          green =   "0x859900";
-          yellow =  "0xb58900";
-          blue =    "0x268bd2";
-          magenta = "0xd33682";
-          cyan =    "0x2aa198";
-          white =   "0xeee8d5";
+          black =   gruvboxDark;
+          red =     "#cc241d";
+          green =   "#98971a";
+          yellow =  "#d79921";
+          blue =    "#458588";
+          magenta = "#b16286";
+          cyan =    "#689d6a";
+          white =   "#a89984";
         };
 
         bright = {
-          black =   "0x002b36";
-          red =     "0xcb4b16";
-          green =   "0x586e75";
-          yellow =  "0x657b83";
-          blue =    "0x839496";
-          magenta = "0x6c71c4";
-          cyan =    "0x93a1a1";
-          white =   "0xfdf6e3";
+          black =   "#928374";
+          red =     "#fb4934";
+          green =   "#b8bb26";
+          yellow =  "#fabd2f";
+          blue =    "#83a598";
+          magenta = "#d3869b";
+          cyan =    "#8ec07c";
+          white =   "#ebdbb2";
+        };
+
+        dim = {
+          black =   "#32302f";
+          red =     "#9d0006";
+          green =   "#79740e";
+          yellow =  "#b57614";
+          blue =    "#076678";
+          magenta = "#8f3f71";
+          cyan =    "#427b58";
+          white =   "#928374";
         };
       };
 

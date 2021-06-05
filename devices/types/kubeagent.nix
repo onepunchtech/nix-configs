@@ -35,6 +35,8 @@
   services = {
     k3s = {
       enable = true;
+      role = "agent";
+      serverAddr = "https://10.0.0.10:6443";
     };
     openssh.enable = true;
     logind.lidSwitch = "ignore";

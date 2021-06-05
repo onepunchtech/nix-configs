@@ -1,11 +1,13 @@
-(require 'lsp-ui)
-(require 'company)
-(require 'treemacs)
-(require 'haskell-mode)
-(require 'treemacs-evil)
-(require 'treemacs-projectile)
-(require 'treemacs-icons-dired)
-(require 'treemacs-magit)
+;;; -*- lexical-binding: t; -*-
+;; (require 'lsp-ui)
+;; (require 'company)
+;; (require 'treemacs)
+;; (require 'haskell-mode)
+;; (require 'treemacs-evil)
+;; (require 'treemacs-projectile)
+;; (require 'treemacs-icons-dired)
+;; (require 'treemacs-magit)
+
 ;; (require 'lsp-haskell)
 
 (setq base-cache-dir (substitute-in-file-name "$HOME/.cache/emacs"))
@@ -13,10 +15,11 @@
 
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
+  :defer t
   :after (direnv evil)
   :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
-  
+
          ;;(go-mode . lsp)
          ;; (haskell-mode . lsp)
          ;; (python-mode . lsp)
@@ -26,7 +29,7 @@
   :bind
   :config
   (progn
-    (setq 
+    (setq
      lsp-session-file (expand-file-name "lsp-session.cache" base-cache-dir)
      lsp-prefer-flymake nil
      lsp-completion-enable t
@@ -58,7 +61,8 @@
        "[/\\\\]\\.deps$"
        "[/\\\\]build-aux$"
        "[/\\\\]autom4te.cache$"
-       "[/\\\\]\\.reference$")))
+       "[/\\\\]\\.reference$"))
+    (setq lsp-eldoc-render-all t))
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)
@@ -89,41 +93,13 @@
         ("C-," . lsp-ui-peek-find-definitions)
         ("C-<" . lsp-ui-peek-find-references)))
 
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-(use-package which-key
-    :config
-    (which-key-mode))
-
-(setq lsp-gopls-staticcheck t)
-(setq lsp-eldoc-render-all t)
-(setq lsp-gopls-complete-unimported t)
-
-
-;; (add-hook 'purescript-mode-hook
-;;   (lambda ()
-;;     (psc-ide-mode)
-;;     (company-mode)
-;;     (flycheck-mode)
-;;     (turn-on-purescript-indentation)))
-;; (setq lsp-haskell-process-path-hie "ghcide")
-;; (setq lsp-haskell-process-args-hie '())
-;; (setq )
-;; (add-hook 'before-save-hook
-;; 	    (lambda ()
-;; 	          (when (member major-mode '(lsp-mode))
-;; 		          (progn 
-;; 			    (lsp-format-buffer)
-;; 			    ;; Return nil, to continue saving.
-;; 			    nil))))
 
 (use-package treemacs
-  :ensure t
-  :defer t
-  :hook (after-init . #'treemacs)
   :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  (progn
+    (defvar treemacs-no-load-time-warnings t)
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window)))
   :config
   (progn
     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
@@ -140,7 +116,7 @@
           treemacs-is-never-other-window         nil
           treemacs-max-git-entries               5000
           treemacs-missing-project-action        'ask
-          treemacs-no-png-images                 nil
+          treemacs-no-png-images                 t
           treemacs-no-delete-other-windows       t
           treemacs-project-follow-cleanup        nil
 
@@ -162,8 +138,6 @@
           treemacs-tag-follow-delay              1.5
           treemacs-width                         35)
 
-    (treemacs-resize-icons 20)
-
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode t)
@@ -182,6 +156,39 @@
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 
+(use-package helm-lsp
+  :defer t
+  :commands helm-lsp-workspace-symbol)
+
+(use-package lsp-treemacs
+  :defer t
+  :commands lsp-treemacs-errors-list)
+
+(use-package which-key
+  :defer t
+  :config
+  (which-key-mode))
+
+
+;; (add-hook 'purescript-mode-hook
+;;   (lambda ()
+;;     (psc-ide-mode)
+;;     (company-mode)
+;;     (flycheck-mode)
+;;     (turn-on-purescript-indentation)))
+;; (setq lsp-haskell-process-path-hie "ghcide")
+;; (setq lsp-haskell-process-args-hie '())
+;; (setq )
+;; (add-hook 'before-save-hook
+;; 	    (lambda ()
+;; 	          (when (member major-mode '(lsp-mode))
+;; 		          (progn
+;; 			    (lsp-format-buffer)
+;; 			    ;; Return nil, to continue saving.
+;; 			    nil))))
+
+
+
 (use-package treemacs-evil
   :after treemacs evil
   :ensure t)
@@ -199,7 +206,7 @@
   :after treemacs magit
   :ensure t)
 
-; Company
+;; Company
 (setq company-idle-delay 0.3)
 (global-company-mode 1)
 (global-set-key (kbd "C-<tab>") 'company-complete)

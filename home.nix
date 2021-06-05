@@ -2,7 +2,7 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  emacsRev = "101abf809ea6a2a71fe34448a9b186bce1be210c";
+  emacsRev = "b678b3774a84b5e96554e26dc0aa2bb4461178ee";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
@@ -24,6 +24,7 @@ in {
     xsel
     scripts.emc
     scripts.opdt
+    imagemagick
     ag
     (python3.withPackages(ps: [
       ps.python-language-server
@@ -46,10 +47,23 @@ in {
       enableBashIntegration = true;
     };
     ssh.forwardAgent = true;
+    tmux = {
+      enable = true;
+      keyMode = "vi";
+      historyLimit = 10000;
+      shortcut = "a";
+      extraConfig = ''
+      '';
+    };
   };
 
   services = {
     lorri.enable = true;
+    emacs = {
+      enable = true;
+      socketActivation.enable = true;
+      client.enable = true;
+    };
   };
 
   imports = [ ./emacs.nix ];

@@ -1,14 +1,3 @@
-
-;; Load libs
-
-(require 'mouse)
-(require 'dired-x)
-(require 'web-mode)
-(require 'auto-complete)
-(require 'writegood-mode)
-(require 'whitespace-cleanup-mode)
-(require 'indent-guide)
-
 ;; Evil
 (use-package evil
   :demand t
@@ -16,17 +5,21 @@
   (evil-esc-delay 0.001 "avoid ESC/meta mixups")
   (evil-shift-width 2)
 
+
   :bind
   (:map evil-normal-state-map
         ("S" . replace-symbol-at-point))
-  
+
   :config
   (evil-mode 1))
 
-;; Functions
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
-(defun json-pretty-print-buffer ()
-  (json-reformat-region (point-min) (point-max)))
+;; Functions
 
 (defun auto-chmod ()
   "If we're in a script buffer, then chmod +x that script."
@@ -38,13 +31,6 @@
              (looking-at "^#!"))))
        (shell-command (concat "chmod u+x " buffer-file-name))
        (message (concat "Saved as script: " buffer-file-name))))
-
-(defun find-alternate-file-with-sudo ()
-  "Re-open with sudo."
-  (interactive)
-  (let ((point (point)))
-    (find-alternate-file (concat "/sudo::" (buffer-file-name)))
-    (goto-char point)))
 
 (defun comment-dwim-line (&optional arg)
   "Do-what-I-mean commenting the current line."
@@ -65,13 +51,6 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-;; (defun toggle-solarized ()
-;;   (interactive)
-;;   (let ((new-mode (if (eq frame-background-mode 'dark) 'light 'dark)))
-;;     (setq frame-background-mode new-mode)
-;;     (set-frame-parameter nil 'background-mode new-mode))
-;;   (enable-theme 'solarized-dark))
-
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
                           "[ \t\n]*$"
@@ -83,10 +62,8 @@
 
 
 ;; Mouse
-
-(xterm-mouse-mode t)
-
 (defun track-mouse (e))
+(xterm-mouse-mode t)
 
 ;; Copy and Paste
 (setq select-enable-clipboard t)
@@ -103,7 +80,7 @@
     (defun xsel-paste-function()
       (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
 	(unless (string= (car kill-ring) xsel-output)
-	  xsel-output )))
+          xsel-output )))
     ;; Attach callbacks to hooks
     (setq interprogram-cut-function 'xsel-cut-function)
     (setq interprogram-paste-function 'xsel-paste-function)
@@ -127,13 +104,6 @@
 
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-
-;; Mode specific keybindings
-
-(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-(ac-set-trigger-key "TAB")
-
-;(define-key shell-mode-map (kbd "C-c C-k") 'erase-buffer)
 
 ;; Disable defaults
 
@@ -163,9 +133,6 @@
 (setq major-mode 'text-mode)
 (setq-default indent-tabs-mode nil)
 (setq-default cursor-type 'bar)
-
-;; (setq ido-ignore-files '("\\.dyn_hi$""\\.dyn_o$""\\.hi$" "\\.o$" "\\.tags$" "^\\.ghci$"))
-;; (setq ido-max-directory-size 200000)
 
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
@@ -262,8 +229,8 @@
 (set-exec-path-from-shell-PATH)
 
 ;; TABS
-(add-hook 'makefile-mode-hook 
-  '(lambda() 
+(add-hook 'makefile-mode-hook
+  '(lambda()
      (setq indent-tabs-mode t)
      (setq tab-width 2)
    )

@@ -11,7 +11,3 @@
    (expand-file-name "transient/history.el" temporary-file-directory))
   :bind (("C-x g" . magit-status)
          ("C-x C-g" . magit-status)))
-
-(use-package evil-magit
-    :config
-    (add-hook 'magit-mode-hook 'evil-local-mode))

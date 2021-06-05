@@ -1,10 +1,3 @@
-(require 'helm-config)
-(require 'helm-fuzzier)
-(require 'projectile)
-(require 'helm-projectile)
-(require 'helm-mode)
-(require 'flymake)
-
 (use-package helm
   :config
   (setq

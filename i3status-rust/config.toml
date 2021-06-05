@@ -1,14 +1,13 @@
 [[block]]
-block = "net"
-device = "enp0s20f0u2"
-speed_up = false
-graph_up = false
-interval = 5
+block = "networkmanager"
+on_click = "alacritty -e nmtui"
+interface_name_exclude = ["br\\-[0-9a-f]{12}", "docker\\d+"]
+interface_name_include = []
 
 [[block]]
 block = "memory"
-format_mem = "{Mum}MB/{MTm}MB({Mup}%)"
-format_swap = "{SUm}MB/{STm}MB({SUp}%)"
+format_mem = "{mem_used}/{mem_total}({mem_used_percents})"
+format_swap = "{swap_used}/{swap_total}({swap_used_percents})"
 display_type = "memory"
 icons = true
 clickable = true

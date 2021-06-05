@@ -1,5 +1,5 @@
 { fetchurl, mkDerivation, base, hpack, optparse-applicative, process, stdenv
-, text
+, text, lib
 }:
 mkDerivation rec {
   pname = "opdt";
@@ -18,5 +18,5 @@ mkDerivation rec {
   testHaskellDepends = [ base optparse-applicative process text ];
   prePatch = "hpack";
   homepage = "https://github.com/githubuser/opdt#readme";
-  license = stdenv.lib.licenses.bsd3;
+  license = lib.licenses.bsd3;
 }

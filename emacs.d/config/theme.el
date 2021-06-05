@@ -3,19 +3,21 @@
 (defun toggle-theme ()
   (interactive)
   (let* ((maybe-theme (car custom-enabled-themes))
-         (old-theme (if maybe-theme maybe-theme 'solarized-light))
+         (light-theme 'gruvbox-light-medium)
+         (dark-theme 'gruvbox-dark-medium)
+         (old-theme (if maybe-theme maybe-theme 'gruvgox-light))
          (name-pieces (reverse (split-string (symbol-name old-theme) "-")))
-         (light? (string= (car name-pieces) "light"))
-         (new-suffix (if light? "dark" "light"))
-         (new-theme (intern
-                     (mapconcat 'identity (reverse
-                                           (cons new-suffix (cdr name-pieces))) "-"))))
+         (light? (string= (nth 1 name-pieces) "light"))
+         (new-theme (if light? dark-theme light-theme)))
+         ;; (new-theme (intern
+         ;;             (mapconcat 'identity (reverse
+         ;;                                   (cons new-suffix (cdr name-pieces))) "-"))))
     (when maybe-theme (disable-theme old-theme))
     (load-theme new-theme t)
     (enable-theme new-theme)))
 
 ;; Set default theme
-(load-theme 'solarized-dark t)
+(load-theme 'gruvbox-dark-medium t)
 
 (setq default-frame-alist '((font . "dejavu sans mono 9")))
 (set-frame-font "dejavu sans mono 9")
