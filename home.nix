@@ -2,7 +2,7 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  emacsRev = "b678b3774a84b5e96554e26dc0aa2bb4461178ee";
+  emacsRev = "dd54cb4be116d3ca13f6e90a5bfb0e792b5133b5";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
