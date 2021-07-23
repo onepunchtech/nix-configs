@@ -1,6 +1,8 @@
 ;; Evil
 (use-package evil
   :demand t
+  :init
+  (setq evil-want-keybinding nil)
   :custom
   (evil-esc-delay 0.001 "avoid ESC/meta mixups")
   (evil-shift-width 2)
@@ -15,6 +17,8 @@
 
 (use-package evil-collection
   :after evil
+  :init
+  (setq evil-want-keybinding nil)
   :ensure t
   :config
   (evil-collection-init))
@@ -160,9 +164,6 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq frame-background-mode 'dark)
-
-(require 'auto-complete-config)
-(ac-config-default)
 
 ;; Hooks
 

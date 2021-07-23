@@ -1,6 +1,5 @@
 ;;; -*- lexical-binding: t; -*-
 ;; (require 'lsp-ui)
-;; (require 'company)
 ;; (require 'treemacs)
 ;; (require 'haskell-mode)
 ;; (require 'treemacs-evil)
@@ -62,12 +61,30 @@
        "[/\\\\]build-aux$"
        "[/\\\\]autom4te.cache$"
        "[/\\\\]\\.reference$"))
-    (setq lsp-eldoc-render-all t))
+    )
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)
               ("C-c e" . lsp-execute-code-action)
               ("C-c l <" . lsp-find-references)))
+
+(use-package company
+  :bind ((:map company-active-map
+               ("<tab>" . company-complete-selection))
+         (:map prog-mode-map
+               ("C-<tab>" . company-complete)
+               ("C-i" . company-indent-or-complete-common)))
+        
+  :config
+  (setq company-idle-delay 0.3
+        company-continue-commands t
+        company-selection-wrap-around t
+        company-idle-delay nil
+        company-async-timeout 15
+        company-tooltip-align-annotations t
+        company-minimum-prefix-length 1
+        )
+  :hook (after-init . global-company-mode))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -81,6 +98,7 @@
      lsp-ui-doc-include-signature t
      lsp-ui-doc-max-width 120
      lsp-ui-doc-max-height 30
+     lsp-ui-doc-delay 2
      lsp-ui-sideline-enable nil
      lsp-ui-flycheck-enable t
      lsp-ui-flycheck-list-position 'right
@@ -162,7 +180,10 @@
 
 (use-package lsp-treemacs
   :defer t
-  :commands lsp-treemacs-errors-list)
+  :commands lsp-treemacs-errors-list
+  :bind
+  (:map global-map
+        ("C-x t e" . lsp-treemacs-errors-list)))
 
 (use-package which-key
   :defer t
@@ -173,7 +194,6 @@
 ;; (add-hook 'purescript-mode-hook
 ;;   (lambda ()
 ;;     (psc-ide-mode)
-;;     (company-mode)
 ;;     (flycheck-mode)
 ;;     (turn-on-purescript-indentation)))
 ;; (setq lsp-haskell-process-path-hie "ghcide")
@@ -205,8 +225,3 @@
 (use-package treemacs-magit
   :after treemacs magit
   :ensure t)
-
-;; Company
-(setq company-idle-delay 0.3)
-(global-company-mode 1)
-(global-set-key (kbd "C-<tab>") 'company-complete)

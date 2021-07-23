@@ -28,8 +28,7 @@
       let-alist
       s
       elm-mode
-      auto-complete
-      company
+      autothemer
       json-reformat
       json-mode
       writegood-mode
@@ -72,13 +71,13 @@
       treemacs-magit
       yasnippet
       restclient
-      company-restclient
       graphviz-dot-mode
       which-key
       lsp-pyright
       scala-mode
       sbt-mode
       lsp-metals
+      doom-modeline
     ];
   };
 

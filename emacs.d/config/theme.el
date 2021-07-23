@@ -42,3 +42,10 @@
 
 (global-set-key (kbd "C-s") nil)
 (global-set-key (kbd "C-s t") 'toggle-theme)
+
+(add-to-list 'custom-theme-load-path "/tmp/opdt/emacs/")
+
+(defun disable-all-themes ()
+  "disable all active themes."
+  (dolist (i custom-enabled-themes)
+    (disable-theme i)))

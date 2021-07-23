@@ -25,6 +25,9 @@ in {
     scripts.emc
     scripts.opdt
     imagemagick
+    dhall
+    dhall-json
+    dhall-lsp-server
     ag
     (python3.withPackages(ps: [
       ps.python-language-server
@@ -53,6 +56,7 @@ in {
       historyLimit = 10000;
       shortcut = "a";
       extraConfig = ''
+        set -g mouse on
       '';
     };
   };

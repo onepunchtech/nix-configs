@@ -3,10 +3,10 @@
 }:
 mkDerivation rec {
   pname = "opdt";
-  version = "0.1.0.1";
+  version = "0.1.0.2";
   src = fetchurl {
     url = "https://github.com/onepunchlinux/opdt/archive/${version}.tar.gz";
-    sha256 = "10mndsr4pnz25zpl5jj4dfm2nmy1jchxk5irkh5aq00v1s93sxnj";
+    sha256 = "1ci4fjrgr2c2ay9mf696kxr0ihh53bixc2yd72icnj1ih8mfazgs";
   };
   isLibrary = true;
   isExecutable = true;
