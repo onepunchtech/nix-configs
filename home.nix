@@ -33,6 +33,8 @@ in {
       ps.python-language-server
       ps.pyls-mypy ps.pyls-isort ps.pyls-black
     ]))
+    alacritty
+    wofi
   ];
 
   home.sessionVariables = {
@@ -72,14 +74,13 @@ in {
 
   imports = [ ./emacs.nix ];
 
-  # xdg.configFile."keyboard/config.xkb".source = ./keyboard/config.xkb;
-  xsession.enable = true;
-  # xsession.initExtra = "xkbcomp ~/.config/keyboard/config.xkb $DISPLAY";
-  xsession.windowManager.command = "${pkgs.i3}/bin/i3";
-
   xdg.configFile."i3/config".source = ./i3/config;
   xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
   xdg.configFile."brittany/config.yaml".source = ./brittany/config.yaml;
+  xdg.configFile."waybar/config".source = ./sway/waybar.conf;
+  xdg.configFile."waybar/style.css".source = ./sway/style.css;
 
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
+
+  wayland.windowManager.sway = (with pkgs; import ./sway/sway.nix {inherit alacritty wofi waybar;});
 }
