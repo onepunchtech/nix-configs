@@ -35,6 +35,8 @@ in {
     ]))
     alacritty
     wofi
+    pavucontrol
+    pulseaudio
   ];
 
   home.sessionVariables = {
