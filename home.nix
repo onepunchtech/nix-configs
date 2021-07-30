@@ -81,6 +81,7 @@ in {
   xdg.configFile."brittany/config.yaml".source = ./brittany/config.yaml;
   xdg.configFile."waybar/config".source = ./sway/waybar.conf;
   xdg.configFile."waybar/style.css".source = ./sway/style.css;
+  xdg.configFile."opdt/config.dhall".source = ./opdt/config.dhall;
 
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 
