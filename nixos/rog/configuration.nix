@@ -83,7 +83,7 @@ in
     rxvt_unicode
     unstable.home-manager
     brightnessctl
-    #firmwareLinuxNonfree
+    firmwareLinuxNonfree
     gtk-engine-murrine
     gtk_engines
     gsettings-desktop-schemas
@@ -130,6 +130,9 @@ in
     };
   };
 
+  programs.nm-applet = {
+    enable = true;
+  };
   programs.sway = {
     enable = true;
     extraPackages = with pkgs; [

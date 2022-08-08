@@ -2,7 +2,7 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  emacsRev = "dd54cb4be116d3ca13f6e90a5bfb0e792b5133b5";
+  emacsRev = "e9fe554910fabf301ebf244aa2f9e5f2d5f69c4b";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
@@ -28,15 +28,12 @@ in {
     dhall
     dhall-json
     dhall-lsp-server
-    ag
-    (python3.withPackages(ps: [
-      ps.python-language-server
-      ps.pyls-mypy ps.pyls-isort ps.pyls-black
-    ]))
+    silver-searcher
     alacritty
     wofi
     pavucontrol
     pulseaudio
+    firefox-wayland
   ];
 
   home.sessionVariables = {
@@ -44,7 +41,7 @@ in {
   };
 
   programs = {
-    rofi = (import ./rofi.nix);
+    #rofi = (import ./rofi.nix);
     alacritty = (import ./alacritty.nix);
     git = (import ./git.nix);
     bash = (import ./bash.nix);
@@ -71,6 +68,11 @@ in {
       enable = true;
       socketActivation.enable = true;
       client.enable = true;
+      defaultEditor = true;
+    };
+    kanshi = {
+      enable = true;
+      profiles = (import ./sway/kanshi.nix);
     };
   };
 
@@ -80,6 +82,7 @@ in {
   xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
   xdg.configFile."brittany/config.yaml".source = ./brittany/config.yaml;
   xdg.configFile."waybar/config".source = ./sway/waybar.conf;
+  # xdg.configFile."kanshi/config".source = ./sway/kanshi.conf;
   xdg.configFile."waybar/style.css".source = ./sway/style.css;
   xdg.configFile."opdt/config.dhall".source = ./opdt/config.dhall;
 

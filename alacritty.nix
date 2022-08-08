@@ -7,7 +7,7 @@
       columns = 200;
     };
     font = {
-      size = 10.0;
+      size = 11.0;
     };
     import = ["~/.config/opdt/alacritty-theme.yml"];
   };

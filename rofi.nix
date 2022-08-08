@@ -1,7 +1,4 @@
 let
-  bgColor = "#191919";
-  textColor = "#555555";
-  selectedColor = "#ffffff";
 in
 {
   enable = true;
@@ -16,43 +13,25 @@ in
   yoffset = 100;
   rowHeight = 1;
 
-  colors = {
-    window = {
-      background = "${bgColor}";
-      border = "${bgColor}";
-      separator = "#c3c6c8";
+  theme = 
+    let inherit (config.lib.formats.rasi) mkLiteral;
+    in {
+	    "*" = {
+		    background-color = mkLiteral "#000000";
+		    foreground-color = mkLiteral "rgba ( 250, 251, 252, 100 % )";
+		    border-color = mkLiteral "#FFFFFF";
+		    width = 512;
+	    };
+
+	    "#inputbar" = {
+		    children = map mkLiteral [ "prompt" "entry" ];
+	    };
+
+	    "#textbox-prompt-colon" = {
+		    expand = false;
+		    str = ":";
+		    margin = mkLiteral "0px 0.3em 0em 0em";
+		    text-color = mkLiteral "@foreground-color";
+	    };
     };
-
-    rows = {
-      normal = {
-        background = "${bgColor}";
-        foreground = "${textColor}";
-        backgroundAlt = "${bgColor}";
-        highlight = {
-          background = "${bgColor}";
-          foreground = "${selectedColor}";
-        };
-      };
-
-      active = {
-        background = "${bgColor}";
-        foreground = "${textColor}";
-        backgroundAlt = "${bgColor}";
-        highlight = {
-          background = "${bgColor}";
-          foreground = "${selectedColor}";
-        };
-      };
-
-      urgent = {
-        background = "${bgColor}";
-        foreground = "${textColor}";
-        backgroundAlt = "${bgColor}";
-        highlight = {
-          background = "${bgColor}";
-          foreground = "${selectedColor}";
-        };
-      };
-    };
-  };
 }

@@ -72,25 +72,6 @@
 ;; Copy and Paste
 (setq select-enable-clipboard t)
 
-(unless window-system
-  (when (getenv "DISPLAY")
-    ;; Callback for when user cuts
-    (defun xsel-cut-function (text &optional push)
-      ;; Insert text to temp-buffer, and "send" content to xsel stdin
-      (with-temp-buffer
-	(insert text)
-	(call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
-    ;; Call back for when user pastes
-    (defun xsel-paste-function()
-      (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
-	(unless (string= (car kill-ring) xsel-output)
-          xsel-output )))
-    ;; Attach callbacks to hooks
-    (setq interprogram-cut-function 'xsel-cut-function)
-    (setq interprogram-paste-function 'xsel-paste-function)
-    ))
-
-
 ;; Global keybindings
 
 (global-set-key (kbd "M-;") 'comment-dwim-line)

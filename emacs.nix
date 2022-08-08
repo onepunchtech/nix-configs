@@ -3,7 +3,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsGcc.override {
+    package = pkgs.emacsPgtk.override {
       imagemagick = pkgs.imagemagickBig;
     };
     extraPackages = epkgs: with epkgs; with melpaPackages; [
@@ -40,6 +40,8 @@
       helm-flx
       helm-fuzzier
       helm-tramp
+      helm-lsp
+      helm-xref
       w3m
       rustic
       toml-mode
@@ -48,6 +50,7 @@
       magit
       forge
       evil-collection
+      haskell-mode
       go-mode
       gotest
       fix-word
@@ -64,12 +67,14 @@
       psc-ide
       purescript-mode
       treemacs
+      treemacs-all-the-icons
       lsp-treemacs
       treemacs-evil
       treemacs-projectile
       treemacs-icons-dired
       treemacs-magit
       yasnippet
+      yasnippet-snippets
       restclient
       graphviz-dot-mode
       which-key
@@ -78,6 +83,10 @@
       sbt-mode
       lsp-metals
       doom-modeline
+      dap-mode
+      typescript-mode
+      all-the-icons
+      ledger-mode
     ];
   };
 

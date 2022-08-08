@@ -19,8 +19,8 @@
 ;; Set default theme
 (load-theme 'gruvbox-dark-medium t)
 
-(setq default-frame-alist '((font . "dejavu sans mono 9")))
-(set-frame-font "dejavu sans mono 9")
+(setq default-frame-alist '((font . "dejavu sans mono 11")))
+(set-frame-font "dejavu sans mono 11")
 
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -49,3 +49,6 @@
   "disable all active themes."
   (dolist (i custom-enabled-themes)
     (disable-theme i)))
+
+(use-package all-the-icons
+  :if (display-graphic-p))

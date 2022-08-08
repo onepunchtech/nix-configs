@@ -1,13 +1,3 @@
-;;; -*- lexical-binding: t; -*-
-;; (require 'lsp-ui)
-;; (require 'treemacs)
-;; (require 'haskell-mode)
-;; (require 'treemacs-evil)
-;; (require 'treemacs-projectile)
-;; (require 'treemacs-icons-dired)
-;; (require 'treemacs-magit)
-
-;; (require 'lsp-haskell)
 
 (setq base-cache-dir (substitute-in-file-name "$HOME/.cache/emacs"))
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -18,14 +8,19 @@
   :after (direnv evil)
   :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
-
-         ;;(go-mode . lsp)
-         ;; (haskell-mode . lsp)
-         ;; (python-mode . lsp)
-         ;; (rust-mode . lsp)
-         ;; (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
-  :bind
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  ;; enable / disable the hints as you prefer:
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
   :config
   (progn
     (setq
@@ -35,6 +30,7 @@
      lsp-enable-indentation t
      lsp-enable-on-type-formatting t
      lsp-before-save-edits t
+     lsp-headerline-breadcrumb-enable nil
      lsp-file-watch-ignored '(
        "[/\\\\]\\.direnv$"
        ; SCM tools
@@ -61,12 +57,14 @@
        "[/\\\\]build-aux$"
        "[/\\\\]autom4te.cache$"
        "[/\\\\]\\.reference$"))
-    )
+    (advice-add 'lsp :before #'direnv-update-environment))
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)
               ("C-c e" . lsp-execute-code-action)
-              ("C-c l <" . lsp-find-references)))
+              ("C-c l <" . lsp-find-references)
+              ([remap xref-find-apropos] . #'helm-lsp-workspace-symbol)
+              ))
 
 (use-package company
   :bind ((:map company-active-map
@@ -74,9 +72,9 @@
          (:map prog-mode-map
                ("C-<tab>" . company-complete)
                ("C-i" . company-indent-or-complete-common)))
-        
+
   :config
-  (setq company-idle-delay 0.3
+  (setq company-idle-delay 0.5
         company-continue-commands t
         company-selection-wrap-around t
         company-idle-delay nil
@@ -175,8 +173,9 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package helm-lsp
-  :defer t
-  :commands helm-lsp-workspace-symbol)
+  :defer t)
+
+(use-package helm-xref)
 
 (use-package lsp-treemacs
   :defer t
@@ -190,25 +189,6 @@
   :config
   (which-key-mode))
 
-
-;; (add-hook 'purescript-mode-hook
-;;   (lambda ()
-;;     (psc-ide-mode)
-;;     (flycheck-mode)
-;;     (turn-on-purescript-indentation)))
-;; (setq lsp-haskell-process-path-hie "ghcide")
-;; (setq lsp-haskell-process-args-hie '())
-;; (setq )
-;; (add-hook 'before-save-hook
-;; 	    (lambda ()
-;; 	          (when (member major-mode '(lsp-mode))
-;; 		          (progn
-;; 			    (lsp-format-buffer)
-;; 			    ;; Return nil, to continue saving.
-;; 			    nil))))
-
-
-
 (use-package treemacs-evil
   :after treemacs evil
   :ensure t)
@@ -221,6 +201,8 @@
   :after treemacs dired
   :ensure t
   :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-all-the-icons)
 
 (use-package treemacs-magit
   :after treemacs magit
