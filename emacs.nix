@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
+
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsPgtk.override {
+    package = pkgs.emacsPgtkNativeComp.override {
       imagemagick = pkgs.imagemagickBig;
     };
     extraPackages = epkgs: with epkgs; with melpaPackages; [
@@ -11,6 +12,9 @@
       evil-numbers
       exec-path-from-shell
       paredit
+      racket-mode
+      on-parens
+      evil-surround
       flycheck
       flycheck-rust
       idris-mode
@@ -44,6 +48,7 @@
       helm-xref
       w3m
       rustic
+      rust-mode
       toml-mode
       cargo
       floobits
@@ -79,14 +84,17 @@
       graphviz-dot-mode
       which-key
       lsp-pyright
-      scala-mode
       sbt-mode
-      lsp-metals
       doom-modeline
       dap-mode
       typescript-mode
       all-the-icons
       ledger-mode
+      lsp-ltex
+      # tree-sitter
+      # tree-sitter-langs
+      # tree-sitter-langs.withGrammars(g: [g.tree-sitter-rust])
+      # tsc
     ];
   };
 

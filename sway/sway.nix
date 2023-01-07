@@ -84,6 +84,14 @@ in {
       };
     };
 
+    input = {
+      "type:touchpad" = {
+        "tap" = "enabled";
+        "natural_scroll" = "disabled";
+        "middle_emulation" = "enabled";
+      };
+    };
+
     bars = [
       {command = "${waybar}/bin/waybar";}
     ];

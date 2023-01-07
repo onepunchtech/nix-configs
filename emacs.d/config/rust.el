@@ -14,7 +14,7 @@
 ;; (use-package rust-mode
   ;; :hook (rust-mode . lsp))
 (use-package rustic
-  :after (direnv evil)
+  :after direnv
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -25,6 +25,13 @@
               ("C-c C-c Q" . lsp-workspace-shutdown)
               ("C-c C-c s" . lsp-rust-analyzer-status))
   :config
+  (setq rustic-lsp-server 'rust-analyzer)
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t))
 
 ;; Add keybindings for interacting with Cargo

@@ -248,3 +248,9 @@
       `((".*" ,"~/.saves/" t)))
 
 (setq create-lockfiles nil)
+
+(use-package lsp-ltex
+  :ensure t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-ltex)
+                       (lsp))))

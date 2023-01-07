@@ -6,7 +6,7 @@
 (use-package lsp-mode
   :defer t
   :after (direnv evil)
-  :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode) . lsp)
+  :hook ((prog-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom
@@ -50,7 +50,6 @@
        "[/\\\\]\\.tox$"
        "[/\\\\]\\.stack-work$"
        "[/\\\\]\\.bloop$"
-       "[/\\\\]\\.metals$"
        "[/\\\\]target$"
        ; Autotools output
        "[/\\\\]\\.deps$"

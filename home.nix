@@ -2,7 +2,8 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  emacsRev = "e9fe554910fabf301ebf244aa2f9e5f2d5f69c4b";
+  # oldemacsRev = "e9fe554910fabf301ebf244aa2f9e5f2d5f69c4b";
+  emacsRev = "2891c0c12ad28fb24eafbce9a273553d3ef94def";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
@@ -14,6 +15,8 @@ in {
     overlays = [ emacs-overlay ];
   };
 
+  home.stateVersion = "22.11";
+  home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
     google-chrome
@@ -34,6 +37,7 @@ in {
     pavucontrol
     pulseaudio
     firefox-wayland
+    ltex-ls
   ];
 
   home.sessionVariables = {
@@ -89,4 +93,5 @@ in {
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 
   wayland.windowManager.sway = (with pkgs; import ./sway/sway.nix {inherit alacritty wofi waybar;});
+  manual.manpages.enable = false;
 }

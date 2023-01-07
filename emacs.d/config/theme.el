@@ -29,7 +29,7 @@
 (setq inhibit-startup-message t) ;disable start page
 (setq inhibit-startup-echo-area-message t)
 
-(global-linum-mode 1)
+(global-display-line-numbers-mode 1)
 (column-number-mode 1)
 (size-indication-mode 1)
 
@@ -42,8 +42,6 @@
 
 (global-set-key (kbd "C-s") nil)
 (global-set-key (kbd "C-s t") 'toggle-theme)
-
-(add-to-list 'custom-theme-load-path "/tmp/opdt/emacs/")
 
 (defun disable-all-themes ()
   "disable all active themes."
