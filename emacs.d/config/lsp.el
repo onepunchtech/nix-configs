@@ -6,12 +6,14 @@
 (use-package lsp-mode
   :defer t
   :after (direnv evil)
-  :hook ((prog-mode . lsp)
+  :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode ts-mode web-mode yaml-mode terraform-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom
   (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
+  (lsp-eldoc-render-all nil)
+  (lsp-eldoc-enable-hover t)
+  ;; (lsp-signature-render-documentation nil)
   (lsp-idle-delay 0.6)
   ;; enable / disable the hints as you prefer:
   (lsp-rust-analyzer-server-display-inlay-hints t)
@@ -90,12 +92,14 @@
     (setq
      lsp-ui-doc-enable t
      lsp-ui-doc-use-childframe t
-     lsp-ui-doc-use-webkit t
+     ;; lsp-ui-doc-use-webkit t
      lsp-ui-doc-position 'top
      lsp-ui-doc-include-signature t
      lsp-ui-doc-max-width 120
-     lsp-ui-doc-max-height 30
+     lsp-ui-doc-max-height 50
      lsp-ui-doc-delay 2
+     ;; lsp-ui-doc-show-with-mouse t
+     ;; lsp-ui-doc-show-with-cursor t
      lsp-ui-sideline-enable nil
      lsp-ui-flycheck-enable t
      lsp-ui-flycheck-list-position 'right
@@ -206,3 +210,28 @@
 (use-package treemacs-magit
   :after treemacs magit
   :ensure t)
+
+(use-package lsp-ltex
+  :ensure t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-ltex)
+                       (lsp))))
+
+(define-abbrev-table 'unicode-table
+  '(("ualpha" "α")
+    ("ubeta"  "β")
+    ("ulam"   "λ")
+    ("ugamma" "γ"))
+    "Unicode characters I use all the time.")
+
+
+(global-set-key (kbd "C-c u l") "λ")
+
+(use-package terraform-mode)
+
+(use-package posframe)
+
+(use-package dap-mode
+  :hook
+  (lsp-mode . dap-mode)
+  (lsp-mode . dap-ui-mode))

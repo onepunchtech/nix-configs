@@ -3,6 +3,8 @@
   :demand t
   :init
   (setq evil-want-keybinding nil)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   :custom
   (evil-esc-delay 0.001 "avoid ESC/meta mixups")
   (evil-shift-width 2)
@@ -248,9 +250,3 @@
       `((".*" ,"~/.saves/" t)))
 
 (setq create-lockfiles nil)
-
-(use-package lsp-ltex
-  :ensure t
-  :hook (text-mode . (lambda ()
-                       (require 'lsp-ltex)
-                       (lsp))))

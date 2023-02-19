@@ -34,6 +34,8 @@
                      ;; "email"
                      "modeline"
                      "react"
+                     "org"
+                     "scala"
                      ))
      (config-paths (mapcar (lambda (name) (concat init-currentDir "config/" name ".el")) init-configs))
      )

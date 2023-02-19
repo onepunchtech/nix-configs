@@ -13,6 +13,7 @@ in {
   nixpkgs = {
     config = import ./nixpkgs-config.nix;
     overlays = [ emacs-overlay ];
+
   };
 
   home.stateVersion = "22.11";
@@ -63,6 +64,12 @@ in {
       extraConfig = ''
         set -g mouse on
       '';
+    };
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+      ];
     };
   };
 

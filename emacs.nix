@@ -7,6 +7,8 @@
     package = pkgs.emacsPgtkNativeComp.override {
       imagemagick = pkgs.imagemagickBig;
     };
+
+
     extraPackages = epkgs: with epkgs; with melpaPackages; [
       use-package
       evil-numbers
@@ -84,18 +86,37 @@
       graphviz-dot-mode
       which-key
       lsp-pyright
-      sbt-mode
       doom-modeline
-      dap-mode
       typescript-mode
       all-the-icons
       ledger-mode
       lsp-ltex
+      terraform-mode
+      org-present
+      org-superstar
+      visual-fill-column
+      scala-mode
+      sbt-mode
+      dap-mode
+      posframe
+      foo
       # tree-sitter
       # tree-sitter-langs
       # tree-sitter-langs.withGrammars(g: [g.tree-sitter-rust])
       # tsc
     ];
+
+    overrides = self: super: rec {
+      foo = self.melpaPackages.lsp-metals.overrideAttrs(old: {
+        src  = pkgs.fetchFromGitHub {
+          owner = "prashantvithani";
+          repo = "lsp-metals";
+          rev = "a2df7263ece6ac69214e41c52d66aab8d3f650eb";
+          sha256 = "sha256-37MU9tGRrbD8SyCW/u/WXIMnJE9cOGS4BMioA58JLvo=";
+
+        };
+      });
+    };
   };
 
   home.file.".emacs.d" = {
