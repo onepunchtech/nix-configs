@@ -4,7 +4,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsPgtkNativeComp.override {
+    package = pkgs.emacs.override {
       imagemagick = pkgs.imagemagickBig;
     };
 
@@ -64,7 +64,6 @@
       whitespace-cleanup-mode
       indent-guide
       discover-my-major
-      proof-general
       nix-mode
       direnv
       gruvbox-theme
@@ -83,6 +82,7 @@
       yasnippet
       yasnippet-snippets
       restclient
+      restart-emacs
       graphviz-dot-mode
       which-key
       lsp-pyright
@@ -100,6 +100,8 @@
       dap-mode
       posframe
       foo
+      lsp-java
+      ox-reveal
       # tree-sitter
       # tree-sitter-langs
       # tree-sitter-langs.withGrammars(g: [g.tree-sitter-rust])

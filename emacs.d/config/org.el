@@ -108,7 +108,7 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
   (visual-line-mode 1)
-  (define-key org-mode-map (kbd "C-c C-p") #'org-present)
+  ;; (define-key org-mode-map (kbd "C-c C-p") #'org-present)
   )
 
 (use-package org-superstar

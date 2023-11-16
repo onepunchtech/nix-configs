@@ -250,3 +250,7 @@
       `((".*" ,"~/.saves/" t)))
 
 (setq create-lockfiles nil)
+
+(use-package restart-emacs)
+
+(use-package ox-reveal)

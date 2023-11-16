@@ -3,7 +3,8 @@
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
   # oldemacsRev = "e9fe554910fabf301ebf244aa2f9e5f2d5f69c4b";
-  emacsRev = "2891c0c12ad28fb24eafbce9a273553d3ef94def";
+  # emacsRev = "2891c0c12ad28fb24eafbce9a273553d3ef94def";
+  emacsRev = "d7eeebd439b52b77958eb3d8043f3262701ddee2";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
@@ -31,7 +32,7 @@ in {
     imagemagick
     dhall
     dhall-json
-    dhall-lsp-server
+    # dhall-lsp-server
     silver-searcher
     alacritty
     wofi
@@ -74,12 +75,10 @@ in {
   };
 
   services = {
-    lorri.enable = true;
     emacs = {
       enable = true;
       socketActivation.enable = true;
       client.enable = true;
-      defaultEditor = true;
     };
     kanshi = {
       enable = true;

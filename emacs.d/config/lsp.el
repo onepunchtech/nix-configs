@@ -4,6 +4,7 @@
 
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
+  :load-path "/home/whitehead/workspace/onepunch/lsp-mode/"
   :defer t
   :after (direnv evil)
   :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode ts-mode web-mode yaml-mode terraform-mode) . lsp)
@@ -235,3 +236,5 @@
   :hook
   (lsp-mode . dap-mode)
   (lsp-mode . dap-ui-mode))
+
+(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
