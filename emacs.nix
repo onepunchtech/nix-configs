@@ -10,6 +10,8 @@
 
 
     extraPackages = epkgs: with epkgs; with melpaPackages; [
+      pdf-tools
+      latex-extra
       use-package
       evil-numbers
       exec-path-from-shell
@@ -65,7 +67,7 @@
       indent-guide
       discover-my-major
       nix-mode
-      direnv
+      envrc
       gruvbox-theme
       lsp-mode
       lsp-ui
@@ -102,6 +104,7 @@
       foo
       lsp-java
       ox-reveal
+      dash
       # tree-sitter
       # tree-sitter-langs
       # tree-sitter-langs.withGrammars(g: [g.tree-sitter-rust])

@@ -3,19 +3,17 @@
   :demand t
   :init
   (setq evil-want-keybinding nil)
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+
   :custom
   (evil-esc-delay 0.001 "avoid ESC/meta mixups")
   (evil-shift-width 2)
 
-
-  :bind
-  (:map evil-normal-state-map
-        ("S" . replace-symbol-at-point))
-
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  )
 
 (use-package evil-collection
   :after evil
@@ -236,11 +234,9 @@
 (indent-guide-global-mode)
 (setq scroll-conservatively 1000)
 
-(use-package direnv
-  :init
-  (add-hook 'prog-mode-hook #'direnv-update-environment)
+(use-package envrc
   :config
-  (direnv-mode))
+  (envrc-global-mode))
 
 (setq mac-command-modifier 'control)
 

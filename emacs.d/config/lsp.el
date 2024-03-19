@@ -2,11 +2,10 @@
 (setq base-cache-dir (substitute-in-file-name "$HOME/.cache/emacs"))
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
-(setq lsp-keymap-prefix "s-l")
+(setq lsp-keymap-prefix "C-c")
 (use-package lsp-mode
-  :load-path "/home/whitehead/workspace/onepunch/lsp-mode/"
   :defer t
-  :after (direnv evil)
+  :after (evil)
   :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode ts-mode web-mode yaml-mode terraform-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
@@ -34,6 +33,7 @@
      lsp-enable-on-type-formatting t
      lsp-before-save-edits t
      lsp-headerline-breadcrumb-enable nil
+     lsp-server-install-dir (substitute-in-file-name "$HOME/.cache/emacs/lsp")
      lsp-file-watch-ignored '(
        "[/\\\\]\\.direnv$"
        ; SCM tools
@@ -59,7 +59,7 @@
        "[/\\\\]build-aux$"
        "[/\\\\]autom4te.cache$"
        "[/\\\\]\\.reference$"))
-    (advice-add 'lsp :before #'direnv-update-environment))
+    (advice-add 'lsp :before #'envrc-reload))
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)

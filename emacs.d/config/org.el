@@ -116,6 +116,23 @@
                                         ;(setq org-bullets-bullet-list '("◉" "⁑" "⁂" "❖" "✮" "✱" "✸"))
   )
 
+(add-hook 'org-mode-hook #'toggle-word-wrap)
+
 (use-package image
   :custom
   (image-use-external-converter t))
+
+(add-to-list 'org-latex-classes
+           '("book-noparts"
+              "\\documentclass{book}"
+              ("\\chapter{%s}" . "\\chapter*{%s}")
+              ("\\section{%s}" . "\\section*{%s}")
+              ("\\subsection{%s}" . "\\subsection*{%s}")
+              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+              ("\\paragraph{%s}" . "\\paragraph*{%s}")
+              ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (member lang '("emacs-listp"))))
+
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)

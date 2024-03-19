@@ -11,5 +11,4 @@
               (lambda ()
                 (lsp)
                 (setq evil-shift-width 2)))
-    (setq lsp-haskell-formatting-provider "fourmolu")
     (setq lsp-haskell-process-path-hie "haskell-language-server")))

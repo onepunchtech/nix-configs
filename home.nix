@@ -2,9 +2,8 @@
 
 let
   scripts = pkgs.callPackage ./scripts/scripts.nix {};
-  # oldemacsRev = "e9fe554910fabf301ebf244aa2f9e5f2d5f69c4b";
-  # emacsRev = "2891c0c12ad28fb24eafbce9a273553d3ef94def";
-  emacsRev = "d7eeebd439b52b77958eb3d8043f3262701ddee2";
+  # oldemacsRev = "d7eeebd439b52b77958eb3d8043f3262701ddee2";
+  emacsRev = "f955f65318caf28da81fe80f5437c6446dbfa7a3";
   emacs-overlay = import (builtins.fetchTarball {
     url =
       "https://github.com/nix-community/emacs-overlay/archive/${emacsRev}.tar.gz";
@@ -21,6 +20,7 @@ in {
   home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
+    texliveFull
     google-chrome
     brightnessctl
     i3
@@ -40,6 +40,10 @@ in {
     pulseaudio
     firefox-wayland
     ltex-ls
+    retroarchFull
+    zip
+    unzip
+    libreoffice
   ];
 
   home.sessionVariables = {
