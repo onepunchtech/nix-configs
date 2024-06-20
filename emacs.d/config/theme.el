@@ -48,5 +48,8 @@
   (dolist (i custom-enabled-themes)
     (disable-theme i)))
 
-(use-package all-the-icons
-  :if (display-graphic-p))
+(use-package nerd-icons)
+
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))

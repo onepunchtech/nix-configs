@@ -67,7 +67,7 @@
       indent-guide
       discover-my-major
       nix-mode
-      envrc
+      direnv
       gruvbox-theme
       lsp-mode
       lsp-ui
@@ -75,7 +75,7 @@
       psc-ide
       purescript-mode
       treemacs
-      treemacs-all-the-icons
+      treemacs-nerd-icons
       lsp-treemacs
       treemacs-evil
       treemacs-projectile
@@ -90,7 +90,7 @@
       lsp-pyright
       doom-modeline
       typescript-mode
-      all-the-icons
+      nerd-icons
       ledger-mode
       lsp-ltex
       terraform-mode
@@ -101,27 +101,12 @@
       sbt-mode
       dap-mode
       posframe
-      foo
       lsp-java
       ox-reveal
       dash
-      # tree-sitter
-      # tree-sitter-langs
-      # tree-sitter-langs.withGrammars(g: [g.tree-sitter-rust])
-      # tsc
+      company-tabnine
+      tabnine
     ];
-
-    overrides = self: super: rec {
-      foo = self.melpaPackages.lsp-metals.overrideAttrs(old: {
-        src  = pkgs.fetchFromGitHub {
-          owner = "prashantvithani";
-          repo = "lsp-metals";
-          rev = "a2df7263ece6ac69214e41c52d66aab8d3f650eb";
-          sha256 = "sha256-37MU9tGRrbD8SyCW/u/WXIMnJE9cOGS4BMioA58JLvo=";
-
-        };
-      });
-    };
   };
 
   home.file.".emacs.d" = {
@@ -133,19 +118,4 @@
       #emacs -Q -nw -l ~/.emacs.d/init.el -batch -f batch-byte-compile ~/.emacs.d/init.el
     '';
   };
-
-  # xdg.dataFile."applications/emacsclient.desktop".text = ''
-  #   [Desktop Entry]
-  #   Name=Emacsclient
-  #   GenericName=Text Editor
-  #   Comment=Edit text
-  #   MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-  #   Exec=emacsclient -c -a emacs %F
-  #   Icon=emacs
-  #   Type=Application
-  #   Terminal=false
-  #   Categories=Development;TextEditor;
-  #   StartupWMClass=Emacs
-  #   Keywords=Text;Editor;
-  # '';
 }

@@ -32,9 +32,13 @@ in {
     imagemagick
     dhall
     dhall-json
+    semgrep
+    nodejs_21
     # dhall-lsp-server
     silver-searcher
     alacritty
+    #stack
+    #haskell-language-server
     wofi
     pavucontrol
     pulseaudio
@@ -44,6 +48,8 @@ in {
     zip
     unzip
     libreoffice
+    nixd
+    nixpkgs-fmt
   ];
 
   home.sessionVariables = {

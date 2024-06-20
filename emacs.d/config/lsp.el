@@ -2,6 +2,13 @@
 (setq base-cache-dir (substitute-in-file-name "$HOME/.cache/emacs"))
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+    (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+                     :major-modes '(nix-mode)
+                     :priority 0
+                     :server-id 'nixd)))
+
 (setq lsp-keymap-prefix "C-c")
 (use-package lsp-mode
   :defer t
@@ -59,7 +66,8 @@
        "[/\\\\]build-aux$"
        "[/\\\\]autom4te.cache$"
        "[/\\\\]\\.reference$"))
-    (advice-add 'lsp :before #'envrc-reload))
+                                        ;(advice-add 'lsp :before #'envrc-reload)
+    )
   :bind (:map lsp-mode-map
               ("C-c r n" . lsp-rename)
               ("C-c l ," . lsp-find-definition)
@@ -67,6 +75,7 @@
               ("C-c l <" . lsp-find-references)
               ([remap xref-find-apropos] . #'helm-lsp-workspace-symbol)
               ))
+
 
 (use-package company
   :bind ((:map company-active-map
