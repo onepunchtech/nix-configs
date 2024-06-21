@@ -1,33 +1,24 @@
-{ config, pkgs, ... }:
+{pkgs, ...}:
 
-let
-  unstable = import
-    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/master)
-    { config = config.nixpkgs.config; };
-
-in
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-    ];
   nixpkgs.config = {
     allowUnfree = true;
   };
+
 
   nixpkgs.overlays = [
     (self: super: {
       wl-clipboard-x11 = super.stdenv.mkDerivation rec {
         pname = "wl-clipboard-x11";
         version = "5";
-  
+
         src = super.fetchFromGitHub {
           owner = "brunelli";
           repo = "wl-clipboard-x11";
           rev = "v${version}";
           sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
         };
-  
+
         dontBuild = true;
         dontConfigure = true;
         propagatedBuildInputs = [ super.wl-clipboard ];
@@ -41,14 +32,14 @@ in
   boot = {
     loader = {
       systemd-boot.enable = true;
+      systemd-boot.configurationLimit = 10;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = unstable.linuxPackages_latest;
-    tmpOnTmpfs = true;
+    supportedFilesystems = [ "ntfs" ];
   };
 
   nix = {
-    buildMachines = [  
+    buildMachines = [
       {
         hostName = "builder";
         system = "x86_64-linux";
@@ -60,19 +51,34 @@ in
     gc = {
       automatic = true;
       dates = "weekly";
+      options = "--delete-older-than 1w";
     };
-    trustedUsers = [ "@wheel" ];
+
+    settings = {
+      trusted-public-keys = [
+        "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+      ];
+      substituters = [
+        "https://cache.iog.io"
+      ];
+      trusted-users = [ "@wheel" ];
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
   };
 
   networking = {
     useDHCP = false;
     hostName = "ludwig";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      dns = "systemd-resolved";
+    };
+    firewall.enable = false;
     extraHosts = ''
       10.10.10.5 bigtux
       10.10.10.5 builder
     '';
-    nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -81,16 +87,17 @@ in
     git
     tree
     rxvt_unicode
-    unstable.home-manager
+    home-manager
     brightnessctl
     firmwareLinuxNonfree
     gtk-engine-murrine
     gtk_engines
     gsettings-desktop-schemas
     lxappearance
+    rofi
   ];
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     dejavu_fonts
     noto-fonts
     noto-fonts-cjk
@@ -104,11 +111,15 @@ in
   };
 
   security.rtkit.enable = true;
+
   services = {
     openssh.enable = true;
     printing.enable = true;
-    printing.drivers = [pkgs.brlaser];
+    printing.drivers = with pkgs; [brlaser gutenprint gutenprintBin cnijfilter2 canon-cups-ufr2 carps-cups];
+    avahi.enable = true;
+    avahi.nssmdns = true;
     acpid.enable = true;
+    resolved.enable = true;
     xserver = {
       enable = true;
       displayManager.gdm.enable = true;
@@ -116,7 +127,6 @@ in
       layout = "us";
       xkbModel = "pc104";
       xkbOptions = "caps:super,ctrl:swap_lalt_lctl";
-      videoDrivers = [ "amdgpu" ];
     };
     pipewire = {
       enable = true;
@@ -133,16 +143,11 @@ in
   programs.nm-applet = {
     enable = true;
   };
-  programs.sway = {
+
+  programs.steam = {
     enable = true;
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      xwayland
-      waybar
-      mako
-      kanshi
-    ];
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
   };
 
   systemd.targets.sleep.enable = false;
@@ -152,13 +157,22 @@ in
 
   hardware.pulseaudio.enable = false;
 
-  system.stateVersion = "21.05";
-
   time.timeZone = "America/Denver";
- 
+
   users.users.whitehead = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" ];
+    extraGroups = [ "wheel" "networkmanager" "video" "docker"];
+  };
+
+  virtualisation.docker.enable = true;
+
+  fileSystems."/mnt/share" = {
+      device = "//10.10.10.5/public";
+      fsType = "cifs";
+      options = let
+        # this line prevents hanging on network split
+        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+
+      in ["${automount_opts}"];
   };
 }
-
