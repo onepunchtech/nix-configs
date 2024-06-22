@@ -69,7 +69,6 @@
 
   networking = {
     useDHCP = false;
-    hostName = "ludwig";
     networkmanager = {
       enable = true;
       dns = "systemd-resolved";
@@ -117,16 +116,23 @@
     printing.enable = true;
     printing.drivers = with pkgs; [brlaser gutenprint gutenprintBin cnijfilter2 canon-cups-ufr2 carps-cups];
     avahi.enable = true;
-    avahi.nssmdns = true;
+    avahi.nssmdns4 = true;
     acpid.enable = true;
     resolved.enable = true;
+    keyd = {
+      enable = true;
+      keyboards.default.settings = {
+        main = {
+          capslock = "layer(meta)"; 
+          leftalt = "layer(control)"; 
+          leftcontrol = "layer(alt)"; 
+	};
+      };
+    };
     xserver = {
       enable = true;
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
-      layout = "us";
-      xkbModel = "pc104";
-      xkbOptions = "caps:super,ctrl:swap_lalt_lctl";
     };
     pipewire = {
       enable = true;
@@ -140,9 +146,10 @@
     };
   };
 
-  programs.nm-applet = {
-    enable = true;
-  };
+  programs.hyprland = {    
+    enable = true;    
+    xwayland.enable = true;    
+  }; 
 
   programs.steam = {
     enable = true;
@@ -175,4 +182,5 @@
 
       in ["${automount_opts}"];
   };
+  system.stateVersion = "24.05";
 }

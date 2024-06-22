@@ -4,4 +4,5 @@
     ./base-hardware.nix
     ./nvidiagpu.nix
   ];
+  networking.hostName = "sowell";
 }
