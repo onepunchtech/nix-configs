@@ -106,6 +106,7 @@
       dash
       company-tabnine
       tabnine
+      auto-dark
     ];
   };
 

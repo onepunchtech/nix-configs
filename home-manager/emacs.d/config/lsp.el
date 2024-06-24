@@ -215,8 +215,6 @@
   :ensure t
   :config (treemacs-icons-dired-mode))
 
-(use-package treemacs-all-the-icons)
-
 (use-package treemacs-magit
   :after treemacs magit
   :ensure t)

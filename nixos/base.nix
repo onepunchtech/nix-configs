@@ -123,9 +123,9 @@
       enable = true;
       keyboards.default.settings = {
         main = {
-          capslock = "layer(meta)"; 
-          leftalt = "layer(control)"; 
-          leftcontrol = "layer(alt)"; 
+          capslock = "layer(meta)";
+          leftalt = "layer(control)";
+          leftcontrol = "layer(alt)";
 	};
       };
     };
@@ -146,10 +146,10 @@
     };
   };
 
-  programs.hyprland = {    
-    enable = true;    
-    xwayland.enable = true;    
-  }; 
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
   programs.steam = {
     enable = true;
@@ -164,7 +164,7 @@
 
   hardware.pulseaudio.enable = false;
 
-  time.timeZone = "America/Denver";
+  time.timeZone = "US/Central";
 
   users.users.whitehead = {
     isNormalUser = true;
