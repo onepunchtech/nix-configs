@@ -1,4 +1,4 @@
-{modulesPath, ...}:
+{pkgs, modulesPath, ...}:
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
@@ -8,6 +8,10 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  hardware.enableAllFirmware = true;
+  hardware.firmware = [
+    pkgs.firmwareLinuxNonfree
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
@@ -18,5 +22,4 @@
     { device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-
 }

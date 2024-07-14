@@ -85,7 +85,6 @@
     vim
     git
     tree
-    rxvt_unicode
     home-manager
     brightnessctl
     firmwareLinuxNonfree
@@ -93,7 +92,8 @@
     gtk_engines
     gsettings-desktop-schemas
     lxappearance
-    rofi
+    libsForQt5.qt5.qtwayland
+    kdePackages.qtwayland
   ];
 
   fonts.packages = with pkgs; [

@@ -33,7 +33,6 @@ in {
     pulseaudio
     firefox-wayland
     ltex-ls
-    retroarchFull
     zip
     unzip
     libreoffice
@@ -47,6 +46,8 @@ in {
     gimp
     blender
     docker-compose
+    mako
+    polkit-kde-agent
   ];
 
   home.sessionVariables = {
