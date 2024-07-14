@@ -39,6 +39,14 @@ in {
     libreoffice
     nixd
     nixpkgs-fmt
+    sops
+    age
+    transmission-gtk
+    vlc
+    inkscape-with-extensions
+    gimp
+    blender
+    docker-compose
   ];
 
   home.sessionVariables = {
