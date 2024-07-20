@@ -48,6 +48,8 @@ in {
     docker-compose
     mako
     polkit-kde-agent
+    glances
+    htop
   ];
 
   home.sessionVariables = {

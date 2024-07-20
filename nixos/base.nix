@@ -121,12 +121,15 @@
     resolved.enable = true;
     keyd = {
       enable = true;
-      keyboards.default.settings = {
-        main = {
-          capslock = "layer(meta)";
-          leftalt = "layer(control)";
-          leftcontrol = "layer(alt)";
-	};
+      keyboards.default = {
+        ids = ["*"];
+        settings = {
+          main = {
+            capslock = "layer(meta)";
+            leftalt = "layer(control)";
+            leftcontrol = "layer(alt)";
+	  };
+        };
       };
     };
     xserver = {
@@ -164,7 +167,7 @@
 
   hardware.pulseaudio.enable = false;
 
-  time.timeZone = "US/Central";
+  time.timeZone = "US/Mountain";
 
   users.users.whitehead = {
     isNormalUser = true;

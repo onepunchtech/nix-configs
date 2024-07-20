@@ -135,4 +135,4 @@
 (defun my-org-confirm-babel-evaluate (lang body)
   (not (member lang '("emacs-listp"))))
 
-(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+(setq org-confirm-babel-evaluate nil)
