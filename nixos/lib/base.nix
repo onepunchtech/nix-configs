@@ -38,7 +38,6 @@
       enable = true;
       dns = "systemd-resolved";
     };
-    firewall.enable = false;
   };
 
   environment.systemPackages = with pkgs; [
