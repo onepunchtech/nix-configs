@@ -55,6 +55,7 @@
     libsForQt5.qt5.qtwayland
     kdePackages.qtwayland
     yubikey-manager
+    mdadm
   ];
 
   services.pcscd.enable = true;

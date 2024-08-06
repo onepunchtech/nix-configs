@@ -7,12 +7,6 @@
       ./lib/base.nix
     ];
 
-  environment.systemPackages = with pkgs; config.environment.systemPackages ++ [
-    mdadm
-  ];
-
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
   services = {
     samba = {
       enable = true;
