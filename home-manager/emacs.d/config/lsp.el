@@ -13,7 +13,16 @@
 (use-package lsp-mode
   :defer t
   :after (evil)
-  :hook (((go-mode haskell-mode scala-mode rust-mode dhall-mode ts-mode web-mode yaml-mode terraform-mode) . lsp)
+  :hook (((go-mode
+           haskell-mode
+           scala-mode
+           rust-mode
+           dhall-mode
+           web-mode
+           yaml-mode
+           terraform-mode
+           tsx-ts-mode
+           typescript-ts-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom

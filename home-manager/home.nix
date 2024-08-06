@@ -29,6 +29,7 @@ in {
     silver-searcher
     alacritty
     wofi
+    rofi
     pavucontrol
     pulseaudio
     firefox-wayland
@@ -106,6 +107,8 @@ in {
 
   imports = [ ./emacs.nix ];
 
+  xdg.configFile."i3/config".source = ./i3/config;
+  xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
   xdg.configFile."waybar/config".source = ./waybar/waybar.conf;
   xdg.configFile."wofi/style.css".source = ./wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;

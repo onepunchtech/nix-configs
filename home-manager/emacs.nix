@@ -89,7 +89,7 @@
       which-key
       lsp-pyright
       doom-modeline
-      typescript-mode
+      treesit-grammars.with-all-grammars
       nerd-icons
       ledger-mode
       lsp-ltex

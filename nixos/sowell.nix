@@ -1,9 +1,9 @@
 {pkgs, ...}:
 {
   imports = [
-    ./base.nix
-    ./base-hardware.nix
-    ./nvidiagpu.nix
+    ./hardware/base-hardware.nix
+    ./lib/base.nix
+    ./lib/nvidiagpu.nix
   ];
   networking.hostName = "sowell";
   boot.initrd.kernelModules = ["snd_pci_acp6x"];

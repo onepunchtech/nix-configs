@@ -42,6 +42,18 @@
           ./sowell.nix
         ];
       };
+      router = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./router.nix
+        ];
+      };
+      bigtux = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./bigtux.nix
+        ];
+      };
     };
   };
 }

@@ -53,11 +53,3 @@
 (use-package treemacs-nerd-icons
   :config
   (treemacs-load-theme "nerd-icons"))
-
-(use-package auto-dark
-  :ensure t
-  :config
-  (setq auto-dark-dark-theme 'gruvbox-dark-medium)
-  (setq auto-dark-light-theme 'gruvbox-light-medium)
-  (setq auto-dark-polling-interval-seconds 5)
-  (auto-dark-mode t))

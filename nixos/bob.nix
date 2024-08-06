@@ -1,7 +1,7 @@
 {
   imports = [
-    ./base.nix
-    ./base-hardware.nix
-    ./amdgpu.nix
+    ./hardware/base-hardware.nix
+    ./lib/base.nix
+    ./lib/amdgpu.nix
   ];
 }

@@ -238,7 +238,9 @@
 ;;   :config
 ;;   (envrc-global-mode))
 
-(use-package direnv)
+(use-package direnv
+ :config
+ (direnv-mode))
 
 (setq mac-command-modifier 'control)
 

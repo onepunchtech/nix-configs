@@ -1,8 +1,8 @@
 {pkgs, config, ...}:
 {
   imports = [
-    ./base.nix
-    ./base-hardware.nix
+    ./lib/base.nix
+    ./hardware/base-hardware.nix
   ];
 
   networking.hostName = "mises";
@@ -20,6 +20,7 @@
       fsType = "ext4";
       options = [
         "users"
+        "defaults"
         "nofail"
       ];
     };
@@ -29,6 +30,7 @@
       fsType = "ext4";
       options = [
         "users"
+        "defaults"
         "nofail"
       ];
     };
