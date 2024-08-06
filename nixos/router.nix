@@ -78,25 +78,25 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5vw9x9O3Nz/hayQwjV4w/gwfT7V0pnN5fxNpZuPZGtcFbSZjwNhEQ66RrGlOc9EZZZf6pLckffGBWUNvV24ocrNor0IBvQZhoR/7d/WE+vCxQtQwJW/ZZagiE7noqpRyk5Ty7DwNDi05s8IMvCUQ6i+t+iVLo7TEZelvF3+1NB5Azx+MIbdtr7kmYlZ8SQwJsSIYYHTVgC8+bEQ5bkRjtjsukHoqiuNzA3z3mBqw7jFCq2PbgYbllzDlJSYkfvr2yxCRqeedab1Q/q4kSD1wq9ysqcPEUYJhDVAVnr1Rp/ndVM+N1tMw4R/ilqsghwNbPNIr7yEY7Y37WphOanqM/ whitehead@ludwig"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXNsJVI+XFBSSfunirxgUFStUCXhFMNBIj2b4Xsl7WSm40E43ZcWThisc+CDGrfstO1w8B2rZSJkBq1xl5IRoyvePy3P/Rcg6tKQIqqBfaksTXZ9ENHP5DwNuYOh1VQCjMBlj5ZWv7n9wXe+fBAS0SXu51ZJX8hiiy5Te9oKOyDm0o3qRXDy/RwWmEzY//g8d+cTcqsRhWaPbpYhEide9Sjbxn4et68/UG5qJgxRNYOWFtCPIeX55sAerfivOKhsx3a0y+C1x1Yhdaf23TvyNKr6jmv4IHwuuZ7uuvicBoKHS9I40+1HOWpDgpgJs8+IwEdDeTJqBlIYMat1xRVA2SP8TruH1aQccSIuYSMgv9XvjS3I6rWe0jjbTTiaWEehc20J01TVzXIdxh1/PgcAJMnvkOu1bDWw9DnHTIhEYSnb3/dKeOj9zQZlwSgZDu42gwJW1IcO133GxJp+EI7y8bQ80Y4WuR6BwEVlM3gFJkphvDqdjDoH9v1Zr+b66MnLc= whitehead@ludwig"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrOpJm3+B7/pyGi+pzn2HbatpFY7tCDpwBcr8orQOd9B0GXTIuTKeV2lGS9Zb1TUqngo9uR2JXv0o51IZOao0zjGgug2udFvB0mQNALCrEosHVzTGopkeuiF9ZKlaHO5vbzi9zfDWs9/1A1YTa7JFt8Qrgi4EqycOli540jlvvxkEDN3PDz/36YaXCqzqj3e5tX6Nmh8xCEq70+oyA9oZ/gTMLFjLLlSigZPn0Ex3KjRpiap3LkPZGt7LPZEFWXrMMKLhzOhM7yuMewHSiYMp4s6gJursUK3etcxSHn+HeXcMdtte9XRi91PwIhnHR/oqUpP+wNpwm26qRmVeOmn2J YubiKey #26922176 PIV Slot 9a"
     ];
   };
 
   users.users.root = {
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5vw9x9O3Nz/hayQwjV4w/gwfT7V0pnN5fxNpZuPZGtcFbSZjwNhEQ66RrGlOc9EZZZf6pLckffGBWUNvV24ocrNor0IBvQZhoR/7d/WE+vCxQtQwJW/ZZagiE7noqpRyk5Ty7DwNDi05s8IMvCUQ6i+t+iVLo7TEZelvF3+1NB5Azx+MIbdtr7kmYlZ8SQwJsSIYYHTVgC8+bEQ5bkRjtjsukHoqiuNzA3z3mBqw7jFCq2PbgYbllzDlJSYkfvr2yxCRqeedab1Q/q4kSD1wq9ysqcPEUYJhDVAVnr1Rp/ndVM+N1tMw4R/ilqsghwNbPNIr7yEY7Y37WphOanqM/ whitehead@ludwig"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXNsJVI+XFBSSfunirxgUFStUCXhFMNBIj2b4Xsl7WSm40E43ZcWThisc+CDGrfstO1w8B2rZSJkBq1xl5IRoyvePy3P/Rcg6tKQIqqBfaksTXZ9ENHP5DwNuYOh1VQCjMBlj5ZWv7n9wXe+fBAS0SXu51ZJX8hiiy5Te9oKOyDm0o3qRXDy/RwWmEzY//g8d+cTcqsRhWaPbpYhEide9Sjbxn4et68/UG5qJgxRNYOWFtCPIeX55sAerfivOKhsx3a0y+C1x1Yhdaf23TvyNKr6jmv4IHwuuZ7uuvicBoKHS9I40+1HOWpDgpgJs8+IwEdDeTJqBlIYMat1xRVA2SP8TruH1aQccSIuYSMgv9XvjS3I6rWe0jjbTTiaWEehc20J01TVzXIdxh1/PgcAJMnvkOu1bDWw9DnHTIhEYSnb3/dKeOj9zQZlwSgZDu42gwJW1IcO133GxJp+EI7y8bQ80Y4WuR6BwEVlM3gFJkphvDqdjDoH9v1Zr+b66MnLc= whitehead@ludwig"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrOpJm3+B7/pyGi+pzn2HbatpFY7tCDpwBcr8orQOd9B0GXTIuTKeV2lGS9Zb1TUqngo9uR2JXv0o51IZOao0zjGgug2udFvB0mQNALCrEosHVzTGopkeuiF9ZKlaHO5vbzi9zfDWs9/1A1YTa7JFt8Qrgi4EqycOli540jlvvxkEDN3PDz/36YaXCqzqj3e5tX6Nmh8xCEq70+oyA9oZ/gTMLFjLLlSigZPn0Ex3KjRpiap3LkPZGt7LPZEFWXrMMKLhzOhM7yuMewHSiYMp4s6gJursUK3etcxSHn+HeXcMdtte9XRi91PwIhnHR/oqUpP+wNpwm26qRmVeOmn2J YubiKey #26922176 PIV Slot 9a"
     ];
   };
 
   environment.systemPackages = with pkgs; [
+    htop
     vim
     wget
   ];
 
 
   services = {
+    monit.enable = true;
     openssh = {
       enable = true;
       ports = [ 1122 ];
