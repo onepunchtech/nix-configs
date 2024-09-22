@@ -14,7 +14,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-  settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   time.timeZone = "US/Mountain";
 
@@ -96,81 +96,183 @@ in
 
 
   services = {
-    monit.enable = true;
     openssh = {
       enable = true;
-      ports = [ 1122 ];
     };
-    dhcpd4 = {
+
+    kea.dhcp4 = {
       enable = true;
-      interfaces = [ "${lan}" ];
-      extraConfig = ''
-        option domain-name-servers 8.8.8.8, 8.8.4.4;
-        option subnet-mask 255.255.255.0;
+      settings = {
+        valid-lifetime = 4000;
+        rebind-timer = 2000;
+        renew-timer = 1000;
 
-        subnet 10.10.10.0 netmask 255.255.255.0 {
-          option broadcast-address 10.10.10.255;
-          option routers 10.10.10.1;
-          interface ${lan};
-          range 10.10.10.100 10.10.10.254;
+        interfaces-config = {
+          interfaces = [
+            "${lan}"
+          ];
+        };
 
-          host switch1 {
-            hardware ethernet e0:1c:fc:aa:8f:24;
-            fixed-address 10.10.10.2;
-          }
+        lease-database = {
+          name = "/var/lib/kea/dhcp4.leases";
+          persist = true;
+          type = "memfile";
+        };
 
-          host tplinkaccesspointoffice {
-            hardware ethernet 00:5f:67:72:28:f6;
-            fixed-address 10.10.10.3;
-          }
-
-          host nighthawk {
-            hardware ethernet a0:63:91:4b:41:56;
-            fixed-address 10.10.10.4;
-          }
-
-          host bigtux {
-            hardware ethernet 40:8d:5c:51:62:b6;
-            fixed-address 10.10.10.5;
-          }
-
-          host outdooraccesspoint {
-            hardware ethernet 00:5f:67:ad:4f:b6;
-            fixed-address 10.10.10.6;
-          }
-
-          host camerafrontdoor {
-            hardware ethernet d4:21:22:89:6e:df;
-            fixed-address 10.10.10.7;
-          }
-
-          host backupnas {
-            hardware ethernet 6c:bf:b5:02:3d:a6;
-            fixed-address 10.10.10.8;
-          }
-
-          host tplinkaccesspointserverroom {
-            hardware ethernet 00:5f:67:72:18:da;
-            fixed-address 10.10.10.9;
-          }
-
-          host accontroller {
-            hardware ethernet 02:42:74:c9:7a:69;
-            fixed-address 10.10.10.30;
-          }
-
+        subnet4 = [
           {
-            hardware ethernet 82:eb:3a:dd:27:e9;
-            fixed-address 10.10.10.31;
+            pools = [
+              {
+                pool = "10.10.10.100 - 10.10.10.254";
+              }
+            ];
+            subnet = "10.10.10.0/24";
+            reservations = [
+              {
+                hw-address = "e0:1c:fc:aa:8f:24";
+                ip-address = "10.10.10.2";
+                hostname = "switch.lan.";
+              }
+              {
+                hw-address = "00:5f:67:72:28:f6";
+                ip-address = "10.10.10.3";
+                hostname = "officeaccesspoint.lan.";
+              }
+              {
+                hw-address = "a0:63:91:4b:41:56";
+                ip-address = "10.10.10.4";
+                hostname = "nighthawk.lan.";
+              }
+              {
+                hw-address = "40:8d:5c:51:62:b6";
+                ip-address = "10.10.10.5";
+                hostname = "bigtux.lan.";
+              }
+              {
+                hw-address = "00:5f:67:ad:4f:b6";
+                ip-address = "10.10.10.6";
+                hostname = "outdooraccesspoint.lan.";
+              }
+              {
+                hw-address = "d4:21:22:89:6e:df";
+                ip-address = "10.10.10.7";
+                hostname = "camerafrontdoor.lan.";
+              }
+              {
+                hw-address = "6c:bf:b5:02:3d:a6";
+                ip-address = "10.10.10.8";
+                hostname = "backupnas.lan.";
+              }
+              {
+                hw-address = "00:5f:67:72:18:da";
+                ip-address = "10.10.10.9";
+                hostname = "waterclosetaccesspoint.lan.";
+              }
+              {
+                hw-address = "02:42:74:c9:7a:69";
+                ip-address = "10.10.10.30";
+                hostname = "accontroller.lan.";
+              }
+              {
+                hw-address = "82:eb:3a:dd:27:e9";
+                ip-address = "10.10.10.31";
+                hostname = "3dprinter.lan.";
+              }
+            ];
           }
+        ];
+        # dhcp-ddns = {
+        #   enable-updates = true;
+        # };
+        option-data =  [
+          {
+            name = "domain-name-servers";
+            data = "10.10.10.1";
+          }
+          {
+            name = "routers";
+            data = "10.10.10.1";
+          }
+          {
+            name = "subnet-mask";
+            data = "255.255.255.0";
+          }
+          {
+            name = "broadcast-address";
+            data = "10.10.10.255";
+          }
+        ];
+      };
+    };
+    unbound = {
+      enable = true;
+      settings = {
+        server = {
+          interface = [ "127.0.0.1" ];
+          port = 5335;
+          access-control = [ "127.0.0.1 allow" ];
+          harden-glue = true;
+          harden-dnssec-stripped = true;
+          use-caps-for-id = false;
+          prefetch = true;
+          edns-buffer-size = 1232;
 
-        }
+          hide-identity = true;
+          hide-version = true;
 
-      '';
+          local-data = [
+            ''"router.lan.  IN A 10.10.10.1"''
+            ''"switch.lan.  IN A 10.10.10.2"''
+            ''"bigtux.lan.  IN A 10.10.10.5"''
+            ''"camerafrontdoor.lan.  IN A 10.10.10.7"''
+            ''"backupnas.lan.  IN A 10.10.10.8"''
+            ''"accontroller.lan.  IN A 10.10.10.30"''
+            ''"3dprinter.lan.  IN A 10.10.10.31"''
+          ];
+        };
+        forward-zone = [
+          {
+            name = ".";
+            forward-addr = [
+              "1.1.1.3"
+              "1.0.0.3"
+            ];
+            #forward-tls-upstream = true;  # Protected DNS
+          }
+        ];
+        # local-zone = [''"lan." static''];
+      };
+    };
+
+    adguardhome = {
+      enable = true;
+      settings = {
+        http = {
+          address = "127.0.0.1:3003";
+        };
+        dns = {
+          upstream_dns = [
+            "127.0.0.1:5335"
+          ];
+        };
+        filtering = {
+          protection_enabled = true;
+          filtering_enabled = true;
+
+          parental_enabled = true;
+          safe_search = {
+            enabled = false;
+          };
+        };
+        filters = map(url: { enabled = true; url = url; }) [
+          "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt"
+          "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt"
+          "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt"
+        ];
+      };
     };
   };
 
-
-  system.stateVersion = "21.05"; # Did you read the comment?
+  system.stateVersion = "21.05";
 
 }

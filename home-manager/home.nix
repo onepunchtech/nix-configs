@@ -51,6 +51,7 @@ in {
     polkit-kde-agent
     glances
     htop
+    cura
   ];
 
   home.sessionVariables = {
