@@ -61,6 +61,7 @@
   services.pcscd.enable = true;
   services.udev.packages = [ pkgs.yubikey-personalization ];
   services.yubikey-agent.enable = true;
+  services.expressvpn.enable = true;
 
   fonts.packages = with pkgs; [
     dejavu_fonts

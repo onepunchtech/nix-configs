@@ -11,7 +11,7 @@
     enable = true;
   };
 
-  boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
@@ -27,4 +27,5 @@
 
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
 }

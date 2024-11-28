@@ -52,6 +52,9 @@ in {
     glances
     htop
     cura
+    expressvpn
+    yaml-language-server
+    nodejs
   ];
 
   home.sessionVariables = {
