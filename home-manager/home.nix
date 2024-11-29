@@ -57,20 +57,20 @@ in {
     nodejs
   ];
 
-  home.sessionVariables = {
-    EDITOR = "emc";
-  };
+  # home.sessionVariables = {
+  #   EDITOR = "emc";
+  # };
 
   programs = {
     waybar.enable = true;
     #rofi = (import ./rofi.nix);
-    alacritty = (import ./alacritty.nix);
+    # alacritty = (import ./alacritty.nix);
     git = (import ./git.nix);
-    bash = (import ./bash.nix);
+    #bash = (import ./bash.nix);
     #autorandr = (import ./autorandr.nix);
     direnv = {
       enable = true;
-      enableBashIntegration = true;
+      enableNushellIntegration = true;
     };
     ssh.forwardAgent = true;
     tmux = {
@@ -99,7 +99,33 @@ in {
       };
       theme = "Catppuccin-Mocha";
     };
+    nushell = {
+      enable = true;
+      configFile.source = ./nushell/config.nu;
+      # shellAliases = {
+      #   vi = "hx";
+      #   vim = "hx";
+      #   nano = "hx";
+      # };
+    };
+    carapace = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+
+    starship = {
+      enable = true;
+      settings = {
+        add_newline = true;
+        character = {
+          success_symbol = "[➜](bold green)";
+          error_symbol = "[➜](bold red)";
+        };
+      };
+    };
+    neovim = (import ./neovim.nix {pkgs = pkgs; lib = pkgs.lib; });
   };
+
 
   services = {
     emacs = {

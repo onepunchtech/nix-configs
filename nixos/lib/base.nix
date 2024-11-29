@@ -102,6 +102,8 @@
 
   time.timeZone = "US/Mountain";
 
+  users.defaultUserShell = pkgs.nushell;
+
   users.users.whitehead = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "docker" "libvirtd" "kvm"];

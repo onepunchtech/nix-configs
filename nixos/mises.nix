@@ -2,6 +2,8 @@
 {
   imports = [
     ./lib/base.nix
+    ./lib/gui.nix
+    ./lib/amdgpu.nix
     ./hardware/base-hardware.nix
   ];
 
