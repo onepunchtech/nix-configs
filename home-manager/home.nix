@@ -102,6 +102,9 @@ in {
     nushell = {
       enable = true;
       configFile.source = ./nushell/config.nu;
+      envFile.text = ''
+        $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
+      '';
       # shellAliases = {
       #   vi = "hx";
       #   vim = "hx";
@@ -143,6 +146,7 @@ in {
   xdg.configFile."wofi/style.css".source = ./wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./waybar/style.css;
   xdg.configFile."hypr/hyprland.conf".source = ./hypr/hyprland.conf;
+  xdg.configFile.nvim.source = ./nvim;
 
   manual.manpages.enable = false;
 }

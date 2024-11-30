@@ -8,8 +8,16 @@
     };
   };
 
-  systemd.targets.sleep.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=yes
+    AllowHibernation=yes
+    AllowHybridSleep=yes
+    AllowSuspendThenHibernate=no
+  '';
+
+  services.thermald.enable = true;
+
+  services.tlp = {
+    enable = true;
+  };
 }

@@ -16,17 +16,14 @@ in
   viAlias = true;
   vimAlias = true;
   vimdiffAlias = true;
-  extraConfig = ''
-  '';
 
   plugins =
     with pkgs.vimPlugins; [
       nvim-lspconfig
       plenary-nvim
-      gruvbox-material
-      mini-nvim
       nvim-treesitter.withAllGrammars
       catppuccin-nvim
-      #(fromGitHub "HEAD" "elihunter173/dirbuf.nvim")
+      oil-nvim
+      lualine-nvim
     ];
 }
