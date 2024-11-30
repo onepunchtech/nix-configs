@@ -82,6 +82,22 @@ in {
         set -g mouse on
       '';
     };
+    zellij = {
+      enable = true;
+      settings = {
+        pane_frames = false;
+        theme = "catppuccin-macchiato";
+        keybinds = {
+          unbind = ["Ctrl p" "Ctrl n"];
+          normal = {
+            "bind \"Alt p\"" = { SwitchToMode = "pane"; };
+          };
+          pane = {
+            "bind \"Alt p\"" = { SwitchToMode = "Normal"; };
+          };
+        };
+      };
+    };
     kitty = {
       enable = true;
       font.name = "DejaVu Sans Mono";
@@ -104,12 +120,13 @@ in {
       configFile.source = ./nushell/config.nu;
       envFile.text = ''
         $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
-      '';
-      # shellAliases = {
-      #   vi = "hx";
-      #   vim = "hx";
-      #   nano = "hx";
-      # };
+        $env.ZELLIJ_AUTO_ATTACH = true
+        '';
+# shellAliases = {
+#   vi = "hx";
+#   vim = "hx";
+#   nano = "hx";
+# };
     };
     carapace = {
       enable = true;

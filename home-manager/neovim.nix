@@ -25,5 +25,6 @@ in
       catppuccin-nvim
       oil-nvim
       lualine-nvim
+      telescope-nvim
     ];
 }

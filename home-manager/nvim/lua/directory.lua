@@ -23,5 +23,3 @@ require("oil").setup({
 		["q"] = "actions.close",
 	},
 })
-
-require('lualine').setup()
