@@ -49,12 +49,14 @@ in {
     docker-compose
     mako
     polkit-kde-agent
-    glances
+    glance
     htop
     cura
     expressvpn
     yaml-language-server
+    ripgrep
     nodejs
+    nerdfonts
   ];
 
   # home.sessionVariables = {
@@ -100,7 +102,7 @@ in {
     };
     kitty = {
       enable = true;
-      font.name = "DejaVu Sans Mono";
+      font.name = "DejaVuSansM Nerd Font Mono";
       font.size = 10;
       settings = {
         scrollback_lines      = 10000;

@@ -1,5 +1,5 @@
 {
-  enable = true;
+ enable = true;
   settings = {
     env.TERM = "xterm-256color";
     window.dimensions = {

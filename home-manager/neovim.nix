@@ -1,13 +1,13 @@
 { pkgs, lib }:
 let
-  fromGitHub = ref: repo: pkgs.vimUtils.buildVimPlugin {
-    pname = "${lib.strings.sanitizeDerivationName repo}";
-    version = ref;
-    src = builtins.fetchGit {
-      url = "https://github.com/${repo}.git";
-      ref = ref;
-    };
+fromGitHub = ref: repo: pkgs.vimUtils.buildVimPlugin {
+  pname = "${lib.strings.sanitizeDerivationName repo}";
+  version = ref;
+  src = builtins.fetchGit {
+    url = "https://github.com/${repo}.git";
+    ref = ref;
   };
+};
 
 in
 {
@@ -26,5 +26,24 @@ in
       oil-nvim
       lualine-nvim
       telescope-nvim
-    ];
+      which-key-nvim
+      alpha-nvim
+      dressing-nvim
+      nvim-ts-autotag
+      indent-blankline-nvim
+      luasnip
+      nvim-cmp
+      cmp_luasnip
+      cmp-buffer
+      cmp-path
+      cmp-nvim-lsp
+      friendly-snippets
+      lspkind-nvim
+      nvim-autopairs
+      nvim-ts-context-commentstring
+      comment-nvim
+      todo-comments-nvim
+      substitute-nvim
+      nvim-surround
+      ];
 }
