@@ -1,28 +1,35 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 
 {
 
   fileSystems."/mnt/share" = {
-      device = "//10.10.10.5/public";
-      fsType = "cifs";
-      options = let
+    device = "//10.10.10.5/public";
+    fsType = "cifs";
+    options =
+      let
         # this line prevents hanging on network split
         automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
 
-      in ["${automount_opts}"];
+      in
+      [ "${automount_opts}" ];
   };
 
-  buildMachines = [
+  nix.buildMachines = [
     {
       hostName = "builder";
       system = "x86_64-linux";
       maxJobs = 1;
       speedFactor = 2;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
     }
   ];
 
-  extraHosts = ''
+  networking.extraHosts = ''
     10.10.10.5 bigtux
     10.10.10.5 builder
   '';

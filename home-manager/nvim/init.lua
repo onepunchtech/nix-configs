@@ -15,15 +15,8 @@ require("subst")
 require("lsp")
 require("formatter")
 require("git")
+require("org")
 
 -- TODO: 
--- gitsigns
--- lazygit
--- org mode
---
---
--- substitute
--- line hints scope
--- direnv
 -- haskell
 -- rust

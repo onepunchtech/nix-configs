@@ -1,5 +1,19 @@
 $env.config = {
   show_banner: false,
+  hooks: {
+    env_change: {
+      PWD: [
+        { ||
+          if (which direnv | is-empty) {
+            return
+          }
+
+          direnv export json | from json | default {} | load-env
+        }
+
+      ]
+    }
+  }
 }
 
 $env.PATH = ($env.PATH |
@@ -7,7 +21,7 @@ $env.PATH = ($env.PATH |
   prepend /home/myuser/.apps |
   append /usr/bin/env
 )
- 
+
 def start_zellij [] {
   if 'ZELLIJ' not-in ($env | columns) {
     if 'ZELLIJ_AUTO_ATTACH' in ($env | columns) and $env.ZELLIJ_AUTO_ATTACH == true {

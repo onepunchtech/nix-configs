@@ -71,5 +71,7 @@ in
       conform-nvim
       gitsigns-nvim
       lazygit-nvim
+      orgmode
+      direnv-vim
     ];
 }

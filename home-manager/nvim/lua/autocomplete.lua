@@ -1,8 +1,3 @@
---require("cmp-buffer")
---require("cmp-path")
--- require("luasnip")
---require("cmp_luasnip")
--- require("friendly-snippets")
 local lspkind = require("lspkind")
 
 local cmp = require('cmp')
@@ -28,6 +23,7 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
+    { name = 'orgmode' },
   }),
 
   formatting = {

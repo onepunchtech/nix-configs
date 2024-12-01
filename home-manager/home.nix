@@ -73,7 +73,8 @@ in
     #autorandr = (import ./autorandr.nix);
     direnv = {
       enable = true;
-      enableNushellIntegration = true;
+      enableNushellIntegration = false;
+      nix-direnv.enable = true;
     };
     ssh.forwardAgent = true;
     tmux = {
@@ -92,6 +93,8 @@ in
         theme = "catppuccin-macchiato";
         keybinds = {
           unbind = [
+            "Ctrl g"
+            "Ctrl o"
             "Ctrl p"
             "Ctrl n"
           ];
@@ -99,10 +102,28 @@ in
             "bind \"Alt p\"" = {
               SwitchToMode = "pane";
             };
+            "bind \"Alt g\"" = {
+              SwitchToMode = "locked";
+            };
           };
           pane = {
             "bind \"Alt p\"" = {
               SwitchToMode = "Normal";
+            };
+          };
+          locked = {
+            "bind \"Alt g\"" = {
+              SwitchToMode = "Normal";
+            };
+          };
+          session = {
+            "bind \"Alt o\"" = {
+              SwitchToMode = "Normal";
+            };
+          };
+          "shared_except \"session\" \"locked\"" = {
+            "bind \"Alt o\"" = {
+              SwitchToMode = "Session";
             };
           };
         };
@@ -116,10 +137,7 @@ in
         scrollback_lines = 10000;
         enable_audio_bell = false;
         update_check_interval = 0;
-        tab_bar_min_tabs = 1;
-        tab_bar_edge = "bottom";
-        tab_bar_style = "powerline";
-        tab_powerline_style = "slanted";
+        tab_bar_style = "hidden";
         confirm_os_window_close = 0;
         tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
       };
@@ -133,6 +151,9 @@ in
         $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
         $env.ZELLIJ_AUTO_ATTACH = true
       '';
+      shellAliases = {
+        lg = "lazygit";
+      };
     };
     carapace = {
       enable = true;
