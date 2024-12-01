@@ -1,9 +1,10 @@
-{pkgs, emacs-overlay, ...}:
+{ pkgs, emacs-overlay, ... }:
 
 let
-  scripts = pkgs.callPackage ./scripts/scripts.nix {};
+  scripts = pkgs.callPackage ./scripts/scripts.nix { };
 
-in {
+in
+{
   nixpkgs = {
     config = import ./nixpkgs-config.nix;
     overlays = [ emacs-overlay.overlays.default ];
@@ -56,6 +57,7 @@ in {
     ripgrep
     nodejs
     nerd-fonts.dejavu-sans-mono
+    lazygit
   ];
 
   # home.sessionVariables = {
@@ -89,12 +91,19 @@ in {
         pane_frames = false;
         theme = "catppuccin-macchiato";
         keybinds = {
-          unbind = ["Ctrl p" "Ctrl n"];
+          unbind = [
+            "Ctrl p"
+            "Ctrl n"
+          ];
           normal = {
-            "bind \"Alt p\"" = { SwitchToMode = "pane"; };
+            "bind \"Alt p\"" = {
+              SwitchToMode = "pane";
+            };
           };
           pane = {
-            "bind \"Alt p\"" = { SwitchToMode = "Normal"; };
+            "bind \"Alt p\"" = {
+              SwitchToMode = "Normal";
+            };
           };
         };
       };
@@ -104,19 +113,18 @@ in {
       font.name = "DejaVu Sans Mono";
       font.size = 10;
       settings = {
-        scrollback_lines      = 10000;
-        enable_audio_bell     = false;
+        scrollback_lines = 10000;
+        enable_audio_bell = false;
         update_check_interval = 0;
-        tab_bar_min_tabs      = 1;
-        tab_bar_edge          = "bottom";
-        tab_bar_style         = "powerline";
-        tab_powerline_style   = "slanted";
+        tab_bar_min_tabs = 1;
+        tab_bar_edge = "bottom";
+        tab_bar_style = "powerline";
+        tab_powerline_style = "slanted";
         confirm_os_window_close = 0;
-        tab_title_template    = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
+        tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
       };
       themeFile = "Catppuccin-Mocha";
-      extraConfig = ''
-      '';
+      extraConfig = '''';
     };
     nushell = {
       enable = true;
@@ -124,7 +132,7 @@ in {
       envFile.text = ''
         $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
         $env.ZELLIJ_AUTO_ATTACH = true
-        '';
+      '';
     };
     carapace = {
       enable = true;
@@ -142,9 +150,13 @@ in {
         };
       };
     };
-    neovim = (import ./neovim.nix {pkgs = pkgs; lib = pkgs.lib; });
+    neovim = (
+      import ./neovim.nix {
+        pkgs = pkgs;
+        lib = pkgs.lib;
+      }
+    );
   };
-
 
   services = {
     emacs = {

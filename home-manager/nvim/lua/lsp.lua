@@ -1,9 +1,3 @@
-local lspconfig = require("lspconfig")
-
-local mason_lspconfig = require("mason-lspconfig")
-
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
 local km = vim.keymap
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -55,53 +49,50 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- used to enable autocompletion (assign to every lsp server config)
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
--- Change the Diagnostic symbols in the sign column (gutter)
--- (not in youtube nvim video)
 local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-mason_lspconfig.setup_handlers({
-  -- default handler for installed servers
-  function(server_name)
-    lspconfig[server_name].setup({
-      capabilities = capabilities,
-    })
-  end,
-  ["graphql"] = function()
-    -- configure graphql language server
-    lspconfig["graphql"].setup({
-      capabilities = capabilities,
-      filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-    })
-  end,
-  ["emmet_ls"] = function()
-    -- configure emmet language server
-    lspconfig["emmet_ls"].setup({
-      capabilities = capabilities,
-      filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-    })
-  end,
-  ["lua_ls"] = function()
-    -- configure lua server (with special settings)
-    lspconfig["lua_ls"].setup({
-      capabilities = capabilities,
-      settings = {
-        Lua = {
-          -- make the language server recognize "vim" global
-          diagnostics = {
-            globals = { "vim" },
-          },
-          completion = {
-            callSnippet = "Replace",
-          },
-        },
+local lspconfig = require("lspconfig")
+
+lspconfig.nixd.setup{}
+lspconfig.lua_ls.setup{
+  settings = {
+    Lua = {
+      -- make the language server recognize "vim" global
+      diagnostics = {
+        globals = { "vim" },
       },
-    })
-  end,
-})
+      completion = {
+        callSnippet = "Replace",
+      },
+    },
+  }
+}
+lspconfig.terraform_lsp.setup{}
+lspconfig.ts_ls.setup{}
+lspconfig.yamlls.setup{}
+lspconfig.bashls.setup{}
+lspconfig.docker_compose_language_service.setup{}
+lspconfig.dockerls.setup{}
+lspconfig.dhall_lsp_server.setup{}
+lspconfig.helm_ls.setup{}
+lspconfig.marksman.setup{}
+lspconfig.nushell.setup{}
+
+local trouble = require("trouble") 
+trouble.setup{}
+
+vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
+vim.keymap.set('n', "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
+vim.keymap.set('n', "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
+vim.keymap.set('n', "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { desc = "LSP Definitions / references / ... (Trouble)" })
+vim.keymap.set('n', "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
+vim.keymap.set('n', "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
+

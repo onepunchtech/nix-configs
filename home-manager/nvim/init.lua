@@ -11,20 +11,19 @@ require("autopairs")
 require("comments")
 require("remaps")
 require("surround")
-require("substitute")
--- require("mason")
--- require("lsp")
--- require("trouble")
+require("subst")
+require("lsp")
+require("formatter")
+require("git")
 
 -- TODO: 
 -- gitsigns
--- trouble
 -- lazygit
 -- org mode
-
-
--- surround
--- auto complete
--- lsp
+--
+--
 -- substitute
 -- line hints scope
+-- direnv
+-- haskell
+-- rust

@@ -1,10 +1,5 @@
-require('ibl').setup {
-  scope = { enabled = true },
-}
-
 require('nvim-ts-autotag').setup()
 require('nvim-treesitter.configs').setup {
-  -- ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
 
   sync_install = false,
 
@@ -23,4 +18,8 @@ require('nvim-treesitter.configs').setup {
   autotag = {
     enable = true
   }
+}
+
+require('ibl').setup {
+  scope = { enabled = true },
 }

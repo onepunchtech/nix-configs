@@ -1,25 +1,43 @@
 { pkgs, lib }:
 let
-fromGitHub = ref: repo: pkgs.vimUtils.buildVimPlugin {
-  pname = "${lib.strings.sanitizeDerivationName repo}";
-  version = ref;
-  src = builtins.fetchGit {
-    url = "https://github.com/${repo}.git";
-    ref = ref;
+  fromGitHub = ref: repo: pkgs.vimUtils.buildVimPlugin {
+    pname = "${lib.strings.sanitizeDerivationName repo}";
+    version = ref;
+    src = builtins.fetchGit {
+      url = "https://github.com/${repo}.git";
+      ref = ref;
+    };
   };
-};
 
 in
-{
+  {
   enable = true;
   defaultEditor = true;
   viAlias = true;
   vimAlias = true;
   vimdiffAlias = true;
-
+  extraLuaPackages = luaPkgs: with luaPkgs; [ luautf8 ];
+  extraPackages = with pkgs; [
+    lua-language-server
+    nixd
+    terraform-lsp
+    typescript-language-server
+    yaml-language-server
+    nodePackages.bash-language-server
+    dockerfile-language-server-nodejs
+    docker-compose-language-service
+    dhall-lsp-server
+    helm-ls
+    marksman
+    rustfmt
+    rust-analyzer
+    nodePackages.prettier
+    stylua
+    nixfmt-rfc-style
+  ];
   plugins =
     with pkgs.vimPlugins; [
-    nvim-lspconfig
+      nvim-lspconfig
       plenary-nvim
       nvim-treesitter.withAllGrammars
       catppuccin-nvim
@@ -45,13 +63,13 @@ in
       todo-comments-nvim
       substitute-nvim
       nvim-surround
-      mason-nvim
-      mason-lspconfig-nvim
-      mason-tool-installer-nvim
       neodev-nvim
       nvim-lspconfig
       nvim-lsp-file-operations
       trouble-nvim
       mini-icons
-      ];
+      conform-nvim
+      gitsigns-nvim
+      lazygit-nvim
+    ];
 }
