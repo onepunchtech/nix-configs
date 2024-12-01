@@ -6,19 +6,25 @@ require("global")
 require("tree-sitter")
 require("directory")
 require("fuzzy-search")
-require("remaps")
 require("autocomplete")
 require("autopairs")
 require("comments")
-require("substitute")
+require("remaps")
 require("surround")
+require("substitute")
+-- require("mason")
+-- require("lsp")
+-- require("trouble")
 
 -- TODO: 
--- auto complete
--- substitute
--- surround
--- lsp
 -- gitsigns
 -- trouble
 -- lazygit
 -- org mode
+
+
+-- surround
+-- auto complete
+-- lsp
+-- substitute
+-- line hints scope

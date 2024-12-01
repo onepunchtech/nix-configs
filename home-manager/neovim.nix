@@ -19,7 +19,7 @@ in
 
   plugins =
     with pkgs.vimPlugins; [
-      nvim-lspconfig
+    nvim-lspconfig
       plenary-nvim
       nvim-treesitter.withAllGrammars
       catppuccin-nvim
@@ -45,5 +45,13 @@ in
       todo-comments-nvim
       substitute-nvim
       nvim-surround
+      mason-nvim
+      mason-lspconfig-nvim
+      mason-tool-installer-nvim
+      neodev-nvim
+      nvim-lspconfig
+      nvim-lsp-file-operations
+      trouble-nvim
+      mini-icons
       ];
 }

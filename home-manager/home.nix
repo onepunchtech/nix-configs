@@ -41,7 +41,7 @@ in {
     nixpkgs-fmt
     sops
     age
-    transmission-gtk
+    transmission_3-gtk
     vlc
     inkscape-with-extensions
     gimp
@@ -51,12 +51,11 @@ in {
     polkit-kde-agent
     glance
     htop
-    cura
     expressvpn
     yaml-language-server
     ripgrep
     nodejs
-    nerdfonts
+    nerd-fonts.dejavu-sans-mono
   ];
 
   # home.sessionVariables = {
@@ -102,7 +101,7 @@ in {
     };
     kitty = {
       enable = true;
-      font.name = "DejaVuSansM Nerd Font Mono";
+      font.name = "DejaVu Sans Mono";
       font.size = 10;
       settings = {
         scrollback_lines      = 10000;
@@ -115,7 +114,9 @@ in {
         confirm_os_window_close = 0;
         tab_title_template    = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
       };
-      theme = "Catppuccin-Mocha";
+      themeFile = "Catppuccin-Mocha";
+      extraConfig = ''
+      '';
     };
     nushell = {
       enable = true;
@@ -124,11 +125,6 @@ in {
         $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
         $env.ZELLIJ_AUTO_ATTACH = true
         '';
-# shellAliases = {
-#   vi = "hx";
-#   vim = "hx";
-#   nano = "hx";
-# };
     };
     carapace = {
       enable = true;
@@ -137,6 +133,7 @@ in {
 
     starship = {
       enable = true;
+      enableNushellIntegration = true;
       settings = {
         add_newline = true;
         character = {
