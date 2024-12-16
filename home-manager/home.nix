@@ -97,6 +97,7 @@ in
             "Ctrl o"
             "Ctrl p"
             "Ctrl n"
+            "Ctrl h"
           ];
           normal = {
             "bind \"Alt p\"" = {
