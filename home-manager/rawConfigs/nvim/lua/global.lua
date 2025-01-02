@@ -1,6 +1,6 @@
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
-local opt = vim.opt 
+local opt = vim.opt
 
 opt.number = true
 opt.tabstop = 2
@@ -14,8 +14,13 @@ opt.backspace = "indent,eol,start"
 
 opt.clipboard:append("unnamedplus")
 
-require('lualine').setup()
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.opt.termguicolors = true
+
+require("lualine").setup()
 local startify = require("alpha.themes.startify")
-require('alpha').setup(startify.config)
-require('which-key').setup()
-require('dressing').setup()
+require("alpha").setup(startify.config)
+require("which-key").setup()
+require("dressing").setup()

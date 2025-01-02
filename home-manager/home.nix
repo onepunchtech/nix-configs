@@ -1,13 +1,25 @@
-{ pkgs, emacs-overlay, ... }:
-
-let
-  scripts = pkgs.callPackage ./scripts/scripts.nix { };
-
-in
 {
+  config,
+  pkgs,
+  extra,
+  ...
+}:
+
+{
+
+  imports = [
+    # ./programs/emacs.nix
+    extra.hyprpanel.homeManagerModules.hyprpanel
+  ];
+
   nixpkgs = {
-    config = import ./nixpkgs-config.nix;
-    overlays = [ emacs-overlay.overlays.default ];
+    config = {
+      allowUnfree = true;
+      allowBroken = true;
+      permittedInsecurePackages = [
+        "openssl-1.0.2u"
+      ];
+    };
   };
 
   home.stateVersion = "24.05";
@@ -21,19 +33,15 @@ in
     i3status-rust
     zlib
     xsel
-    scripts.emc
-    #scripts.opdt
     imagemagick
     dhall
     dhall-json
     semgrep
     silver-searcher
-    alacritty
     wofi
-    rofi
     pavucontrol
     pulseaudio
-    firefox-wayland
+    firefox
     ltex-ls
     zip
     unzip
@@ -42,7 +50,6 @@ in
     nixpkgs-fmt
     sops
     age
-    transmission_3-gtk
     vlc
     inkscape-with-extensions
     gimp
@@ -58,7 +65,21 @@ in
     nodejs
     nerd-fonts.dejavu-sans-mono
     lazygit
+    hyprpanel
   ];
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Nordzy-cursors";
+    package = pkgs.nordzy-cursor-theme;
+    size = 24;
+  };
+
+  gtk.iconTheme = {
+    name = "Nordzy";
+    package = pkgs.nordzy-icon-theme;
+  };
 
   # home.sessionVariables = {
   #   EDITOR = "emc";
@@ -66,11 +87,7 @@ in
 
   programs = {
     waybar.enable = true;
-    #rofi = (import ./rofi.nix);
-    # alacritty = (import ./alacritty.nix);
-    git = (import ./git.nix);
-    #bash = (import ./bash.nix);
-    #autorandr = (import ./autorandr.nix);
+    git = (import ./programs/git.nix);
     direnv = {
       enable = true;
       enableNushellIntegration = false;
@@ -86,77 +103,10 @@ in
         set -g mouse on
       '';
     };
-    zellij = {
-      enable = true;
-      settings = {
-        pane_frames = false;
-        theme = "catppuccin-macchiato";
-        keybinds = {
-          unbind = [
-            "Ctrl g"
-            "Ctrl o"
-            "Ctrl p"
-            "Ctrl n"
-            "Ctrl h"
-          ];
-          normal = {
-            "bind \"Alt p\"" = {
-              SwitchToMode = "pane";
-            };
-            "bind \"Alt g\"" = {
-              SwitchToMode = "locked";
-            };
-          };
-          pane = {
-            "bind \"Alt p\"" = {
-              SwitchToMode = "Normal";
-            };
-          };
-          locked = {
-            "bind \"Alt g\"" = {
-              SwitchToMode = "Normal";
-            };
-          };
-          session = {
-            "bind \"Alt o\"" = {
-              SwitchToMode = "Normal";
-            };
-          };
-          "shared_except \"session\" \"locked\"" = {
-            "bind \"Alt o\"" = {
-              SwitchToMode = "Session";
-            };
-          };
-        };
-      };
-    };
-    kitty = {
-      enable = true;
-      font.name = "DejaVu Sans Mono";
-      font.size = 10;
-      settings = {
-        scrollback_lines = 10000;
-        enable_audio_bell = false;
-        update_check_interval = 0;
-        tab_bar_style = "hidden";
-        confirm_os_window_close = 0;
-        tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
-      };
-      themeFile = "Catppuccin-Mocha";
-      extraConfig = '''';
-    };
-    nushell = {
-      enable = true;
-      configFile.source = ./nushell/config.nu;
-      envFile.text = ''
-        $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
-        #$env.ZELLIJ_AUTO_ATTACH = true
-      '';
-      shellAliases = {
-        lg = "lazygit";
-        z = "zellij -l welcome";
-      };
-    };
+    hyprpanel = (import ./programs/hyprpanel.nix);
+    zellij = (import ./programs/zellij.nix);
+    kitty = (import ./programs/kitty.nix);
+    nushell = (import ./programs/nushell.nix);
     carapace = {
       enable = true;
       enableNushellIntegration = true;
@@ -174,7 +124,7 @@ in
       };
     };
     neovim = (
-      import ./neovim.nix {
+      import ./programs/neovim.nix {
         pkgs = pkgs;
         lib = pkgs.lib;
       }
@@ -182,22 +132,21 @@ in
   };
 
   services = {
-    emacs = {
-      enable = true;
-      socketActivation.enable = true;
-      client.enable = true;
-    };
+    hypridle.enable = true;
+    # emacs = {
+    #   enable = true;
+    #   socketActivation.enable = true;
+    #   client.enable = true;
+    # };
   };
 
-  imports = [ ./emacs.nix ];
-
-  xdg.configFile."i3/config".source = ./i3/config;
-  xdg.configFile."i3status-rust/config.toml".source = ./i3status-rust/config.toml;
-  xdg.configFile."waybar/config".source = ./waybar/waybar.conf;
-  xdg.configFile."wofi/style.css".source = ./wofi/style.css;
-  xdg.configFile."waybar/style.css".source = ./waybar/style.css;
-  xdg.configFile."hypr/hyprland.conf".source = ./hypr/hyprland.conf;
-  xdg.configFile.nvim.source = ./nvim;
+  xdg.configFile."i3/config".source = ./rawConfigs/i3/config;
+  xdg.configFile."i3status-rust/config.toml".source = ./rawConfigs/i3status-rust/config.toml;
+  xdg.configFile."waybar/config".source = ./rawConfigs/waybar/waybar.conf;
+  xdg.configFile."wofi/style.css".source = ./rawConfigs/wofi/style.css;
+  xdg.configFile."waybar/style.css".source = ./rawConfigs/waybar/style.css;
+  xdg.configFile."hypr/hyprland.conf".source = ./rawConfigs/hypr/hyprland.conf;
+  xdg.configFile.nvim.source = ./rawConfigs/nvim;
 
   manual.manpages.enable = false;
 }

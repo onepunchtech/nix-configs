@@ -9,19 +9,30 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
+    hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, emacs-overlay, ... }:
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      emacs-overlay,
+      hyprpanel,
+      ...
+    }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       homeConfigurations."whitehead" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [ ./home.nix ];
-        extraSpecialArgs.emacs-overlay = emacs-overlay;
-
+        pkgs = nixpkgs.legacyPackages.${system};
+        modules = [
+          ./home.nix
+        ];
+        extraSpecialArgs = {
+          extra = { inherit hyprpanel; };
+        };
       };
     };
 }

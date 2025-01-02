@@ -1,4 +1,4 @@
-{config, ...}:
+{ config, ... }:
 {
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -9,8 +9,8 @@
     nvidiaSettings = true;
   };
 
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.driSupport32Bit = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  
+
 }

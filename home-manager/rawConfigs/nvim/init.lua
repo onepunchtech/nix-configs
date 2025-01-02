@@ -1,6 +1,6 @@
 vim.o.termguicolors = true
 
-vim.cmd "colorscheme catppuccin"
+vim.cmd("colorscheme catppuccin")
 
 require("global")
 require("tree-sitter")
@@ -17,6 +17,5 @@ require("formatter")
 require("git")
 require("org")
 
--- TODO: 
--- haskell
+-- TODO:
 -- rust
