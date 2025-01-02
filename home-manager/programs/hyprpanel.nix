@@ -5,9 +5,6 @@
   hyprland.enable = true;
   overwrite.enable = true;
   theme = "catppuccin_mocha";
-  # override = {
-  #   theme.bar.menus.text = "#123ABC";
-  # };
 
   layout = {
     "bar.layouts" = {
