@@ -65,6 +65,7 @@
     nodejs
     nerd-fonts.dejavu-sans-mono
     lazygit
+    lm_sensors
     hyprpanel
   ];
 

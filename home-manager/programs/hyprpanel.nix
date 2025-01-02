@@ -41,6 +41,8 @@
       show_numbered = true;
     };
 
+    bar.customModules.cpuTemp.sensor = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input";
+
     menus.clock = {
       time = {
         military = false;
