@@ -5,6 +5,32 @@
   ...
 }:
 
+let
+  vale = pkgs.valeWithConfig {
+    packages =
+      styles: with styles; [
+        microsoft
+        google
+        proselint
+        write-good
+        readability
+      ];
+    vocab = {
+      accept = [ "devshell" ];
+    };
+    formatOptions = {
+      "*" = {
+        basedOnStyles = [
+          "Vale"
+          "Microsoft"
+          "Readability"
+        ];
+        "Microsoft.Passive" = true;
+      };
+    };
+  };
+
+in
 {
 
   imports = [
@@ -28,6 +54,7 @@
   home.packages = with pkgs; [
     texliveFull
     google-chrome
+    transmission_4-gtk
     brightnessctl
     i3
     i3status-rust
@@ -61,12 +88,25 @@
     htop
     expressvpn
     yaml-language-server
+    vale-ls
     ripgrep
     nodejs
+    deno
     nerd-fonts.dejavu-sans-mono
-    lazygit
     lm_sensors
+    vale
+    valeStyles.google
+    valeStyles.write-good
+    valeStyles.readability
+    valeStyles.proselint
+    valeStyles.microsoft
     hyprpanel
+    # terminal
+    lazygit
+    harlequin
+    # formatters
+    tflint
+    taplo
   ];
 
   home.pointerCursor = {

@@ -1,25 +1,21 @@
-require('nvim-ts-autotag').setup()
-require('nvim-treesitter.configs').setup {
+require("nvim-ts-autotag").setup()
+require("nvim-treesitter.configs").setup({
 
-  sync_install = false,
+	sync_install = false,
 
-  auto_install = false,
+	auto_install = false,
 
-  ignore_install = { "all" },
+	ignore_install = { "all" },
 
-  highlight = {
-    enable = true,
+	highlight = {
+		enable = true,
 
-    additional_vim_regex_highlighting = false,
-  },
+		additional_vim_regex_highlighting = false,
+	},
 
-  indent = { enable = true },
+	indent = { enable = true },
+})
 
-  autotag = {
-    enable = true
-  }
-}
-
-require('ibl').setup {
-  scope = { enabled = true },
-}
+require("ibl").setup({
+	scope = { enabled = true },
+})

@@ -83,11 +83,15 @@ lspconfig.docker_compose_language_service.setup({})
 lspconfig.dockerls.setup({})
 lspconfig.dhall_lsp_server.setup({})
 lspconfig.helm_ls.setup({})
+vim.cmd([[
+autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,*.gotmpl,helmfile*.yaml set ft=helm
+]])
 lspconfig.marksman.setup({})
 lspconfig.nushell.setup({})
 lspconfig["hls"].setup({
 	filetypes = { "haskell", "lhaskell", "cabal" },
 })
+lspconfig.vale_ls.setup({})
 
 local trouble = require("trouble")
 trouble.setup({})

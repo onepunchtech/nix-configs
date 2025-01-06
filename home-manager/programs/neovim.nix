@@ -75,5 +75,7 @@ in
     orgmode
     direnv-vim
     nvim-tree-lua
+    render-markdown-nvim
+    markdown-preview-nvim
   ];
 }

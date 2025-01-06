@@ -15,7 +15,5 @@ require("subst")
 require("lsp")
 require("formatter")
 require("git")
-require("org")
-
--- TODO:
--- rust
+require("markdown")
+require("writing")
