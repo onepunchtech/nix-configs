@@ -65,6 +65,7 @@
     yaml-language-server
     marksman
     ltex-ls
+    vscode-langservers-extracted
     ripgrep
     nodejs
     deno
