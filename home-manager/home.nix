@@ -103,7 +103,7 @@ in
     hyprpanel
     # terminal
     lazygit
-    harlequin
+    lazysql
     # formatters
     tflint
     taplo
