@@ -87,11 +87,11 @@ vim.cmd([[
 autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,*.gotmpl,helmfile*.yaml set ft=helm
 ]])
 lspconfig.marksman.setup({})
+lspconfig.ltex.setup({})
 lspconfig.nushell.setup({})
 lspconfig["hls"].setup({
 	filetypes = { "haskell", "lhaskell", "cabal" },
 })
-lspconfig.vale_ls.setup({})
 
 local trouble = require("trouble")
 trouble.setup({})
