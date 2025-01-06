@@ -10,7 +10,6 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
-    vale-nix.url = "github:icewind1991/vale-nix";
   };
 
   outputs =
@@ -18,16 +17,12 @@
       nixpkgs,
       home-manager,
       hyprpanel,
-      vale-nix,
       ...
     }:
     let
       system = "x86_64-linux";
-      overlays = [
-        vale-nix.overlays.default
-      ];
       pkgs = (import nixpkgs) {
-        inherit system overlays;
+        inherit system;
       };
     in
     {

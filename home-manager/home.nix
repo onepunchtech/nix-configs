@@ -5,32 +5,6 @@
   ...
 }:
 
-let
-  vale = pkgs.valeWithConfig {
-    packages =
-      styles: with styles; [
-        microsoft
-        google
-        proselint
-        write-good
-        readability
-      ];
-    vocab = {
-      accept = [ "devshell" ];
-    };
-    formatOptions = {
-      "*" = {
-        basedOnStyles = [
-          "Vale"
-          "Microsoft"
-          "Readability"
-        ];
-        "Microsoft.Passive" = true;
-      };
-    };
-  };
-
-in
 {
 
   imports = [
@@ -87,19 +61,15 @@ in
     glance
     htop
     expressvpn
+    #Language servers
     yaml-language-server
-    vale-ls
+    marksman
+    ltex-ls
     ripgrep
     nodejs
     deno
     nerd-fonts.dejavu-sans-mono
     lm_sensors
-    vale
-    valeStyles.google
-    valeStyles.write-good
-    valeStyles.readability
-    valeStyles.proselint
-    valeStyles.microsoft
     hyprpanel
     # terminal
     lazygit
