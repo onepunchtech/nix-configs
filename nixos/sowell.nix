@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
-    ./hardware/base-hardware.nix
     ./lib/base.nix
+    ./hardware/base-hardware.nix
     ./lib/gui.nix
     ./lib/nvidiagpu.nix
     ./lib/laptop.nix
@@ -16,6 +16,7 @@
     "nvidia_modeset"
     "snd_pci_acp6x"
   ];
+
   hardware.enableAllFirmware = true;
   hardware.firmware = [
     pkgs.firmwareLinuxNonfree
