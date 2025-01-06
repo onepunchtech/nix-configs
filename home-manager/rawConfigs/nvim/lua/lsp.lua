@@ -78,6 +78,7 @@ lspconfig.lua_ls.setup({
 lspconfig.terraform_lsp.setup({})
 lspconfig.ts_ls.setup({})
 lspconfig.yamlls.setup({})
+lspconfig.jsonls.setup({})
 lspconfig.bashls.setup({})
 lspconfig.docker_compose_language_service.setup({})
 lspconfig.dockerls.setup({})
