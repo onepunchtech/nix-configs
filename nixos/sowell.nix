@@ -15,6 +15,7 @@
     "nvidia_uvm"
     "nvidia_modeset"
     "snd_pci_acp6x"
+    "kvm-amd"
   ];
 
   hardware.enableAllFirmware = true;
@@ -28,4 +29,13 @@
     }
   ];
   services.power-profiles-daemon.enable = false;
+  virtualisation.libvirtd.enable = true;
+  networking.interfaces.br0.useDHCP = true;
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  networking.nat.enable = true;
+  programs.virt-manager.enable = true;
+
+  users.groups.libvirtd.members = [ "whitehead" ];
+
+  virtualisation.spiceUSBRedirection.enable = true;
 }

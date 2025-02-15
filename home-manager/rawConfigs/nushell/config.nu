@@ -17,6 +17,7 @@ $env.config = {
 }
 
 $env.config.edit_mode = 'vi'
+$env.EDITOR = 'vim'
 
 $env.PATH = ($env.PATH |
   split row (char esep) |

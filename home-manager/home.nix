@@ -75,6 +75,7 @@
     # terminal
     lazygit
     lazysql
+    ghostty
     # formatters
     tflint
     taplo
@@ -158,6 +159,7 @@
   xdg.configFile."wofi/style.css".source = ./rawConfigs/wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./rawConfigs/waybar/style.css;
   xdg.configFile."hypr/hyprland.conf".source = ./rawConfigs/hypr/hyprland.conf;
+  xdg.configFile."ghostty/config".source = ./rawConfigs/ghostty/config;
   xdg.configFile.nvim.source = ./rawConfigs/nvim;
 
   manual.manpages.enable = false;
