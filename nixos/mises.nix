@@ -42,5 +42,6 @@
   boot.kernelParams = [
     "video=DP-1:2560x1440@120"
     "video=HDMI-A-1:2560x1440@120"
+    "kvm_amd"
   ];
 }

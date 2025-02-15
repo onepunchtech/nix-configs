@@ -30,7 +30,7 @@
   boot = {
     loader = {
       systemd-boot.enable = true;
-      systemd-boot.configurationLimit = 10;
+      systemd-boot.configurationLimit = 5;
       efi.canTouchEfiVariables = true;
     };
     supportedFilesystems = [ "ntfs" ];
@@ -156,6 +156,9 @@
   ];
 
   virtualisation.docker.enable = true;
+  virtualisation.libvirtd.enable = true;
 
   system.stateVersion = "24.05";
+
+  programs.virt-manager.enable = true;
 }
