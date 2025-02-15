@@ -78,6 +78,19 @@
             ./router.nix
           ];
         };
+        beara = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/beara.json; }
+            {
+              _module.args.disks = [ "/dev/nvme0n1" ];
+            }
+            ./disko/beara.nix
+            ./beara.nix
+          ];
+        };
         bigtux = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [

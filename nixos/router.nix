@@ -1,11 +1,5 @@
 { pkgs, config, ... }:
 
-let
-  wan = "enp1s0";
-  lan = "enp2s0";
-
-in
-
 {
   imports = [
     ./hardware/router.nix
