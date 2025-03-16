@@ -76,6 +76,6 @@ in
     direnv-vim
     nvim-tree-lua
     render-markdown-nvim
-    markdown-preview-nvim
+    #markdown-preview-nvim
   ];
 }

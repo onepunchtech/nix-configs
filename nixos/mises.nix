@@ -17,25 +17,35 @@
     ];
   };
 
-  fileSystems."/storage1" = {
-    device = "/dev/disk/by-label/Storage1";
-    fsType = "ext4";
-    options = [
-      "users"
-      "defaults"
-      "nofail"
-    ];
-  };
-
-  fileSystems."/extra1" = {
-    device = "/dev/disk/by-label/Extra1";
-    fsType = "ext4";
-    options = [
-      "users"
-      "defaults"
-      "nofail"
-    ];
-  };
+  # fileSystems."/storage1" = {
+  #   device = "/dev/disk/by-label/Storage1";
+  #   fsType = "ext4";
+  #   options = [
+  #     "users"
+  #     "defaults"
+  #     "nofail"
+  #   ];
+  # };
+  #
+  # fileSystems."/extra1" = {
+  #   device = "/dev/disk/by-label/Extra1";
+  #   fsType = "ext4";
+  #   options = [
+  #     "users"
+  #     "defaults"
+  #     "nofail"
+  #   ];
+  # };
+  #
+  # fileSystems."/mnt/extra2" = {
+  #   device = "/dev/disk/by-label/Extra2";
+  #   fsType = "ext4";
+  #   options = [
+  #     "users"
+  #     "defaults"
+  #     "nofail"
+  #   ];
+  # };
 
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   services.xserver.videoDrivers = [ "amdgpu" ];

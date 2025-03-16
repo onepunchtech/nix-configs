@@ -59,12 +59,15 @@
     };
   };
 
-  networking = {
-    useDHCP = false;
-    networkmanager = {
-      enable = true;
-      dns = "systemd-resolved";
+  systemd.network.enable = true;
+
+  systemd.network.networks."10-lan" = {
+    matchConfig.Name = "enp1s0";
+    networkConfig = {
+      DHCP = "ipv4";
+      IPv6AcceptRA = true;
     };
+    linkConfig.RequiredForOnline = "routable";
   };
 
   environment.systemPackages = with pkgs; [
@@ -85,13 +88,7 @@
     mdadm
     pciutils
     wl-clipboard
-    sops
   ];
-
-  services.pcscd.enable = true;
-  services.udev.packages = [ pkgs.yubikey-personalization ];
-  services.yubikey-agent.enable = true;
-  services.expressvpn.enable = true;
 
   fonts.packages = with pkgs; [
     dejavu_fonts
@@ -105,16 +102,8 @@
     enableRedistributableFirmware = true;
   };
 
-  security.rtkit.enable = true;
-
   services = {
     openssh.enable = true;
-    printing.enable = true;
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
     acpid.enable = true;
     resolved.enable = true;
     keyd = {
@@ -157,9 +146,5 @@
   ];
 
   virtualisation.docker.enable = true;
-  virtualisation.libvirtd.enable = true;
-
   system.stateVersion = "24.05";
-
-  programs.virt-manager.enable = true;
 }

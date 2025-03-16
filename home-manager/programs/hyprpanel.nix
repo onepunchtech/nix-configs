@@ -1,7 +1,6 @@
 {
   enable = true;
   overlay.enable = true;
-  systemd.enable = true;
   hyprland.enable = true;
   overwrite.enable = true;
   theme = "catppuccin_mocha";
@@ -38,7 +37,8 @@
       show_numbered = true;
     };
 
-    bar.customModules.cpuTemp.sensor = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input";
+    #bar.customModules.cpuTemp.sensor = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input";
+    bar.customModules.cpuTemp.sensor = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon2/temp1_input";
 
     menus.clock = {
       time = {

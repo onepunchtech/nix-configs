@@ -91,10 +91,25 @@
             ./beara.nix
           ];
         };
+
         bigtux = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./bigtux.nix
+          ];
+        };
+
+        rack1k8scp1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/rack1k8scp1.json; }
+            # {
+            #   _module.args.disks = [ "/dev/nvme0n1" ];
+            # }
+            ./disko/basic.nix
+            ./k8s/control-plane.nix
           ];
         };
       };
@@ -106,6 +121,13 @@
           ];
           format = "iso";
         };
+
+        installTest = pkgs.writeScriptBin "installTest" ''
+          # create tmp directory
+          # decrypt secrets to directory
+          # write ssh keys from secrets to directory
+          nix run github:nix-community/nixos-anywhere -- --flake .#router -- --generate-hardware-config nixos-facter ./hardware/facter/router.json --target-host root@192.168.122.130
+        '';
 
         runVM = pkgs.writeScriptBin "runVM" ''
           ${pkgs.qemu}/bin/qemu-system-x86_64 \

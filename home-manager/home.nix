@@ -26,12 +26,11 @@
   home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
+    dnsutils
     texliveFull
     google-chrome
     transmission_4-gtk
     brightnessctl
-    i3
-    i3status-rust
     zlib
     xsel
     imagemagick
@@ -42,7 +41,7 @@
     wofi
     pavucontrol
     pulseaudio
-    firefox
+    brave
     ltex-ls
     zip
     unzip
@@ -56,11 +55,9 @@
     gimp
     blender
     docker-compose
-    mako
-    polkit-kde-agent
+    kdePackages.polkit-kde-agent-1
     glance
     htop
-    expressvpn
     #Language servers
     yaml-language-server
     marksman
@@ -153,8 +150,6 @@
     # };
   };
 
-  xdg.configFile."i3/config".source = ./rawConfigs/i3/config;
-  xdg.configFile."i3status-rust/config.toml".source = ./rawConfigs/i3status-rust/config.toml;
   xdg.configFile."waybar/config".source = ./rawConfigs/waybar/waybar.conf;
   xdg.configFile."wofi/style.css".source = ./rawConfigs/wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./rawConfigs/waybar/style.css;
