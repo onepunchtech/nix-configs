@@ -58,6 +58,7 @@
     kdePackages.polkit-kde-agent-1
     glance
     htop
+    wdisplays
     #Language servers
     yaml-language-server
     marksman
