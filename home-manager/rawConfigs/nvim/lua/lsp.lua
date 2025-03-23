@@ -94,6 +94,16 @@ lspconfig["hls"].setup({
 	filetypes = { "haskell", "lhaskell", "cabal" },
 })
 
+lspconfig.rust_analyzer.setup({
+	settings = {
+		["rust-analyzer"] = {
+			diagnostics = {
+				enable = false,
+			},
+		},
+	},
+})
+
 local trouble = require("trouble")
 trouble.setup({})
 
