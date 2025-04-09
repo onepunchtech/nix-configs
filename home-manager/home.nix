@@ -77,6 +77,8 @@
     # formatters
     tflint
     taplo
+    shotcut
+    kdePackages.kdenlive
   ];
 
   home.pointerCursor = {

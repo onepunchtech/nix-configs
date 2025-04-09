@@ -11,6 +11,8 @@
     };
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -21,6 +23,7 @@
       nixos-generators,
       nixos-facter-modules,
       disko,
+      sops-nix,
       ...
     }@inputs:
 
@@ -44,6 +47,9 @@
                 })
               ];
             }
+            nixos-facter-modules.nixosModules.facter
+            { config.facter.reportPath = ./hardware/facter/mises.json; }
+            sops-nix.nixosModules.sops
             ./mises.nix
           ];
         };
@@ -65,17 +71,19 @@
             ./sowell.nix
           ];
         };
-        router = nixpkgs.lib.nixosSystem {
+        labcontrol = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            sops-nix.nixosModules.sops
             nixos-facter-modules.nixosModules.facter
             disko.nixosModules.disko
-            { config.facter.reportPath = ./hardware/facter/router.json; }
+            { config.facter.reportPath = ./hardware/facter/labcontrol.json; }
             {
-              _module.args.disks = [ "/dev/vda" ];
+              _module.args.disks = [ "/dev/sda" ];
             }
-            ./disko/router.nix
-            ./router.nix
+            ./disko/labcontrol.nix
+            ./labcontrol.nix
+
           ];
         };
         beara = nixpkgs.lib.nixosSystem {
@@ -99,15 +107,57 @@
           ];
         };
 
-        rack1k8scp1 = nixpkgs.lib.nixosSystem {
+        k8scontrol1 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             nixos-facter-modules.nixosModules.facter
             disko.nixosModules.disko
-            { config.facter.reportPath = ./hardware/facter/rack1k8scp1.json; }
-            # {
-            #   _module.args.disks = [ "/dev/nvme0n1" ];
-            # }
+            { config.facter.reportPath = ./hardware/facter/k8scontrol1.json; }
+            {
+              _module.args.disks = [ "/dev/sda" ];
+            }
+            {
+              networking = {
+                hostName = "k8scontrol1";
+                interfaces.enp2s0.ipv4.addresses = [
+                  {
+                    address = "10.10.10.40";
+                    prefixLength = 24;
+                  }
+                ];
+              };
+
+              sops.defaultSopsFile = ./host-secrets/k8scontrol1-secrets.yaml;
+            }
+            sops-nix.nixosModules.sops
+            ./disko/basic.nix
+            ./k8s/control-plane.nix
+          ];
+        };
+
+        k8scontrol2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/k8scontrol2.json; }
+            {
+              _module.args.disks = [ "/dev/sda" ];
+            }
+            {
+              networking = {
+                hostName = "k8scontrol2";
+                interfaces.enp4s0.ipv4.addresses = [
+                  {
+                    address = "10.10.10.41";
+                    prefixLength = 24;
+                  }
+                ];
+              };
+
+              sops.defaultSopsFile = ./host-secrets/k8scontrol1-secrets.yaml;
+            }
+            sops-nix.nixosModules.sops
             ./disko/basic.nix
             ./k8s/control-plane.nix
           ];

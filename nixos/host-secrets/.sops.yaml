@@ -1,0 +1,12 @@
+creation_rules:
+  - path_regex: k8scontrol2-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age14fdlekaela53cz4xsuhwgyctqavcchqjal2hdx2fxtcrf65grv3qpgptvg,
+      age125mcl9emudwdrxj80zfdmkzg0gesm20fwg7k5gytjxlqdr5uhywsgpwrka
+
+  - age: >-
+      age1z33zlp2rjw6esxwt5srntgnh3xzn8v68fdpetpu5w8qw7fdvyumqrl37zg,
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age14fdlekaela53cz4xsuhwgyctqavcchqjal2hdx2fxtcrf65grv3qpgptvg,
+      age19nrq00th63twalj729y3454dvn8kwwf0ktphntcuw4q8q43e8a0q4a9wwa

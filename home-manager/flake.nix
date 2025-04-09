@@ -23,6 +23,9 @@
       system = "x86_64-linux";
       pkgs = (import nixpkgs) {
         inherit system;
+        overlays = [
+          hyprpanel.overlay
+        ];
       };
     in
     {
