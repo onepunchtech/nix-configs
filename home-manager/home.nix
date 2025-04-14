@@ -9,7 +9,7 @@
 
   imports = [
     # ./programs/emacs.nix
-    extra.hyprpanel.homeManagerModules.hyprpanel
+    ./programs/hyprpanel.nix
   ];
 
   nixpkgs = {
@@ -26,6 +26,11 @@
   home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
+    ffmpeg_6-full
+    gphoto2
+    mpv
+    v4l-utils
+    obs-studio
     dnsutils
     texliveFull
     google-chrome
@@ -116,7 +121,6 @@
         set -g mouse on
       '';
     };
-    hyprpanel = (import ./programs/hyprpanel.nix);
     zellij = (import ./programs/zellij.nix);
     kitty = (import ./programs/kitty.nix);
     nushell = (import ./programs/nushell.nix);

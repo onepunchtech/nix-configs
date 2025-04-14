@@ -49,7 +49,7 @@
             }
             nixos-facter-modules.nixosModules.facter
             { config.facter.reportPath = ./hardware/facter/mises.json; }
-            sops-nix.nixosModules.sops
+            #sops-nix.nixosModules.sops
             ./mises.nix
           ];
         };
