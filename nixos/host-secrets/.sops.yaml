@@ -5,6 +5,26 @@ creation_rules:
       age14fdlekaela53cz4xsuhwgyctqavcchqjal2hdx2fxtcrf65grv3qpgptvg,
       age125mcl9emudwdrxj80zfdmkzg0gesm20fwg7k5gytjxlqdr5uhywsgpwrka
 
+  - path_regex: k8sworker1-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1zmc0fcyt0e2n9rru2gvsyln6z7kch93h6qr3uq3ux44z82ywasqqmwge3v
+
+  - path_regex: sowell-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1lp0c29lnxk8sygk0wx383w2wfxvqruvzj2vdyj73tpykejggnqxqpw0taj
+
+  - path_regex: k8sworker2-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1g98lgw8evfqcrdefs4s8pluc7lrw7k3zpsthxlacq7f97ac8qa7sdj29k3
+
+  - path_regex: k8sworker3-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1g98lgw8evfqcrdefs4s8pluc7lrw7k3zpsthxlacq7f97ac8qa7sdj29k3
+
   - age: >-
       age1z33zlp2rjw6esxwt5srntgnh3xzn8v68fdpetpu5w8qw7fdvyumqrl37zg,
       age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,

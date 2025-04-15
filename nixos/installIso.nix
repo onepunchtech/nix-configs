@@ -7,6 +7,7 @@
 
   environment.systemPackages = with pkgs; [
     kitty
+    nixos-facter
   ];
 
   services.openssh = {

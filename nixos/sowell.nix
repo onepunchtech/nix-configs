@@ -2,11 +2,11 @@
 {
   imports = [
     ./lib/base.nix
-    ./hardware/base-hardware.nix
     ./lib/gui.nix
     ./lib/nvidiagpu.nix
     ./lib/laptop.nix
     ./lib/driver.nix
+    ./lib/users.nix
   ];
   networking.hostName = "sowell";
   boot.initrd.kernelModules = [
@@ -30,7 +30,6 @@
   ];
   services.power-profiles-daemon.enable = false;
   virtualisation.libvirtd.enable = true;
-  networking.interfaces.br0.useDHCP = true;
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.nat.enable = true;
   programs.virt-manager.enable = true;
@@ -38,4 +37,8 @@
   users.groups.libvirtd.members = [ "whitehead" ];
 
   virtualisation.spiceUSBRedirection.enable = true;
+
+  sops.defaultSopsFile = ./host-secrets/sowell-secrets.yaml;
+  sops.secrets.whitehead-password = { };
+  sops.secrets.whitehead-password.neededForUsers = true;
 }

@@ -22,5 +22,6 @@ sops -d --extract '["hosts"]["'"$HOST"'"]["age"]["privateKey"]' $SOPS_FILE > "$t
 nix run github:nix-community/nixos-anywhere -- \
   --extra-files "$temp" \
   --flake '.#'"$HOST" \
+  --phases disko,install,reboot \
   --generate-hardware-config nixos-facter ./hardware/facter/"$HOST".json \
   --target-host root@"$TARGET_IP"

@@ -68,6 +68,16 @@
         sowell = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            sops-nix.nixosModules.sops
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            {
+              _module.args.disks = [ "/dev/nvme0n1" ];
+            }
+            {
+              config.facter.reportPath = ./hardware/facter/sowell.json;
+            }
+            ./disko/basic.nix
             ./sowell.nix
           ];
         };
@@ -160,6 +170,107 @@
             sops-nix.nixosModules.sops
             ./disko/basic.nix
             ./k8s/control-plane.nix
+          ];
+        };
+
+        k8sworker1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/k8sworker1.json; }
+            {
+              _module.args.disks = [ "/dev/sdb" ];
+            }
+            {
+              networking = {
+                hostName = "k8sworker1";
+                nameservers = [ "10.10.10.11" ];
+                defaultGateway = {
+                  address = "10.10.10.1";
+                  interface = "eno1np0";
+                };
+                interfaces.eno1np0.ipv4.addresses = [
+                  {
+                    address = "10.10.10.50";
+                    prefixLength = 24;
+                  }
+                ];
+              };
+
+              sops.defaultSopsFile = ./host-secrets/k8sworker1-secrets.yaml;
+            }
+            sops-nix.nixosModules.sops
+            ./disko/basic.nix
+            ./k8s/worker.nix
+          ];
+        };
+
+        k8sworker2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/k8sworker2.json; }
+            {
+              _module.args.disks = [ "/dev/sdb" ];
+            }
+            {
+              networking = {
+                hostName = "k8sworker2";
+                nameservers = [ "10.10.10.11" ];
+                defaultGateway = {
+                  address = "10.10.10.1";
+                  interface = "eno1";
+                };
+                interfaces.eno1.ipv4.addresses = [
+                  {
+                    address = "10.10.10.51";
+                    prefixLength = 24;
+                  }
+                ];
+              };
+
+              sops.defaultSopsFile = ./host-secrets/k8sworker2-secrets.yaml;
+              systemd.tpm2.enable = false;
+              boot.initrd.systemd.tpm2.enable = false;
+            }
+            sops-nix.nixosModules.sops
+            ./disko/basic.nix
+            ./k8s/worker.nix
+          ];
+        };
+
+        k8sworker3 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            { config.facter.reportPath = ./hardware/facter/k8sworker3.json; }
+            {
+              _module.args.disks = [ "/dev/sdb" ];
+            }
+            {
+              networking = {
+                hostName = "k8sworker3";
+                nameservers = [ "10.10.10.11" ];
+                defaultGateway = {
+                  address = "10.10.10.1";
+                  interface = "eno1";
+                };
+                interfaces.eno1.ipv4.addresses = [
+                  {
+                    address = "10.10.10.52";
+                    prefixLength = 24;
+                  }
+                ];
+              };
+
+              sops.defaultSopsFile = ./host-secrets/k8sworker3-secrets.yaml;
+            }
+            sops-nix.nixosModules.sops
+            ./disko/basic.nix
+            ./k8s/worker.nix
           ];
         };
       };
