@@ -23,10 +23,6 @@
     };
     networkmanager.enable = false;
 
-    defaultGateway = {
-      address = "10.10.10.1";
-      interface = "enp1s0";
-    };
   };
 
   virtualisation.docker.enable = true;

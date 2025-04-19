@@ -5,6 +5,11 @@ creation_rules:
       age14fdlekaela53cz4xsuhwgyctqavcchqjal2hdx2fxtcrf65grv3qpgptvg,
       age125mcl9emudwdrxj80zfdmkzg0gesm20fwg7k5gytjxlqdr5uhywsgpwrka
 
+  - path_regex: k8scontrol3-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1u2j9lmhrdk672d9q56ee4g7rx8xs7kv0zzfwh89cs5a8sa7gpacs37qwjt
+
   - path_regex: k8sworker1-secrets\.yaml$
     age: >-
       age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
@@ -24,6 +29,26 @@ creation_rules:
     age: >-
       age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
       age1g98lgw8evfqcrdefs4s8pluc7lrw7k3zpsthxlacq7f97ac8qa7sdj29k3
+
+  - path_regex: k8sworker4-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age188zhqe9rv0exq3zu73k0yqpwvf858pqlefsnt4heh5jwkmqgh5wqetmdy2
+
+  - path_regex: k8sworker5-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age13rwluzkte23yp0pwuvvclvdgq2peejhutm7uepzz8cltq6ew85mqsvfx0z
+
+  - path_regex: k8sworker6-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1ctsg3czc4vafh7az9jnsurwxp8dmy77n2n9nj94cuume0ev9cq3s0lhcm6
+
+  - path_regex: k8sworker7-secrets\.yaml$
+    age: >-
+      age1jg06nj8xky8tk6k3wewwslh3ava09ce0sj6t2hmt0glrpg93z5qsnz83xn,
+      age1z6xl90t06agewgj4gsy44gmedsdtxv2jt08xm9h39apy0dwfmylsrly2tv
 
   - age: >-
       age1z33zlp2rjw6esxwt5srntgnh3xzn8v68fdpetpu5w8qw7fdvyumqrl37zg,
