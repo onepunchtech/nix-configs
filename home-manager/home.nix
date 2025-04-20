@@ -47,6 +47,8 @@
     pavucontrol
     pulseaudio
     brave
+    chromium
+    librewolf
     ltex-ls
     zip
     unzip

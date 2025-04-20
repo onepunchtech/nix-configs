@@ -81,18 +81,18 @@
             ./sowell.nix
           ];
         };
-        labcontrol = nixpkgs.lib.nixosSystem {
+        router = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             sops-nix.nixosModules.sops
             nixos-facter-modules.nixosModules.facter
             disko.nixosModules.disko
-            { config.facter.reportPath = ./hardware/facter/labcontrol.json; }
+            { config.facter.reportPath = ./hardware/facter/router.json; }
             {
               _module.args.disks = [ "/dev/sda" ];
             }
-            ./disko/labcontrol.nix
-            ./labcontrol.nix
+            ./disko/router.nix
+            ./machines/router.nix
 
           ];
         };
