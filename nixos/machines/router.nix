@@ -26,24 +26,24 @@
   };
   config =
     let
-      wan = "enp1s0";
+      wan = "enp4s0";
 
       lan1 = {
-        iface = "enp2s0";
+        iface = "eno1";
         gw = "10.10.51.1";
         ip = "10.10.51.1/24";
         subnet = "10.10.51.0/24";
       };
 
       lan2 = {
-        iface = "enp3s0";
+        iface = "eno2";
         gw = "10.10.53.1";
         ip = "10.10.53.1/24";
         subnet = "10.10.53.0/24";
       };
 
       lan3 = {
-        iface = "enp4s0";
+        iface = "enp5s0";
         gw = "10.10.55.1";
         ip = "10.10.55.1/24";
         subnet = "10.10.55.0/24";
@@ -234,9 +234,9 @@
           settings = {
             interfaces-config = {
               interfaces = [
-                lan1.iface
-                lan2.iface
-                lan3.iface
+                "${lan1.iface}/${lan1.gw}"
+                "${lan2.iface}/${lan2.gw}"
+                "${lan3.iface}/${lan3.gw}"
               ];
             };
             lease-database = {
@@ -251,7 +251,7 @@
                 id = 1;
                 pools = [
                   {
-                    pool = "10.10.51.100 - 10.10.51.240";
+                    pool = "10.10.51.140 - 10.10.51.240";
                   }
                 ];
                 subnet = lan1.subnet;
@@ -265,6 +265,50 @@
                     "name" = "domain-name-servers";
                     "data" = lan1.gw;
                   }
+                ];
+                reservations = [
+                  {
+                    hw-address = "48:4d:7e:c6:a3:ea";
+                    ip-address = "10.10.51.40"; # k8scontrol1
+                  }
+                  {
+                    hw-address = "c8:1f:66:0f:1a:83";
+                    ip-address = "10.10.51.41"; # k8scontrol2
+                  }
+                  {
+                    hw-address = "34:1a:4d:0e:9b:ee";
+                    ip-address = "10.10.51.42"; # k8scontrol3
+                  }
+
+                  {
+                    hw-address = "b0:26:28:51:69:84";
+                    ip-address = "10.10.51.50"; # k8sworker1
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.51"; # k8sworker2
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.52"; # k8sworker3
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.53"; # k8sworker4
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.54"; # k8sworker5
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.55"; # k8sworker6
+                  }
+                  {
+                    hw-address = "";
+                    ip-address = "10.10.51.56"; # k8sworker7
+                  }
+
                 ];
               }
               {

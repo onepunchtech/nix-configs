@@ -89,9 +89,9 @@
             disko.nixosModules.disko
             { config.facter.reportPath = ./hardware/facter/router.json; }
             {
-              _module.args.disks = [ "/dev/sda" ];
+              _module.args.disks = [ "/dev/nvme0n1" ];
             }
-            ./disko/router.nix
+            ./disko/basic.nix
             ./machines/router.nix
 
           ];
@@ -127,14 +127,12 @@
               _module.args.disks = [ "/dev/sda" ];
             }
             {
+              systemd.network.networks."10-lan" = {
+                matchConfig.Name = "enp2s0";
+                networkConfig.DHCP = "ipv4";
+              };
               networking = {
                 hostName = "k8scontrol1";
-                interfaces.enp2s0.ipv4.addresses = [
-                  {
-                    address = "10.10.10.40";
-                    prefixLength = 24;
-                  }
-                ];
               };
 
               sops.defaultSopsFile = ./host-secrets/k8scontrol1-secrets.yaml;
@@ -155,14 +153,12 @@
               _module.args.disks = [ "/dev/sda" ];
             }
             {
+              systemd.network.networks."10-lan" = {
+                matchConfig.Name = "enp4s0";
+                networkConfig.DHCP = "ipv4";
+              };
               networking = {
                 hostName = "k8scontrol2";
-                interfaces.enp4s0.ipv4.addresses = [
-                  {
-                    address = "10.10.10.41";
-                    prefixLength = 24;
-                  }
-                ];
               };
 
               sops.defaultSopsFile = ./host-secrets/k8scontrol1-secrets.yaml;
@@ -183,19 +179,14 @@
               _module.args.disks = [ "/dev/sda" ];
             }
             {
+
+              systemd.network.networks."10-lan" = {
+                matchConfig.Name = "eno1";
+                networkConfig.DHCP = "ipv4";
+              };
+
               networking = {
                 hostName = "k8scontrol3";
-                nameservers = [ "10.10.10.11" ];
-                defaultGateway = {
-                  address = "10.10.10.1";
-                  interface = "eno1";
-                };
-                interfaces.eno1.ipv4.addresses = [
-                  {
-                    address = "10.10.10.42";
-                    prefixLength = 24;
-                  }
-                ];
               };
 
               sops.defaultSopsFile = ./host-secrets/k8scontrol3-secrets.yaml;
