@@ -93,7 +93,6 @@
             }
             ./disko/basic.nix
             ./machines/router.nix
-
           ];
         };
         beara = nixpkgs.lib.nixosSystem {
