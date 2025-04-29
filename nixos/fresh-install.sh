@@ -19,6 +19,8 @@ install -d -m755 "$temp/var/lib/sops-nix"
 
 sops -d --extract '["hosts"]["'"$HOST"'"]["age"]["privateKey"]' $SOPS_FILE > "$temp/var/lib/sops-nix/key.txt"
 
+echo RUNNING NIXOS-ANYWHERE ON "$HOST"
+
 nix run github:nix-community/nixos-anywhere -- \
   --extra-files "$temp" \
   --flake '.#'"$HOST" \
