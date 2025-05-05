@@ -126,6 +126,22 @@
     zellij = (import ./programs/zellij.nix);
     kitty = (import ./programs/kitty.nix);
     nushell = (import ./programs/nushell.nix);
+    ghostty = {
+      enable = true;
+      settings = {
+        background-blur-radius = 20;
+        theme = "catppuccin-mocha";
+        window-theme = "dark";
+        background-opacity = 1;
+        minimum-contrast = 1.1;
+        font-family = "DejaVu Sans Mono";
+        font-size = 11;
+        scrollback-limit = 524288000;
+        gtk-titlebar = false;
+        command = "nu";
+      };
+
+    };
     carapace = {
       enable = true;
       enableNushellIntegration = true;
@@ -163,7 +179,6 @@
   xdg.configFile."wofi/style.css".source = ./rawConfigs/wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./rawConfigs/waybar/style.css;
   xdg.configFile."hypr/hyprland.conf".source = ./rawConfigs/hypr/hyprland.conf;
-  xdg.configFile."ghostty/config".source = ./rawConfigs/ghostty/config;
   xdg.configFile.nvim.source = ./rawConfigs/nvim;
 
   manual.manpages.enable = false;

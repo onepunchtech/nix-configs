@@ -19,6 +19,8 @@ $env.config = {
 $env.config.edit_mode = 'vi'
 $env.EDITOR = 'vim'
 
+$env.shell = "nu"
+
 $env.PATH = ($env.PATH |
   split row (char esep) |
   prepend /home/myuser/.apps |
