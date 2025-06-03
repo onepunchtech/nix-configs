@@ -56,6 +56,11 @@
         "net.ipv6.conf.all.forwarding" = true;
       };
 
+      boot.kernelModules = [
+        "nf_flow_table_inet"
+        "nf_flow_table"
+      ];
+
       systemd.network = {
         wait-online.anyInterface = true;
         networks = {
@@ -104,12 +109,13 @@
 
         nftables = {
           enable = true;
+          checkRuleset = false;
           ruleset = ''
             table inet filter {
 
               #flowtable f {
-                #hook ingress priority 0;
-                #devices = { ${wan}, ${lan1.iface}, ${lan2.iface}, ${lan3.iface} };
+              #  hook ingress priority 0;
+              #  devices = { ${wan}, ${lan1.iface}, ${lan2.iface}, ${lan3.iface} };
               #}
 
               chain output {
@@ -119,10 +125,10 @@
               chain input {
                 type filter hook input priority 0; policy drop;
 
+                iifname "lo" accept
                 iifname { "${lan1.iface}", "${lan2.iface}", "${lan3.iface}" } accept
                 iifname "${wan}" ct state { established, related } accept
                 iifname "${wan}" drop
-                iifname "lo" accept
               }
 
               chain forward {
@@ -131,6 +137,7 @@
                 #ip protocol { tcp, udp } flow offload @f
 
                 iifname { "${lan1.iface}", "${lan2.iface}", "${lan3.iface}" } oifname { "${wan}" } accept
+                iifname { "${lan1.iface}", "${lan2.iface}", "${lan3.iface}" } oifname { "${lan1.iface}", "${lan2.iface}", "${lan3.iface}" } accept
                 iifname { "${wan}" } oifname { "${lan1.iface}", "${lan2.iface}", "${lan3.iface}" } ct state { established, related } accept
               }
             }
@@ -176,6 +183,9 @@
               upstream_dns = [
                 "127.0.0.1:5335"
               ];
+              local_ptr_upstreams = [
+                "[/in-addr.arpa/]127.0.0.1:5335"
+              ];
             };
             filtering = {
               protection_enabled = true;
@@ -199,35 +209,130 @@
                 ];
           };
         };
-        unbound = {
-          enable = true;
-          settings = {
-            server = {
-              interface = [ "127.0.0.1" ];
-              port = 5335;
-              access-control = [ "127.0.0.1 allow" ];
-              harden-glue = true;
-              harden-dnssec-stripped = true;
-              use-caps-for-id = false;
-              prefetch = true;
-              edns-buffer-size = 1232;
+        unbound =
+          let
+            onepunchZone = pkgs.writeText "onepunch.zone" ''
+              $ORIGIN onepunch.
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                               IN      NS      ns1.onepunch.
+              ns1              IN      A       10.10.53.1
+              router           IN      A       10.10.53.1
+              tplink1          IN      A       10.10.53.5
+              bigtux           IN      A       10.10.51.140
+              officelab        IN      A       10.10.51.41
 
-              hide-identity = true;
-              hide-version = true;
-            };
-            forward-zone = [
-              {
-                name = ".";
-                forward-addr = [
-                  "1.1.1.1@853#cloudflare-dns.com"
-                  "1.0.0.1@853#cloudflare-dns.com"
+              k8scontrol1      IN      A       10.10.51.41
+              cp1.officelab    IN      A       10.10.51.41
+              k8scontrol2      IN      A       10.10.51.42
+              cp2.officelab    IN      A       10.10.51.42
+              k8scontrol3      IN      A       10.10.51.43
+              cp3.officelab    IN      A       10.10.51.43
+
+              masterlab        IN      A       10.10.51.31
+              cp1.masterlab    IN      A       10.10.51.31
+              nas.masterlab    IN      A       10.10.51.39
+
+
+            '';
+
+            reverseOnepunchZone = pkgs.writeText "" ''
+              $ORIGIN 51.10.10.in-addr.arpa.
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                  IN NS ns1.onepunch.
+
+              1   IN PTR router.onepnuch.
+              41 IN PTR officelab.onepnuch.
+              41 IN PTR k8scontrol1.onepnuch.
+              41 IN PTR cp1.officelab.onepnuch.
+              42 IN PTR k8scontrol2.onepnuch.
+              42 IN PTR cp2.officelab.onepnuch.
+              43 IN PTR k8scontrol3.onepnuch.
+              43 IN PTR cp3.officelab.onepnuch.
+
+              31 IN PTR cp1.masterlab
+              31 IN PTR masterlab
+              39 IN PTR nas.masterlab
+            '';
+
+            reverse53OnepunchZone = pkgs.writeText "" ''
+              $ORIGIN 53.10.10.in-addr.arpa.
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                  IN NS ns1.onepunch.
+
+              1   IN PTR router.onepnuch.
+              5  IN PTR tplink1.onepnuch.
+            '';
+
+          in
+          {
+            enable = true;
+            settings = {
+              server = {
+                #verbosity = 2;
+                interface = [ "127.0.0.1" ];
+                port = 5335;
+                access-control = [ "127.0.0.1 allow" ];
+                harden-glue = true;
+                harden-dnssec-stripped = true;
+                use-caps-for-id = false;
+                prefetch = true;
+                edns-buffer-size = 1232;
+
+                hide-identity = true;
+                hide-version = true;
+                private-domain = [
+                  "onepunch."
+                  "51.10.10.in-addr.arpa."
                 ];
-                forward-first = false;
-                forward-tls-upstream = true;
-              }
-            ];
+                local-zone = [
+                  "\"10.in-addr.arpa.\" nodefault"
+                ];
+              };
+              forward-zone = [
+                {
+                  name = ".";
+                  forward-addr = [
+                    "1.1.1.1@853#cloudflare-dns.com"
+                    "1.0.0.1@853#cloudflare-dns.com"
+                  ];
+                  forward-first = false;
+                  forward-tls-upstream = true;
+                }
+              ];
+              auth-zone = [
+                {
+                  name = "onepunch";
+                  zonefile = "${onepunchZone}";
+                }
+                {
+                  name = "51.10.10.in-addr.arpa";
+                  zonefile = "${reverseOnepunchZone}";
+                }
+                {
+                  name = "53.10.10.in-addr.arpa";
+                  zonefile = "${reverse53OnepunchZone}";
+                }
+              ];
+            };
           };
-        };
 
         kea.dhcp4 = {
           enable = true;
@@ -267,46 +372,26 @@
                   }
                 ];
                 reservations = [
+
                   {
-                    hw-address = "48:4d:7e:c6:a3:ea";
-                    ip-address = "10.10.51.40"; # k8scontrol1
-                  }
-                  {
-                    hw-address = "c8:1f:66:0f:1a:83";
-                    ip-address = "10.10.51.41"; # k8scontrol2
+                    hw-address = "00:e0:4c:68:07:9f";
+                    ip-address = "10.10.51.41"; # k8scontrol1
                   }
                   {
                     hw-address = "34:1a:4d:0e:9b:ee";
-                    ip-address = "10.10.51.42"; # k8scontrol3
-                  }
-
-                  {
-                    hw-address = "b0:26:28:51:69:84";
-                    ip-address = "10.10.51.50"; # k8sworker1
+                    ip-address = "10.10.51.42"; # k8scontrol2
                   }
                   {
-                    hw-address = "";
-                    ip-address = "10.10.51.51"; # k8sworker2
+                    hw-address = "34:1a:4d:0e:9f:49";
+                    ip-address = "10.10.51.43"; # k8scontrol3
                   }
                   {
-                    hw-address = "";
-                    ip-address = "10.10.51.52"; # k8sworker3
+                    hw-address = "6c:bf:b5:02:3d:a6";
+                    ip-address = "10.10.51.39"; # nas
                   }
                   {
-                    hw-address = "";
-                    ip-address = "10.10.51.53"; # k8sworker4
-                  }
-                  {
-                    hw-address = "";
-                    ip-address = "10.10.51.54"; # k8sworker5
-                  }
-                  {
-                    hw-address = "";
-                    ip-address = "10.10.51.55"; # k8sworker6
-                  }
-                  {
-                    hw-address = "";
-                    ip-address = "10.10.51.56"; # k8sworker7
+                    hw-address = "7c:10:c9:26:6d:9b";
+                    ip-address = "10.10.51.31"; # cp1.masterlab
                   }
 
                 ];
@@ -328,6 +413,13 @@
                   {
                     "name" = "domain-name-servers";
                     "data" = lan2.gw;
+                  }
+                ];
+
+                reservations = [
+                  {
+                    hw-address = "00:5f:67:72:18:da";
+                    ip-address = "10.10.53.5"; # tplink1
                   }
                 ];
               }
@@ -354,6 +446,43 @@
             ];
             valid-lifetime = 4000;
           };
+        };
+
+        frr = {
+          bgpd.enable = true;
+          config = ''
+            ! -*- bgp -*-
+            !
+            hostname $UDMP_HOSTNAME
+            password zebra
+            frr defaults traditional
+            log file stdout
+            !
+            router bgp 65000
+             bgp ebgp-requires-policy
+             bgp router-id 10.10.51.1
+             !
+             neighbor kubevip peer-group
+             neighbor kubevip remote-as 65000
+             neighbor kubevip activate
+             neighbor kubevip soft-reconfiguration inbound
+             neighbor 10.10.51.41 peer-group kubevip
+             neighbor 10.10.51.42 peer-group kubevip
+             neighbor 10.10.51.43 peer-group kubevip
+
+             address-family ipv4 unicast
+              redistribute connected
+              neighbor kubevip activate
+              neighbor kubevip route-map ALLOW-ALL in
+              neighbor kubevip route-map ALLOW-ALL out
+              neighbor kubevip next-hop-self
+             exit-address-family
+             !
+            route-map ALLOW-ALL permit 10
+            !
+            line vty
+            !
+          '';
         };
 
         avahi = {
