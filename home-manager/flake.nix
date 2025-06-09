@@ -2,7 +2,7 @@
   description = "Home Manager configuration of whitehead";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?rev=8072da51328d54e5d5469bd0efd85a59cd288db3";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

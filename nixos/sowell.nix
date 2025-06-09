@@ -6,6 +6,7 @@
     ./lib/nvidiagpu.nix
     ./lib/laptop.nix
     ./lib/driver.nix
+    ./lib/virtualization.nix
     ./lib/users.nix
   ];
   networking.hostName = "sowell";

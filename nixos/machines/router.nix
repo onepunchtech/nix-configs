@@ -236,6 +236,8 @@
 
               masterlab        IN      A       10.10.51.31
               cp1.masterlab    IN      A       10.10.51.31
+              cp2.masterlab    IN      A       10.10.51.32
+              cp3.masterlab    IN      A       10.10.51.33
               nas.masterlab    IN      A       10.10.51.39
 
 
@@ -261,8 +263,10 @@
               43 IN PTR k8scontrol3.onepnuch.
               43 IN PTR cp3.officelab.onepnuch.
 
-              31 IN PTR cp1.masterlab
               31 IN PTR masterlab
+              31 IN PTR cp1.masterlab
+              32 IN PTR cp2.masterlab
+              33 IN PTR cp3.masterlab
               39 IN PTR nas.masterlab
             '';
 
@@ -392,6 +396,10 @@
                   {
                     hw-address = "7c:10:c9:26:6d:9b";
                     ip-address = "10.10.51.31"; # cp1.masterlab
+                  }
+                  {
+                    hw-address = "30:68:93:ab:b3:0b";
+                    ip-address = "10.10.51.32"; # cp2.masterlab
                   }
 
                 ];
