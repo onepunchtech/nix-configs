@@ -401,6 +401,10 @@
                     hw-address = "30:68:93:ab:b3:0b";
                     ip-address = "10.10.51.32"; # cp2.masterlab
                   }
+                  {
+                    hw-address = "00:e0:4c:68:05:f8";
+                    ip-address = "10.10.51.33"; # cp3.masterlab
+                  }
 
                 ];
               }
