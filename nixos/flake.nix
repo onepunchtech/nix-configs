@@ -47,9 +47,14 @@
                 })
               ];
             }
+            sops-nix.nixosModules.sops
             nixos-facter-modules.nixosModules.facter
+            disko.nixosModules.disko
+            {
+              _module.args.disks = [ "/dev/nvme0n1" ];
+            }
             { config.facter.reportPath = ./hardware/facter/mises.json; }
-            #sops-nix.nixosModules.sops
+            ./disko/basic.nix
             ./mises.nix
           ];
         };

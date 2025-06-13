@@ -72,5 +72,5 @@
   systemd.targets.suspend.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 }
