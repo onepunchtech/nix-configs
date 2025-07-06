@@ -37,10 +37,10 @@
   ];
 
   services = {
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     xserver = {
       enable = true;
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
       windowManager.i3.enable = true;
     };
     pipewire = {

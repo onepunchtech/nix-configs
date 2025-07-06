@@ -23,9 +23,11 @@
     settings = {
       trusted-public-keys = [
         "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
       substituters = [
         "https://cache.iog.io"
+        "https://nix-community.cachix.org"
       ];
       trusted-users = [ "@wheel" ];
       experimental-features = [
@@ -47,6 +49,8 @@
     mdadm
     pciutils
     sops
+    step-cli
+    xkcdpass
   ];
 
   services.pcscd.enable = true;

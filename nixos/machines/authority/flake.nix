@@ -35,7 +35,7 @@
     {
 
       nixosConfigurations = {
-        mises = nixpkgs.lib.nixosSystem rec {
+        authority = nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
           modules = [
             {
@@ -51,9 +51,9 @@
             sops-nix.nixosModules.sops
             nixos-facter-modules.nixosModules.facter
             disko.nixosModules.disko
-            { config.facter.reportPath = ../../hardware/facter/mises.json; }
+            { config.facter.reportPath = ../../hardware/facter/authority.json; }
             ./disko.nix
-            ./mises.nix
+            ./authority.nix
           ];
         };
       };

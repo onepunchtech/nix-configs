@@ -26,6 +26,7 @@
   home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
+    audacity
     age-plugin-yubikey
     ffmpeg_6-full
     gphoto2
@@ -87,6 +88,8 @@
     taplo
     shotcut
     kdePackages.kdenlive
+    k9s
+    kubectl
   ];
 
   home.pointerCursor = {

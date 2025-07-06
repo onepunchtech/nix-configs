@@ -220,12 +220,13 @@
                                       1800       ; retry
                                       1209600    ; expire
                                       86400 )    ; minimum
-                               IN      NS      ns1.onepunch.
-              ns1              IN      A       10.10.53.1
-              router           IN      A       10.10.53.1
-              tplink1          IN      A       10.10.53.5
-              bigtux           IN      A       10.10.51.140
-              officelab        IN      A       10.10.51.41
+                                    IN      NS      ns1.onepunch.
+              ns1                   IN      A       10.10.53.1
+              router                IN      A       10.10.53.1
+              tplink1               IN      A       10.10.53.5
+              bigtux                IN      A       10.10.51.140
+              officelab             IN      A       10.10.51.41
+              ca                    IN      A       10.10.51.3
 
               k8scontrol1      IN      A       10.10.51.41
               cp1.officelab    IN      A       10.10.51.41
@@ -255,6 +256,7 @@
                   IN NS ns1.onepunch.
 
               1   IN PTR router.onepnuch.
+              3   IN PTR ca.onepnuch.
               41 IN PTR officelab.onepnuch.
               41 IN PTR k8scontrol1.onepnuch.
               41 IN PTR cp1.officelab.onepnuch.
@@ -394,16 +396,20 @@
                     ip-address = "10.10.51.39"; # nas
                   }
                   {
-                    hw-address = "7c:10:c9:26:6d:9b";
+                    hw-address = "e0:51:d8:1a:a9:43";
                     ip-address = "10.10.51.31"; # cp1.masterlab
                   }
                   {
-                    hw-address = "30:68:93:ab:b3:0b";
+                    hw-address = "e0:51:d8:1a:c4:5b";
                     ip-address = "10.10.51.32"; # cp2.masterlab
                   }
                   {
-                    hw-address = "00:e0:4c:68:05:f8";
+                    hw-address = "e0:51:d8:1a:af:7a";
                     ip-address = "10.10.51.33"; # cp3.masterlab
+                  }
+                  {
+                    hw-address = "34:1a:4d:0e:9f:4a";
+                    ip-address = "10.10.51.3"; # authority
                   }
 
                 ];
@@ -460,42 +466,55 @@
           };
         };
 
-        frr = {
-          bgpd.enable = true;
-          config = ''
-            ! -*- bgp -*-
-            !
-            hostname $UDMP_HOSTNAME
-            password zebra
-            frr defaults traditional
-            log file stdout
-            !
-            router bgp 65000
-             bgp ebgp-requires-policy
-             bgp router-id 10.10.51.1
-             !
-             neighbor kubevip peer-group
-             neighbor kubevip remote-as 65000
-             neighbor kubevip activate
-             neighbor kubevip soft-reconfiguration inbound
-             neighbor 10.10.51.41 peer-group kubevip
-             neighbor 10.10.51.42 peer-group kubevip
-             neighbor 10.10.51.43 peer-group kubevip
+        frr =
+          let
 
-             address-family ipv4 unicast
-              redistribute connected
-              neighbor kubevip activate
-              neighbor kubevip route-map ALLOW-ALL in
-              neighbor kubevip route-map ALLOW-ALL out
-              neighbor kubevip next-hop-self
-             exit-address-family
-             !
-            route-map ALLOW-ALL permit 10
-            !
-            line vty
-            !
-          '';
-        };
+            masterLabGroup = "masterlab";
+            officeLabGroup = "officelab";
+          in
+          {
+            bgpd.enable = true;
+            config = ''
+              ! -*- bgp -*-
+              !
+              frr defaults traditional
+
+              router bgp 65000
+               bgp ebgp-requires-policy
+               bgp router-id 10.10.51.1
+
+               neighbor ${masterLabGroup} peer-group
+               neighbor ${masterLabGroup} remote-as 65000
+               neighbor ${masterLabGroup} activate
+               neighbor ${masterLabGroup} soft-reconfiguration inbound
+               neighbor 10.10.51.31 peer-group ${masterLabGroup}
+               neighbor 10.10.51.32 peer-group ${masterLabGroup}
+               neighbor 10.10.51.33 peer-group ${masterLabGroup}
+
+               ! neighbor ${officeLabGroup} peer-group
+               ! neighbor ${officeLabGroup} remote-as 65000
+               ! neighbor ${officeLabGroup} activate
+               ! neighbor ${officeLabGroup} soft-reconfiguration inbound
+               ! neighbor 10.10.51.41 peer-group ${officeLabGroup}
+               ! neighbor 10.10.51.42 peer-group ${officeLabGroup}
+               ! neighbor 10.10.51.43 peer-group ${officeLabGroup}
+
+               address-family ipv4 unicast
+                redistribute connected
+                neighbor ${masterLabGroup} activate
+                neighbor ${masterLabGroup} route-map ALLOW-ALL in
+                neighbor ${masterLabGroup} route-map ALLOW-ALL out
+                neighbor ${masterLabGroup} next-hop-self
+
+                ! neighbor ${officeLabGroup} activate
+                ! neighbor ${officeLabGroup} route-map ALLOW-ALL in
+                ! neighbor ${officeLabGroup} route-map ALLOW-ALL out
+                ! neighbor ${officeLabGroup} next-hop-self
+               exit-address-family
+
+              route-map ALLOW-ALL permit 10
+            '';
+          };
 
         avahi = {
           enable = true;

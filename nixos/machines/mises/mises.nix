@@ -31,6 +31,17 @@
       "nofail"
     ];
   };
+  fileSystems."/mnt/nas" = {
+    device = "10.10.53.124:/public";
+    fsType = "nfs";
+    options = [
+      "x-systemd.idle-timeout=600"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+  # optional, but ensures rpc-statsd is running for on demand mounting
+  boot.supportedFilesystems = [ "nfs" ];
 
   boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   services.xserver.videoDrivers = [ "amdgpu" ];
