@@ -51,6 +51,8 @@
     sops
     step-cli
     xkcdpass
+    htop
+    iotop
   ];
 
   services.pcscd.enable = true;

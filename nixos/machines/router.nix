@@ -30,9 +30,8 @@
 
       lan1 = {
         iface = "eno1";
-        gw = "10.10.51.1";
-        ip = "10.10.51.1/24";
-        subnet = "10.10.51.0/24";
+        gw = "10.10.51.0";
+        ip = "10.10.51.0/31";
       };
 
       lan2 = {
@@ -79,6 +78,28 @@
             networkConfig = {
               ConfigureWithoutCarrier = true;
             };
+            routes = [
+              {
+                Destination = "10.10.100.0/24";
+                Gateway = "10.10.51.1";
+              }
+              {
+                Destination = "10.10.102.0/24";
+                Gateway = "10.10.51.1";
+              }
+              {
+                Destination = "10.10.104.0/24";
+                Gateway = "10.10.51.1";
+              }
+              {
+                Destination = "10.10.106.0/24";
+                Gateway = "10.10.51.1";
+              }
+              {
+                Destination = "10.10.108.0/24";
+                Gateway = "10.10.51.1";
+              }
+            ];
           };
           "10-lan2" = {
             matchConfig.Name = lan2.iface;
@@ -184,7 +205,7 @@
                 "127.0.0.1:5335"
               ];
               local_ptr_upstreams = [
-                "[/in-addr.arpa/]127.0.0.1:5335"
+                "127.0.0.1:5335"
               ];
             };
             filtering = {
@@ -221,30 +242,37 @@
                                       1209600    ; expire
                                       86400 )    ; minimum
                                     IN      NS      ns1.onepunch.
-              ns1                   IN      A       10.10.53.1
-              router                IN      A       10.10.53.1
-              tplink1               IN      A       10.10.53.5
-              bigtux                IN      A       10.10.51.140
-              officelab             IN      A       10.10.51.41
-              ca                    IN      A       10.10.51.3
+              ns1                   IN      A       10.10.51.0
+              router                IN      A       10.10.51.0
+              torswitch1            IN      A       10.10.51.1
 
-              k8scontrol1      IN      A       10.10.51.41
-              cp1.officelab    IN      A       10.10.51.41
-              k8scontrol2      IN      A       10.10.51.42
-              cp2.officelab    IN      A       10.10.51.42
-              k8scontrol3      IN      A       10.10.51.43
-              cp3.officelab    IN      A       10.10.51.43
+              dlink                 IN      A       10.10.108.2
+              tplink1               IN      A       10.10.108.3
+              tplink2               IN      A       10.10.108.4
 
-              masterlab        IN      A       10.10.51.31
-              cp1.masterlab    IN      A       10.10.51.31
-              cp2.masterlab    IN      A       10.10.51.32
-              cp3.masterlab    IN      A       10.10.51.33
-              nas.masterlab    IN      A       10.10.51.39
+
+
+              accontrol             IN      A       10.10.100.99
+              masterprinter         IN      A       10.10.100.90
+
+              ca               IN      A       10.10.106.3
+              officelab        IN      A       10.10.106.41
+              cp1.officelab    IN      A       10.10.106.41
+              cp2.officelab    IN      A       10.10.106.42
+              cp3.officelab    IN      A       10.10.106.43
+
+              masterlab        IN      A       10.10.106.31
+              cp1.masterlab    IN      A       10.10.106.31
+              cp2.masterlab    IN      A       10.10.106.32
+              cp3.masterlab    IN      A       10.10.106.33
+              nas.masterlab    IN      A       10.10.106.39
+
+              bigtux           IN      A       10.10.106.101
 
 
             '';
 
-            reverseOnepunchZone = pkgs.writeText "" ''
+            reverseRootZone = pkgs.writeText "" ''
               $ORIGIN 51.10.10.in-addr.arpa.
               $TTL 86400
               @       IN      SOA     ns1.onepunch. admin.onepunch. (
@@ -255,25 +283,11 @@
                                       86400 )    ; minimum
                   IN NS ns1.onepunch.
 
-              1   IN PTR router.onepnuch.
-              3   IN PTR ca.onepnuch.
-              41 IN PTR officelab.onepnuch.
-              41 IN PTR k8scontrol1.onepnuch.
-              41 IN PTR cp1.officelab.onepnuch.
-              42 IN PTR k8scontrol2.onepnuch.
-              42 IN PTR cp2.officelab.onepnuch.
-              43 IN PTR k8scontrol3.onepnuch.
-              43 IN PTR cp3.officelab.onepnuch.
-
-              31 IN PTR masterlab
-              31 IN PTR cp1.masterlab
-              32 IN PTR cp2.masterlab
-              33 IN PTR cp3.masterlab
-              39 IN PTR nas.masterlab
+              0   IN PTR router.onepnuch.
             '';
 
-            reverse53OnepunchZone = pkgs.writeText "" ''
-              $ORIGIN 53.10.10.in-addr.arpa.
+            reverseHomeZone = pkgs.writeText "" ''
+              $ORIGIN 100.10.10.in-addr.arpa.
               $TTL 86400
               @       IN      SOA     ns1.onepunch. admin.onepunch. (
                                       2023010101 ; serial
@@ -283,8 +297,50 @@
                                       86400 )    ; minimum
                   IN NS ns1.onepunch.
 
-              1   IN PTR router.onepnuch.
-              5  IN PTR tplink1.onepnuch.
+              99   IN PTR accontrol.onepnuch.
+              90   IN PTR masterprinter.onepnuch.
+            '';
+
+            reverseOnepunchZone = pkgs.writeText "" ''
+              $ORIGIN 106.10.10.in-addr.arpa.
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                  IN NS ns1.onepunch.
+
+              3  IN PTR ca.onepnuch.
+              41 IN PTR officelab.onepnuch.
+              41 IN PTR cp1.officelab.onepnuch.
+              42 IN PTR cp2.officelab.onepnuch.
+              43 IN PTR cp3.officelab.onepnuch.
+
+              31 IN PTR masterlab
+              31 IN PTR cp1.masterlab
+              32 IN PTR cp2.masterlab
+              33 IN PTR cp3.masterlab
+              39 IN PTR nas.masterlab
+
+              101 IN PTR bigtux.onepunch.
+            '';
+
+            reverseManagementZone = pkgs.writeText "" ''
+              $ORIGIN 108.10.10.in-addr.arpa.
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                  IN NS ns1.onepunch.
+
+              2   IN PTR dlink.onepnuch.
+              3   IN PTR tplink1.onepnuch.
+              4   IN PTR tplink2.onepnuch.
             '';
 
           in
@@ -330,12 +386,21 @@
                 }
                 {
                   name = "51.10.10.in-addr.arpa";
+                  zonefile = "${reverseRootZone}";
+                }
+                {
+                  name = "100.10.10.in-addr.arpa";
+                  zonefile = "${reverseHomeZone}";
+                }
+                {
+                  name = "106.10.10.in-addr.arpa";
                   zonefile = "${reverseOnepunchZone}";
                 }
                 {
-                  name = "53.10.10.in-addr.arpa";
-                  zonefile = "${reverse53OnepunchZone}";
+                  name = "108.10.10.in-addr.arpa";
+                  zonefile = "${reverseManagementZone}";
                 }
+
               ];
             };
           };
@@ -345,9 +410,9 @@
           settings = {
             interfaces-config = {
               interfaces = [
-                "${lan1.iface}/${lan1.gw}"
-                "${lan2.iface}/${lan2.gw}"
-                "${lan3.iface}/${lan3.gw}"
+                "${lan1.iface}"
+                "${lan2.iface}"
+                "${lan3.iface}"
               ];
             };
             lease-database = {
@@ -358,64 +423,32 @@
             rebind-timer = 2000;
             renew-timer = 1000;
             subnet4 = [
+              # {
+              #   id = 1;
+              #   pools = [
+              #     {
+              #       pool = "10.10.51.140 - 10.10.51.240";
+              #     }
+              #   ];
+              #   subnet = lan1.subnet;
+              #   interface = lan1.iface;
+              #   option-data = [
+              #     {
+              #       "name" = "routers";
+              #       "data" = lan1.gw;
+              #     }
+              #     {
+              #       "name" = "domain-name-servers";
+              #       "data" = lan1.gw;
+              #     }
+              #   ];
+              #   reservations = [
+              #
+              #
+              #   ];
+              # }
               {
                 id = 1;
-                pools = [
-                  {
-                    pool = "10.10.51.140 - 10.10.51.240";
-                  }
-                ];
-                subnet = lan1.subnet;
-                interface = lan1.iface;
-                option-data = [
-                  {
-                    "name" = "routers";
-                    "data" = lan1.gw;
-                  }
-                  {
-                    "name" = "domain-name-servers";
-                    "data" = lan1.gw;
-                  }
-                ];
-                reservations = [
-
-                  {
-                    hw-address = "00:e0:4c:68:07:9f";
-                    ip-address = "10.10.51.41"; # k8scontrol1
-                  }
-                  {
-                    hw-address = "34:1a:4d:0e:9b:ee";
-                    ip-address = "10.10.51.42"; # k8scontrol2
-                  }
-                  {
-                    hw-address = "34:1a:4d:0e:9f:49";
-                    ip-address = "10.10.51.43"; # k8scontrol3
-                  }
-                  {
-                    hw-address = "6c:bf:b5:02:3d:a6";
-                    ip-address = "10.10.51.39"; # nas
-                  }
-                  {
-                    hw-address = "e0:51:d8:1a:a9:43";
-                    ip-address = "10.10.51.31"; # cp1.masterlab
-                  }
-                  {
-                    hw-address = "e0:51:d8:1a:c4:5b";
-                    ip-address = "10.10.51.32"; # cp2.masterlab
-                  }
-                  {
-                    hw-address = "e0:51:d8:1a:af:7a";
-                    ip-address = "10.10.51.33"; # cp3.masterlab
-                  }
-                  {
-                    hw-address = "34:1a:4d:0e:9f:4a";
-                    ip-address = "10.10.51.3"; # authority
-                  }
-
-                ];
-              }
-              {
-                id = 2;
                 pools = [
                   {
                     pool = "10.10.53.100 - 10.10.53.240";
@@ -435,17 +468,14 @@
                 ];
 
                 reservations = [
-                  {
-                    hw-address = "00:5f:67:72:18:da";
-                    ip-address = "10.10.53.5"; # tplink1
-                  }
+
                 ];
               }
               {
-                id = 3;
+                id = 2;
                 pools = [
                   {
-                    pool = "10.10.55.100 - 10.10.55.240";
+                    pool = "10.10.55.100 - 10.10.55.254";
                   }
                 ];
                 subnet = lan3.subnet;
@@ -461,8 +491,180 @@
                   }
                 ];
               }
+              {
+                id = 3;
+                pools = [
+                  {
+                    pool = "10.10.100.100 - 10.10.100.254";
+                  }
+                ];
+                subnet = "10.10.100.0/24";
+                interface = lan1.iface;
+                option-data = [
+                  {
+                    "name" = "routers";
+                    "data" = "10.10.100.1";
+                  }
+                  {
+                    "name" = "domain-name-servers";
+                    "data" = lan1.gw;
+                  }
+                ];
+
+                reservations = [
+                  {
+                    hw-address = "02:42:74:c9:7a:69";
+                    ip-address = "10.10.100.99"; # ac control
+                  }
+                  {
+                    hw-address = "80:a5:89:f3:f4:51";
+                    ip-address = "10.10.100.90"; # printer
+                  }
+
+                ];
+              }
+              {
+                id = 4;
+                pools = [
+                  {
+                    pool = "10.10.102.100 - 10.10.102.254";
+                  }
+                ];
+                subnet = "10.10.102.0/24";
+                interface = lan1.iface;
+                option-data = [
+                  {
+                    "name" = "routers";
+                    "data" = "10.10.102.1";
+                  }
+                  {
+                    "name" = "domain-name-servers";
+                    "data" = lan1.gw;
+                  }
+                ];
+
+                reservations = [
+                ];
+              }
+              {
+                id = 5;
+                pools = [
+                  {
+                    pool = "10.10.104.100 - 10.10.104.254";
+                  }
+                ];
+                subnet = "10.10.104.0/24";
+                interface = lan1.iface;
+                option-data = [
+                  {
+                    "name" = "routers";
+                    "data" = "10.10.104.1";
+                  }
+                  {
+                    "name" = "domain-name-servers";
+                    "data" = lan1.gw;
+                  }
+                ];
+
+                reservations = [
+                ];
+              }
+              {
+                id = 6;
+                pools = [
+                  {
+                    pool = "10.10.106.100 - 10.10.106.254";
+                  }
+                ];
+                subnet = "10.10.106.0/24";
+                interface = lan1.iface;
+                option-data = [
+                  {
+                    "name" = "routers";
+                    "data" = "10.10.106.1";
+                  }
+                  {
+                    "name" = "domain-name-servers";
+                    "data" = lan1.gw;
+                  }
+                ];
+
+                reservations = [
+                  {
+                    hw-address = "00:e0:4c:68:07:9f";
+                    ip-address = "10.10.106.41"; # k8scontrol1
+                  }
+                  {
+                    hw-address = "34:1a:4d:0e:9b:ee";
+                    ip-address = "10.10.106.42"; # k8scontrol2
+                  }
+                  {
+                    hw-address = "34:1a:4d:0e:9f:49";
+                    ip-address = "10.10.106.43"; # k8scontrol3
+                  }
+                  {
+                    hw-address = "6c:bf:b5:02:3d:a6";
+                    ip-address = "10.10.106.39"; # nas
+                  }
+                  {
+                    hw-address = "e0:51:d8:1a:a9:43";
+                    ip-address = "10.10.106.31"; # cp1.masterlab
+                  }
+                  {
+                    hw-address = "e0:51:d8:1a:c4:5b";
+                    ip-address = "10.10.106.32"; # cp2.masterlab
+                  }
+                  {
+                    hw-address = "e0:51:d8:1a:af:7a";
+                    ip-address = "10.10.106.33"; # cp3.masterlab
+                  }
+                  {
+                    hw-address = "34:1a:4d:0e:9f:4a";
+                    ip-address = "10.10.106.3"; # authority
+                  }
+                  {
+                    hw-address = "1c:86:0b:2d:da:da";
+                    ip-address = "10.10.106.50"; # nas1
+                  }
+                ];
+              }
+              {
+                id = 7;
+                pools = [
+                  {
+                    pool = "10.10.108.100 - 10.10.108.254";
+                  }
+                ];
+                subnet = "10.10.108.0/24";
+                interface = lan1.iface;
+                option-data = [
+                  {
+                    "name" = "routers";
+                    "data" = "10.10.108.1";
+                  }
+                  {
+                    "name" = "domain-name-servers";
+                    "data" = lan1.gw;
+                  }
+                ];
+
+                reservations = [
+                  {
+                    hw-address = "e0:1c:fc:aa:8f:24";
+                    ip-address = "10.10.108.2"; # d-link switch
+                  }
+                  {
+                    hw-address = "00:5f:67:72:18:da";
+                    ip-address = "10.10.108.3"; # tplink1
+                  }
+                  {
+                    hw-address = "00:5f:67:72:28:f6";
+                    ip-address = "10.10.108.4"; # tplink2
+                  }
+                ];
+              }
             ];
-            valid-lifetime = 4000;
+            valid-lifetime = 43200;
           };
         };
 
@@ -479,40 +681,56 @@
               !
               frr defaults traditional
 
+              debug bgp neighbor-events
+              debug bgp updates
+              debug bgp zebra
+
               router bgp 65000
-               bgp ebgp-requires-policy
-               bgp router-id 10.10.51.1
+               bgp bestpath as-path multipath-relax
+               no bgp ebgp-requires-policy
+               !bgp ebgp-requires-policy
+               bgp router-id 10.10.51.0
+
 
                neighbor ${masterLabGroup} peer-group
-               neighbor ${masterLabGroup} remote-as 65000
-               neighbor ${masterLabGroup} activate
+               neighbor ${masterLabGroup} remote-as 65001
+               !neighbor ${masterLabGroup} activate
                neighbor ${masterLabGroup} soft-reconfiguration inbound
-               neighbor 10.10.51.31 peer-group ${masterLabGroup}
-               neighbor 10.10.51.32 peer-group ${masterLabGroup}
-               neighbor 10.10.51.33 peer-group ${masterLabGroup}
+               neighbor 10.10.106.31 peer-group ${masterLabGroup}
+               neighbor 10.10.106.32 peer-group ${masterLabGroup}
+               neighbor 10.10.106.33 peer-group ${masterLabGroup}
+
+               neighbor 10.10.106.31 ebgp-multihop 4
+               neighbor 10.10.106.31 disable-connected-check
+
+               neighbor 10.10.106.32 ebgp-multihop 4
+               neighbor 10.10.106.32 disable-connected-check
+
+               neighbor 10.10.106.33 ebgp-multihop 4
+               neighbor 10.10.106.33 disable-connected-check
 
                ! neighbor ${officeLabGroup} peer-group
-               ! neighbor ${officeLabGroup} remote-as 65000
+               ! neighbor ${officeLabGroup} remote-as 65002
                ! neighbor ${officeLabGroup} activate
                ! neighbor ${officeLabGroup} soft-reconfiguration inbound
-               ! neighbor 10.10.51.41 peer-group ${officeLabGroup}
-               ! neighbor 10.10.51.42 peer-group ${officeLabGroup}
-               ! neighbor 10.10.51.43 peer-group ${officeLabGroup}
+               ! neighbor 10.10.106.41 peer-group ${officeLabGroup}
+               ! neighbor 10.10.106.42 peer-group ${officeLabGroup}
+               ! neighbor 10.10.106.43 peer-group ${officeLabGroup}
 
-               address-family ipv4 unicast
-                redistribute connected
-                neighbor ${masterLabGroup} activate
-                neighbor ${masterLabGroup} route-map ALLOW-ALL in
-                neighbor ${masterLabGroup} route-map ALLOW-ALL out
-                neighbor ${masterLabGroup} next-hop-self
+               ! address-family ipv4 unicast
+                ! redistribute connected
+                ! neighbor ${masterLabGroup} activate
+                ! neighbor ${masterLabGroup} route-map ALLOW-ALL in
+                ! neighbor ${masterLabGroup} route-map ALLOW-ALL out
+                ! neighbor ${masterLabGroup} next-hop-self
 
                 ! neighbor ${officeLabGroup} activate
                 ! neighbor ${officeLabGroup} route-map ALLOW-ALL in
                 ! neighbor ${officeLabGroup} route-map ALLOW-ALL out
                 ! neighbor ${officeLabGroup} next-hop-self
-               exit-address-family
+               ! exit-address-family
 
-              route-map ALLOW-ALL permit 10
+              ! route-map ALLOW-ALL permit 10
             '';
           };
 

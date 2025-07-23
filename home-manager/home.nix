@@ -26,6 +26,7 @@
   home.homeDirectory = "/home/whitehead";
   home.username = "whitehead";
   home.packages = with pkgs; [
+    traceroute
     audacity
     age-plugin-yubikey
     ffmpeg_6-full
