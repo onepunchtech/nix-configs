@@ -33,7 +33,16 @@
     gphoto2
     mpv
     v4l-utils
-    obs-studio
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        obs-backgroundremoval
+        obs-pipewire-audio-capture
+        obs-vaapi # optional AMD hardware acceleration
+        obs-gstreamer
+        obs-vkcapture
+      ];
+    })
     dnsutils
     texliveFull
     google-chrome

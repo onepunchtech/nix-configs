@@ -47,7 +47,7 @@
   };
 
   fileSystems."/srv/share" = {
-    device = "/mnt/data1";
+    device = "/mnt/data1/share";
     options = [ "bind" ];
   };
 

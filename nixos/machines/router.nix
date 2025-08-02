@@ -254,6 +254,51 @@
 
               accontrol             IN      A       10.10.100.99
               masterprinter         IN      A       10.10.100.90
+              3dprinter1            IN      A       10.10.100.91
+
+              ca               IN      A       10.10.106.3
+              officelab        IN      A       10.10.106.41
+              cp1.officelab    IN      A       10.10.106.41
+              cp2.officelab    IN      A       10.10.106.42
+              cp3.officelab    IN      A       10.10.106.43
+
+              masterlab        IN      A       10.10.106.31
+              cp1.masterlab    IN      A       10.10.106.31
+              cp2.masterlab    IN      A       10.10.106.32
+              cp3.masterlab    IN      A       10.10.106.33
+              nas.masterlab    IN      A       10.10.106.39
+
+              bigtux           IN      A       10.10.106.101
+              nas1             IN      A       10.10.106.50
+
+              argocd           IN      A       10.0.10.0
+
+
+            '';
+
+            onepunchTechIO = pkgs.writeText "onepunchtechio.zone" ''
+              $ORIGIN onepunch.io
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                                    IN      NS      ns1.onepunch.
+              ns1                   IN      A       10.10.51.0
+              router                IN      A       10.10.51.0
+              torswitch1            IN      A       10.10.51.1
+
+              dlink                 IN      A       10.10.108.2
+              tplink1               IN      A       10.10.108.3
+              tplink2               IN      A       10.10.108.4
+
+
+
+              accontrol             IN      A       10.10.100.99
+              masterprinter         IN      A       10.10.100.90
+              3dprinter1            IN      A       10.10.100.91
 
               ca               IN      A       10.10.106.3
               officelab        IN      A       10.10.106.41
@@ -269,6 +314,7 @@
 
               bigtux           IN      A       10.10.106.101
 
+              argocd           IN      A       10.0.10.0
 
             '';
 
@@ -357,9 +403,9 @@
                 use-caps-for-id = false;
                 prefetch = true;
                 edns-buffer-size = 1232;
-
                 hide-identity = true;
                 hide-version = true;
+
                 private-domain = [
                   "onepunch."
                   "51.10.10.in-addr.arpa."
@@ -383,6 +429,10 @@
                 {
                   name = "onepunch";
                   zonefile = "${onepunchZone}";
+                }
+                {
+                  name = "onepunchtechio";
+                  zonefile = "${onepunchTechIO}";
                 }
                 {
                   name = "51.10.10.in-addr.arpa";
@@ -519,6 +569,10 @@
                   {
                     hw-address = "80:a5:89:f3:f4:51";
                     ip-address = "10.10.100.90"; # printer
+                  }
+                  {
+                    hw-address = "ce:65:7f:c4:04:49";
+                    ip-address = "10.10.100.91"; # 3dprinter1
                   }
 
                 ];
@@ -692,22 +746,8 @@
                bgp router-id 10.10.51.0
 
 
-               neighbor ${masterLabGroup} peer-group
-               neighbor ${masterLabGroup} remote-as 65001
-               !neighbor ${masterLabGroup} activate
-               neighbor ${masterLabGroup} soft-reconfiguration inbound
-               neighbor 10.10.106.31 peer-group ${masterLabGroup}
-               neighbor 10.10.106.32 peer-group ${masterLabGroup}
-               neighbor 10.10.106.33 peer-group ${masterLabGroup}
-
-               neighbor 10.10.106.31 ebgp-multihop 4
-               neighbor 10.10.106.31 disable-connected-check
-
-               neighbor 10.10.106.32 ebgp-multihop 4
-               neighbor 10.10.106.32 disable-connected-check
-
-               neighbor 10.10.106.33 ebgp-multihop 4
-               neighbor 10.10.106.33 disable-connected-check
+               neighbor 10.10.51.1 remote-as 65001
+               neighbor 10.10.51.1 activate
 
                ! neighbor ${officeLabGroup} peer-group
                ! neighbor ${officeLabGroup} remote-as 65002
