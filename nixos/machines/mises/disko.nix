@@ -3,7 +3,8 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_with_Heatsink_2TB_S7HGNJ0Y417166V";
+        device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7KHNJ0Y113382M";
+
         content = {
           type = "gpt";
           partitions = {
@@ -28,6 +29,30 @@
           };
         };
       };
+
+      extra1 = {
+        type = "disk";
+        device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7KHNJ0Y116438Y";
+        content = {
+          type = "gpt";
+          partitions = {
+            root = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/mnt/extra1";
+                mountOptions = [
+                  "users"
+                  "defaults"
+                  "nofail"
+                ];
+              };
+            };
+          };
+        };
+      };
+
     };
   };
 }

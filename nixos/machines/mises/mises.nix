@@ -22,16 +22,6 @@
     ];
   };
 
-  # fileSystems."/mnt/extra2" = {
-  #   device = "/dev/disk/by-label/Extra2";
-  #   fsType = "ext4";
-  #   options = [
-  #     "users"
-  #     "defaults"
-  #     "nofail"
-  #   ];
-  # };
-  #
   fileSystems."/mnt/share" = {
     device = "10.10.106.50:/srv/share";
     fsType = "nfs";
