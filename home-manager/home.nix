@@ -100,6 +100,10 @@
     kdePackages.kdenlive
     k9s
     kubectl
+    kanidm
+    cilium-cli
+    kubetail
+
   ];
 
   home.pointerCursor = {

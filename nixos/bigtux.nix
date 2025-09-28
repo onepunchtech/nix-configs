@@ -49,7 +49,8 @@
     networkmanager.enable = true;
     interfaces.enp7s0.useDHCP = true;
   };
-  fileSystems."/mnt/data1" = {
+
+  fileSystems."/mnt/nas1/share" = {
     device = "10.10.106.50:/srv/share";
     fsType = "nfs";
     options = [
@@ -58,6 +59,27 @@
       "nfsvers=4.2"
     ];
   };
+
+  fileSystems."/mnt/nas1/repositories" = {
+    device = "10.10.106.50:/srv/repositories";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "nfsvers=4.2"
+    ];
+  };
+
+  fileSystems."/mnt/nas1/media" = {
+    device = "10.10.106.50:/srv/media";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "nfsvers=4.2"
+    ];
+  };
+
   boot.supportedFilesystems = [ "nfs" ];
 
   users.users.whitehead = {

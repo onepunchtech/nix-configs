@@ -42,17 +42,11 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/mnt/extra1";
-                mountOptions = [
-                  "users"
-                  "defaults"
-                  "nofail"
-                ];
               };
             };
           };
         };
       };
-
     };
   };
 }

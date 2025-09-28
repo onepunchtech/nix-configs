@@ -53,6 +53,10 @@
     xkcdpass
     htop
     iotop
+    ghostty
+    mbuffer
+    smartmontools
+    pv
   ];
 
   services.pcscd.enable = true;

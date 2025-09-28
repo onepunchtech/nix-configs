@@ -22,8 +22,12 @@
     ];
   };
 
+  systemd.tmpfiles.rules = [
+    "d /mnt/extra1 0777 whitehead users"
+  ];
+
   fileSystems."/mnt/share" = {
-    device = "10.10.106.50:/srv/share";
+    device = "10.10.106.50:/mnt/share";
     fsType = "nfs";
     options = [
       "x-systemd.automount"
@@ -31,11 +35,44 @@
       "nfsvers=4.2"
     ];
   };
+
+  fileSystems."/mnt/media" = {
+    device = "10.10.106.50:/mnt/media";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "nfsvers=4.2"
+    ];
+  };
+
+  fileSystems."/mnt/ops-backups" = {
+    device = "10.10.106.50:/mnt/ops-backups";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "nfsvers=4.2"
+    ];
+  };
+
+  fileSystems."/mnt/project-backups" = {
+    device = "10.10.106.50:/mnt/project-backups";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "nfsvers=4.2"
+    ];
+  };
+
   # optional, but ensures rpc-statsd is running for on demand mounting
   boot.supportedFilesystems = [ "nfs" ];
 
-  boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
   services.xserver.videoDrivers = [ "amdgpu" ];
+
+  services.resolved.enable = true;
+
   boot.kernelParams = [
     "video=DP-1:2560x1440@120"
     "video=HDMI-A-1:2560x1440@120"

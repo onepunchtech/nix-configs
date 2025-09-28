@@ -1,34 +1,12 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-let
-  zfsCompatibleKernelPackages = lib.filterAttrs (
-    name: kernelPackages:
-    (builtins.match "linux_[0-9]+_[0-9]+" name) != null
-    && (builtins.tryEval kernelPackages).success
-    && (!kernelPackages.${config.boot.zfs.package.kernelModuleAttribute}.meta.broken)
-  ) pkgs.linuxKernel.packages;
-  latestKernelPackage = lib.last (
-    lib.sort (a: b: (lib.versionOlder a.kernel.version b.kernel.version)) (
-      builtins.attrValues zfsCompatibleKernelPackages
-    )
-  );
-in
-
+{ pkgs, config, ... }:
 {
   imports = [
     ../../lib/base.nix
     ../../lib/shell.nix
+    ../../lib/sops.nix
   ];
 
-  boot.zfs.extraPools = [ "storage1" ];
-
-  boot.kernelPackages = latestKernelPackage;
-
-  networking.hostName = "nas1";
+  networking.hostName = "nas2";
 
   # optional, but ensures rpc-statsd is running for on demand mounting
   boot.supportedFilesystems = [
@@ -36,50 +14,20 @@ in
     "zfs"
     "btrfs"
   ];
+  boot.zfs.extraPools = [ "storage1" ];
+
+  networking.hostId = "8425e348";
 
   systemd.network.enable = true;
-  networking.hostId = "8425e349";
 
-  systemd.network.networks."10-lan" = {
-    matchConfig.Name = "enp7s0";
+  systemd.network.networks."10-lan-phys-all" = {
+    matchConfig.Name = "enp*";
     networkConfig.DHCP = "ipv4";
   };
 
-  services.zfs = {
-    autoScrub.enable = true;
-    trim.enable = true;
-  };
-
-  services.sanoid = {
-    enable = true;
-    templates.backup = {
-      hourly = 24;
-      daily = 15;
-      monthly = 1;
-      autoprune = true;
-      autosnap = true;
-    };
-
-    datasets."storage1/repositories" = {
-      useTemplate = [ "backup" ];
-    };
-
-    datasets."storage1/ops-backups" = {
-      useTemplate = [ "backup" ];
-    };
-
-    datasets."storage1/project-backups" = {
-      useTemplate = [ "backup" ];
-    };
-
-    datasets."storage1/share" = {
-      useTemplate = [ "backup" ];
-    };
-
-    datasets."storage1/media" = {
-      useTemplate = [ "backup" ];
-    };
-  };
+  environment.systemPackages = with pkgs; [
+    sanoid
+  ];
 
   users.users.whitehead = {
     isNormalUser = true;
@@ -107,26 +55,21 @@ in
     isNormalUser = true;
     extraGroups = [
     ];
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrOpJm3+B7/pyGi+pzn2HbatpFY7tCDpwBcr8orQOd9B0GXTIuTKeV2lGS9Zb1TUqngo9uR2JXv0o51IZOao0zjGgug2udFvB0mQNALCrEosHVzTGopkeuiF9ZKlaHO5vbzi9zfDWs9/1A1YTa7JFt8Qrgi4EqycOli540jlvvxkEDN3PDz/36YaXCqzqj3e5tX6Nmh8xCEq70+oyA9oZ/gTMLFjLLlSigZPn0Ex3KjRpiap3LkPZGt7LPZEFWXrMMKLhzOhM7yuMewHSiYMp4s6gJursUK3etcxSHn+HeXcMdtte9XRi91PwIhnHR/oqUpP+wNpwm26qRmVeOmn2J YubiKey #26922176 PIV Slot 9a"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILR+DhzZ7fDLf6zVmOokIT/MwXQ0BQ08nOyoFrV+Gadv whitehead@nas1"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHodVIKNrDnLmE18C+nJHgb+tL6SR6WN+EsYsklvUplw zfs@nas1"
-    ];
   };
 
-  services.nfs.server = {
-    enable = true;
-    lockdPort = 4001;
-    mountdPort = 4002;
-    statdPort = 4000;
-    extraNfsdConfig = '''';
-  };
-
-  fileSystems."/nfs" = {
-    device = "/mnt/nas";
-    options = [ "bind" ];
-  };
-
+  # services.nfs.server = {
+  #   enable = true;
+  #   lockdPort = 4001;
+  #   mountdPort = 4002;
+  #   statdPort = 4000;
+  #   extraNfsdConfig = '''';
+  # };
+  #
+  # fileSystems."/nfs" = {
+  #   device = "/mnt/nas";
+  #   options = [ "bind" ];
+  # };
+  #
   # systemd.tmpfiles.rules = [
   #   "d /nfs 0777 nobody nogroup"
   # ];
@@ -157,6 +100,7 @@ in
       4001
       4002
       20048
+      9000 # utility
     ];
     allowedUDPPorts = [
       111
@@ -165,7 +109,88 @@ in
       4001
       4002
       20048
+      9000 # utility
     ];
   };
 
+  services.sanoid = {
+    enable = true;
+    templates.backup = {
+      autoprune = true;
+      autosnap = false;
+      frequently = 0;
+      hourly = 36;
+      daily = 30;
+      monthly = 6;
+      yearly = 0;
+    };
+
+    datasets."storage1/repositories" = {
+      useTemplate = [ "backup" ];
+    };
+
+    datasets."storage1/ops-backups" = {
+      useTemplate = [ "backup" ];
+    };
+
+    datasets."storage1/project-backups" = {
+      useTemplate = [ "backup" ];
+    };
+
+    datasets."storage1/share" = {
+      useTemplate = [ "backup" ];
+    };
+
+    datasets."storage1/media" = {
+      useTemplate = [ "backup" ];
+    };
+  };
+
+  sops.defaultSopsFile = ../../host-secrets/nas2.yaml;
+  sops.secrets."ssh_keys/id_ed25519_zfs" = {
+    owner = config.users.users.zfs.name;
+    group = config.users.users.zfs.group;
+  };
+
+  services.syncoid = {
+    enable = true;
+    user = "zfs";
+    commonArgs = [
+      "--no-privilege-elevation"
+      "--no-sync-snap"
+      "--sshoption=StrictHostKeyChecking=off"
+    ];
+    sshKey = config.sops.secrets."ssh_keys/id_ed25519_zfs".path;
+
+    commands."media" = {
+      source = "zfs@nas1.onepunch:storage1/media";
+      target = "storage1/media";
+      extraArgs = [ ];
+
+    };
+
+    commands."repositories" = {
+      source = "zfs@nas1.onepunch:storage1/repositories";
+      target = "storage1/repositories";
+      extraArgs = [ ];
+    };
+
+    commands."ops-backups" = {
+      source = "zfs@nas1.onepunch:storage1/ops-backups";
+      target = "storage1/ops-backups";
+      extraArgs = [ ];
+    };
+
+    commands."project-backups" = {
+      source = "zfs@nas1.onepunch:storage1/project-backups";
+      target = "storage1/project-backups";
+      extraArgs = [ ];
+    };
+
+    commands."share" = {
+      source = "zfs@nas1.onepunch:storage1/share";
+      target = "storage1/share";
+      extraArgs = [ ];
+    };
+  };
 }

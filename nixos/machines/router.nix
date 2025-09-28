@@ -166,6 +166,18 @@
             table ip nat {
               chain prerouting {
                 type nat hook prerouting priority -100; policy accept;
+                ip saddr 10.10.100.0/24 udp dport 53 counter dnat to 10.10.51.0;
+                ip saddr 10.10.102.0/24 udp dport 53 counter dnat to 10.10.51.0
+                ip saddr 10.10.104.0/24 udp dport 53 counter dnat to 10.10.51.0
+
+                ip saddr 10.10.100.0/24 tcp dport 53 counter dnat to 10.10.51.0
+                ip saddr 10.10.102.0/24 tcp dport 53 counter dnat to 10.10.51.0
+                ip saddr 10.10.104.0/24 tcp dport 53 counter dnat to 10.10.51.0
+
+                ip saddr 10.10.100.0/24 tcp dport 853 counter dnat to 10.10.51.0
+                ip saddr 10.10.102.0/24 tcp dport 853 counter dnat to 10.10.51.0
+                ip saddr 10.10.104.0/24 tcp dport 853 counter dnat to 10.10.51.0
+
               }
 
               chain postrouting {
@@ -185,6 +197,7 @@
         kitty
         ethtool
         tcpdump
+        traceroute
         conntrack-tools
       ];
 
@@ -224,11 +237,21 @@
                   url = url;
                 })
                 [
-                  "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt"
-                  "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt"
-                  "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt"
+                  "https://big.oisd.nl"
+                  "https://nsfw.oisd.nl"
+                  "https://github.com/ppfeufer/adguard-filter-list/blob/master/blocklist?raw=true"
                 ];
           };
+
+          # tls = {
+          #   enabled = true;
+          #   server_name = "router.onepunchtech.io";
+          #   force_https = true;
+          #   port_dns_over_tls = 853;
+          #   certificate_chain = "";
+          #   private_key = "";
+          # };
+
         };
         unbound =
           let
@@ -270,14 +293,15 @@
 
               bigtux           IN      A       10.10.106.101
               nas1             IN      A       10.10.106.50
+              nas2             IN      A       10.10.106.51
 
-              argocd           IN      A       10.0.10.0
+              argocd           IN      A       10.10.110.0
 
 
             '';
 
-            onepunchTechIO = pkgs.writeText "onepunchtechio.zone" ''
-              $ORIGIN onepunch.io
+            onepunchtechioZone = pkgs.writeText "onepunchtechio.zone" ''
+              $ORIGIN onepunchtech.io
               $TTL 86400
               @       IN      SOA     ns1.onepunch. admin.onepunch. (
                                       2023010101 ; serial
@@ -285,7 +309,7 @@
                                       1800       ; retry
                                       1209600    ; expire
                                       86400 )    ; minimum
-                                    IN      NS      ns1.onepunch.
+                                    IN      NS      ns1.onepunchtech.io.
               ns1                   IN      A       10.10.51.0
               router                IN      A       10.10.51.0
               torswitch1            IN      A       10.10.51.1
@@ -306,15 +330,33 @@
               cp2.officelab    IN      A       10.10.106.42
               cp3.officelab    IN      A       10.10.106.43
 
-              masterlab        IN      A       10.10.106.31
+              masterlab        IN      A       10.10.110.1
               cp1.masterlab    IN      A       10.10.106.31
               cp2.masterlab    IN      A       10.10.106.32
               cp3.masterlab    IN      A       10.10.106.33
               nas.masterlab    IN      A       10.10.106.39
 
-              bigtux           IN      A       10.10.106.101
+              nas1             IN      A       10.10.106.50
+              nas2             IN      A       10.10.106.51
 
-              argocd           IN      A       10.0.10.0
+              argocd           IN      A       10.10.110.3
+              forgejo          IN      A       10.10.110.3
+
+            '';
+
+            authonepunchtechcomZone = pkgs.writeText "onepunchtechio.zone" ''
+              $ORIGIN auth-onepunchtech.com
+              $TTL 86400
+              @       IN      SOA     ns1.onepunch. admin.onepunch. (
+                                      2023010101 ; serial
+                                      3600       ; refresh
+                                      1800       ; retry
+                                      1209600    ; expire
+                                      86400 )    ; minimum
+                                    IN      NS      ns1.onepunchtech.io.
+              ns1                   IN      A       10.10.51.0
+
+              idm           IN      A       10.10.110.3
 
             '';
 
@@ -394,7 +436,7 @@
             enable = true;
             settings = {
               server = {
-                #verbosity = 2;
+                # verbosity = 2;
                 interface = [ "127.0.0.1" ];
                 port = 5335;
                 access-control = [ "127.0.0.1 allow" ];
@@ -408,31 +450,36 @@
 
                 private-domain = [
                   "onepunch."
+                  "onepunchtech.io."
                   "51.10.10.in-addr.arpa."
                 ];
                 local-zone = [
                   "\"10.in-addr.arpa.\" nodefault"
                 ];
               };
-              forward-zone = [
-                {
-                  name = ".";
-                  forward-addr = [
-                    "1.1.1.1@853#cloudflare-dns.com"
-                    "1.0.0.1@853#cloudflare-dns.com"
-                  ];
-                  forward-first = false;
-                  forward-tls-upstream = true;
-                }
-              ];
+              # forward-zone = [
+              #   {
+              #     name = ".";
+              #     forward-addr = [
+              #       "1.1.1.1@853#cloudflare-dns.com"
+              #       "1.0.0.1@853#cloudflare-dns.com"
+              #     ];
+              #     forward-first = false;
+              #     forward-tls-upstream = true;
+              #   }
+              # ];
               auth-zone = [
                 {
                   name = "onepunch";
                   zonefile = "${onepunchZone}";
                 }
                 {
-                  name = "onepunchtechio";
-                  zonefile = "${onepunchTechIO}";
+                  name = "onepunchtech.io";
+                  zonefile = "${onepunchtechioZone}";
+                }
+                {
+                  name = "auth-onepunchtech.com";
+                  zonefile = "${authonepunchtechcomZone}";
                 }
                 {
                   name = "51.10.10.in-addr.arpa";
@@ -677,9 +724,14 @@
                     ip-address = "10.10.106.3"; # authority
                   }
                   {
-                    hw-address = "1c:86:0b:2d:da:da";
+                    hw-address = "1c:86:0b:2d:da:18";
                     ip-address = "10.10.106.50"; # nas1
                   }
+                  {
+                    hw-address = "1c:86:0b:2d:da:aa";
+                    ip-address = "10.10.106.51"; # nas2
+                  }
+
                 ];
               }
               {
