@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     nixos-generators = {
@@ -47,6 +47,10 @@
                   };
                 })
               ];
+              nix.settings = {
+                substituters = [ "https://cosmic.cachix.org/" ];
+                trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              };
             }
             sops-nix.nixosModules.sops
             nixos-facter-modules.nixosModules.facter

@@ -2,6 +2,7 @@
   config,
   pkgs,
   extra,
+  cosmicLib,
   ...
 }:
 
@@ -103,7 +104,9 @@
     kanidm
     cilium-cli
     kubetail
-
+    qidi-slicer-bin
+    wireguard-tools
+    screen
   ];
 
   home.pointerCursor = {
@@ -200,4 +203,31 @@
   xdg.configFile.nvim.source = ./rawConfigs/nvim;
 
   manual.manpages.enable = false;
+
+  wayland.desktopManager.cosmic.shortcuts = [
+    {
+      action = cosmicLib.cosmic.mkRON "enum" "Close";
+      key = "Super+C";
+    }
+    {
+      action = cosmicLib.cosmic.mkRON "enum" {
+        value = [
+          "brave"
+        ];
+        variant = "Spawn";
+      };
+      description = cosmicLib.cosmic.mkRON "optional" "Open Brave";
+      key = "Super+B";
+    }
+    {
+      action = cosmicLib.cosmic.mkRON "enum" {
+        value = [
+          "ghostty"
+        ];
+        variant = "Spawn";
+      };
+      description = cosmicLib.cosmic.mkRON "optional" "Open terminal";
+      key = "Super+Enter";
+    }
+  ];
 }

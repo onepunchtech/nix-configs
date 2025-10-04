@@ -3,17 +3,26 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    cosmic-manager = {
+      url = "github:HeitorAugustoLN/cosmic-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+
   };
 
   outputs =
     {
       nixpkgs,
       home-manager,
+      cosmic-manager,
       ...
     }:
     let
@@ -28,6 +37,7 @@
 
         modules = [
           ./home.nix
+          cosmic-manager.homeManagerModules.cosmic-manager
         ];
       };
     };

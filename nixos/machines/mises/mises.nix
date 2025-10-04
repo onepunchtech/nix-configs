@@ -13,6 +13,8 @@
   ];
 
   networking.hostName = "mises";
+  services.desktopManager.cosmic.enable = true;
+  #services.displayManager.cosmic-greeter.enable = true;
 
   hardware.graphics = {
     enable = true;

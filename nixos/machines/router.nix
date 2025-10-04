@@ -277,7 +277,7 @@
 
               accontrol             IN      A       10.10.100.99
               masterprinter         IN      A       10.10.100.90
-              3dprinter1            IN      A       10.10.100.91
+              3dprinter1            IN      A       10.10.100.92
 
               ca               IN      A       10.10.106.3
               officelab        IN      A       10.10.106.41
@@ -322,7 +322,7 @@
 
               accontrol             IN      A       10.10.100.99
               masterprinter         IN      A       10.10.100.90
-              3dprinter1            IN      A       10.10.100.91
+              3dprinter1            IN      A       10.10.100.92
 
               ca               IN      A       10.10.106.3
               officelab        IN      A       10.10.106.41
@@ -340,7 +340,8 @@
               nas2             IN      A       10.10.106.51
 
               argocd           IN      A       10.10.110.3
-              forgejo          IN      A       10.10.110.3
+              code             IN      A       10.10.110.3
+              jellyfin         IN      A       10.10.110.3
 
             '';
 
@@ -620,6 +621,10 @@
                   {
                     hw-address = "ce:65:7f:c4:04:49";
                     ip-address = "10.10.100.91"; # 3dprinter1
+                  }
+                  {
+                    hw-address = "c8:3a:35:cd:98:f0";
+                    ip-address = "10.10.100.92"; # 3dprinter1
                   }
 
                 ];
