@@ -21,8 +21,11 @@
     enable32Bit = true;
     extraPackages = [
       pkgs.amdvlk
+      pkgs.rocmPackages.clr.icd
     ];
   };
+
+  nixpkgs.config.allowUnfree = true;
 
   systemd.tmpfiles.rules = [
     "d /mnt/extra1 0777 whitehead users"

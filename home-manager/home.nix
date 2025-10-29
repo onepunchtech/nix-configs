@@ -107,6 +107,8 @@
     qidi-slicer-bin
     wireguard-tools
     screen
+    hugo
+    davinci-resolve-studio
   ];
 
   home.pointerCursor = {
@@ -200,6 +202,7 @@
   xdg.configFile."wofi/style.css".source = ./rawConfigs/wofi/style.css;
   xdg.configFile."waybar/style.css".source = ./rawConfigs/waybar/style.css;
   xdg.configFile."hypr/hyprland.conf".source = ./rawConfigs/hypr/hyprland.conf;
+  xdg.configFile."nixpkgs/config.nix".source = ./rawConfigs/nixpkgs/config.nix;
   xdg.configFile.nvim.source = ./rawConfigs/nvim;
 
   manual.manpages.enable = false;
