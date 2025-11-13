@@ -61,7 +61,11 @@ end
 
 local lspconfig = require("lspconfig")
 
-lspconfig.nixd.setup({})
+lspconfig.nixd.setup({
+	cmd = { "nixd" },
+	filetypes = { "nix" },
+	root_markers = { "flake.nix", ".git" },
+})
 lspconfig.lua_ls.setup({
 	settings = {
 		Lua = {

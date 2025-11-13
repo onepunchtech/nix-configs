@@ -40,5 +40,13 @@
           cosmic-manager.homeManagerModules.cosmic-manager
         ];
       };
+
+      homeConfigurations."whitehead-darwin" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs { system = "aarch64-darwin"; };
+
+        modules = [
+          ./home-darwin.nix
+        ];
+      };
     };
 }
