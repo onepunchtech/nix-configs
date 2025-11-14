@@ -6,6 +6,7 @@
       pane_frames = false;
       theme = "catppuccin-macchiato";
       default_layout = "compact";
+      show_startup_tips = false;
       keybinds = {
         unbind = [
           "Ctrl g"
