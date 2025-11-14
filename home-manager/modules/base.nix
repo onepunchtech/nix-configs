@@ -44,6 +44,17 @@
     zsh = {
       enable = true;
       autosuggestion.enable = true;
+      shellAliases = {
+        ll = "ls -l";
+        z = "zellij";
+      };
+      plugins = [
+        {
+          name = "vi-mode";
+          src = pkgs.zsh-vi-mode;
+          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+        }
+      ];
 
     };
     direnv = {

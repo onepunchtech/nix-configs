@@ -30,6 +30,7 @@
         "cmd+q=text:\\x11"
         "cmd+r=text:\\x12"
         "cmd+s=text:\\x13"
+        "cmd+t=text:\\x14"
         "cmd+u=text:\\x15"
         "cmd+v=text:\\x16"
         "cmd+w=text:\\x17"
