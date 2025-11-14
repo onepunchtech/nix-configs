@@ -46,7 +46,7 @@
       autosuggestion.enable = true;
       shellAliases = {
         ll = "ls -l";
-        z = "zellij";
+        z = "zellij -l welcome";
       };
       plugins = [
         {
