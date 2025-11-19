@@ -16,17 +16,27 @@ let
       };
     };
 
+  avante-latest = pkgs.vimPlugins.avante-nvim.overrideAttrs (_old: {
+    version = "git-latest"; 
+
+    src = pkgs.fetchFromGitHub {
+      owner = "yetone";
+      repo  = "avante.nvim";
+      rev   = "7e50de89049ea3540f0d39acec7b68a74a5d1edb";
+      hash  = "sha256-0PSZkDHoVSnDhbcxJ1koL31mTmHd5oOnLhLRKtTvzZQ=";
+    };
+  });
+
 in
 {
   programs.neovim = {
     enable = true;
-    package = pkgs-unstable.neovim;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
     extraLuaPackages = luaPkgs: with luaPkgs; [ luautf8 ];
-    extraPackages = with pkgs-unstable; [
+    extraPackages = with pkgs; [
       lua-language-server
       nixd
       terraform-lsp
@@ -44,7 +54,7 @@ in
       stylua
       nixfmt-rfc-style
     ];
-    plugins = with pkgs-unstable.vimPlugins; [
+    plugins = with pkgs.vimPlugins; [
       nvim-lspconfig
       plenary-nvim
       nvim-treesitter.withAllGrammars
@@ -84,7 +94,9 @@ in
       nvim-tree-lua
       render-markdown-nvim
       nvim-jdtls
-      avante-nvim
+      nvim-web-devicons
+      nui-nvim
+      avante-latest
       #markdown-preview-nvim
     ];
   };
