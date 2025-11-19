@@ -4,7 +4,14 @@ local config = {
 	root_dir = vim.fs.root(0, { "gradlew", ".git", "mvnw" }),
 
 	settings = {
-		java = {},
+		java = {
+			format = {
+				enabled = false,
+			},
+			saveActions = {
+				organizeImports = false,
+			},
+		},
 	},
 
 	init_options = {

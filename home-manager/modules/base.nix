@@ -7,6 +7,8 @@
     ./git.nix
     ./nushell
     ./zellij.nix
+    ./zsh.nix
+    ./development/java.nix
   ];
 
   home.packages = with pkgs; [
@@ -37,26 +39,17 @@
     silver-searcher
     unzip
     jdt-language-server
+    ripgrep
+    isort
+    black
+    prettierd
+    nodejs
+    fd
+    tree-sitter
   ];
 
   programs = {
     ssh.forwardAgent = true;
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      shellAliases = {
-        ll = "ls -l";
-        z = "zellij -l welcome";
-      };
-      plugins = [
-        {
-          name = "vi-mode";
-          src = pkgs.zsh-vi-mode;
-          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-        }
-      ];
-
-    };
     direnv = {
       enable = true;
       enableZshIntegration = true;

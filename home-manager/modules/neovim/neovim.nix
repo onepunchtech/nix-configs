@@ -73,7 +73,7 @@ in
       conform-nvim
       gitsigns-nvim
       lazygit-nvim
-      orgmode
+      #orgmode
       direnv-vim
       nvim-tree-lua
       render-markdown-nvim
