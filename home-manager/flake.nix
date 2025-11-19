@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     cosmic-manager = {
       url = "github:HeitorAugustoLN/cosmic-manager";
       inputs = {
@@ -23,13 +24,13 @@
       nixpkgs,
       home-manager,
       cosmic-manager,
+      nixpkgs-unstable,
       ...
     }:
     let
       system = "x86_64-linux";
-      pkgs = (import nixpkgs) {
-        inherit system;
-      };
+      pkgs = import nixpkgs { inherit system; };
+      pkgs-unstable = import nixpkgs-unstable { inherit system; };
     in
     {
       homeConfigurations."whitehead" = home-manager.lib.homeManagerConfiguration {
@@ -39,6 +40,8 @@
           ./home.nix
           cosmic-manager.homeManagerModules.cosmic-manager
         ];
+
+        extraSpecialArgs = { inherit nixpkgs-unstable; };
       };
 
       homeConfigurations."whitehead-darwin" = home-manager.lib.homeManagerConfiguration {
@@ -47,6 +50,8 @@
         modules = [
           ./home-darwin.nix
         ];
+
+        extraSpecialArgs = { inherit pkgs-unstable; };
       };
     };
 }

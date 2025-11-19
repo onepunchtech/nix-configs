@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  pkgs-unstable,
+  lib,
+  ...
+}:
 let
   fromGitHub =
     ref: repo:
@@ -15,12 +20,13 @@ in
 {
   programs.neovim = {
     enable = true;
+    package = pkgs-unstable.neovim;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
     extraLuaPackages = luaPkgs: with luaPkgs; [ luautf8 ];
-    extraPackages = with pkgs; [
+    extraPackages = with pkgs-unstable; [
       lua-language-server
       nixd
       terraform-lsp
@@ -38,7 +44,7 @@ in
       stylua
       nixfmt-rfc-style
     ];
-    plugins = with pkgs.vimPlugins; [
+    plugins = with pkgs-unstable.vimPlugins; [
       nvim-lspconfig
       plenary-nvim
       nvim-treesitter.withAllGrammars
