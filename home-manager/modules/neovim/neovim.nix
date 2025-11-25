@@ -17,13 +17,13 @@ let
     };
 
   avante-latest = pkgs.vimPlugins.avante-nvim.overrideAttrs (_old: {
-    version = "git-latest"; 
+    version = "git-latest";
 
     src = pkgs.fetchFromGitHub {
       owner = "yetone";
-      repo  = "avante.nvim";
-      rev   = "7e50de89049ea3540f0d39acec7b68a74a5d1edb";
-      hash  = "sha256-0PSZkDHoVSnDhbcxJ1koL31mTmHd5oOnLhLRKtTvzZQ=";
+      repo = "avante.nvim";
+      rev = "7e50de89049ea3540f0d39acec7b68a74a5d1edb";
+      hash = "sha256-0PSZkDHoVSnDhbcxJ1koL31mTmHd5oOnLhLRKtTvzZQ=";
     };
   });
 
@@ -53,6 +53,7 @@ in
       nodePackages.prettier
       stylua
       nixfmt-rfc-style
+      cuelsp
     ];
     plugins = with pkgs.vimPlugins; [
       nvim-lspconfig
@@ -98,6 +99,8 @@ in
       nui-nvim
       avante-latest
       #markdown-preview-nvim
+      vim-nickel
+      nvim-treesitter-parsers.nickel
     ];
   };
   xdg.configFile.nvim.source = ./nvim;

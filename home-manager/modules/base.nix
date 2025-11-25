@@ -46,6 +46,11 @@
     nodejs
     fd
     tree-sitter
+    cue
+    cuelsp
+    nickel
+    nls
+    nix-converter
   ];
 
   programs = {
